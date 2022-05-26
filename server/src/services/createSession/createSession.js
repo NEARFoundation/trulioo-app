@@ -9,8 +9,9 @@ export const createSession = async (req, res) => {
       return invalidCode(res);
     }
 
-    let sessionId = req.body["session_id"];
+    const sessionId = req.body["session_id"];
     const forced = req.body["forced"];
+    const code = req.params.code;
     let applicant;
 
     if (sessionId) {
@@ -20,11 +21,22 @@ export const createSession = async (req, res) => {
       }
 
       if (forced === "true") {
-        applicant = await createApplicant(req, sessionId);
+        applicant = await createApplicant(code, sessionId);
+      } else {
+        const lastSession = findLaterSession(code, sessionId);
+        if (lastSession) {
+          return res.status(400).send({ error: 'This session ID is no longer valid.' });
+        }
       }
 
     } else {
-      applicant = await createApplicant(req);
+      if (forced) {
+        return res.status(400).send({ error: 'Session ID cannot be empty.' });
+      }
+      applicant = await createApplicant(code);
+    }
+    if (!applicant) {
+      return res.status(400).send({ error: 'The session ID for this URL is already registered.' });
     }
 
     res.send({ session_id: applicant.session_id, status: applicant.status });
@@ -37,15 +49,23 @@ export const createSession = async (req, res) => {
   }
 }
 
-async function createApplicant(req, oldSessionId = null) {
+async function createApplicant(code, oldSessionId = null) {
+  const storedApplicant = findLaterSession(code, oldSessionId);
+  if (storedApplicant) {
+    return null;
+  }
   const sessionId = createUniqueId();
-  let applicant = new Applicant({
+  const applicant = new Applicant({
     session_id: sessionId,
-    code: req.params.code,
+    code: code,
     session_timestamp: new Date(),
     status: "new",
     old_session_id: oldSessionId
   });
   await applicant.save();
   return applicant;
+}
+
+async function findLaterSession(code, oldSessionId = null) {
+  return Applicant.findOne({code: code, old_session_id: {$eq: oldSessionId}});
 }

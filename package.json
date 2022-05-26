@@ -1,7 +1,7 @@
 {
   "name": "trulioo-app",
   "version": "1.0.0",
-  "description": "Trulio KYC module",
+  "description": "Trulioo KYC module",
   "scripts": {
     "start-dev": "(yarn build:ui) && (cd server && yarn start-dev)",
     "build:ui": "scripts/build_ui.sh",
