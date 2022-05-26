@@ -16,6 +16,8 @@ const schema = new Schema({
   communication: Object,
   tx1_id: String,
   tx2_id: String,
+  tx1_record_id: String,
+  tx2_record_id: String,
   result1: Object,
   result2: Object,
   verify1_begin_timestamp: Date,
@@ -25,5 +27,7 @@ const schema = new Schema({
   old_session_id: String
 });
 schema.index({code: 1, old_session_id: 1}, {unique: true});
+schema.index({tx1_id: 1}, {unique: false});
+schema.index({tx2_id: 1}, {unique: false});
 
 export const Applicant = model('Applicant', schema);

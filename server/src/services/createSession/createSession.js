@@ -30,7 +30,7 @@ export const createSession = async (req, res) => {
       }
 
     } else {
-      if (forced) {
+      if (forced === "true") {
         return res.status(400).send({ error: 'Session ID cannot be empty.' });
       }
       applicant = await createApplicant(code);
@@ -66,6 +66,6 @@ async function createApplicant(code, oldSessionId = null) {
   return applicant;
 }
 
-async function findLaterSession(code, oldSessionId = null) {
+export const findLaterSession = async (code, oldSessionId = null) => {
   return Applicant.findOne({code: code, old_session_id: {$eq: oldSessionId}});
 }
