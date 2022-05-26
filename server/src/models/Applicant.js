@@ -24,5 +24,6 @@ const schema = new Schema({
   verify2_end_timestamp: Date,
   old_session_id: String
 });
+schema.index({code: 1, old_session_id: 1}, {unique: true});
 
 export const Applicant = model('Applicant', schema);
