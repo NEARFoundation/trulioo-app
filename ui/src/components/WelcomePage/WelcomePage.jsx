@@ -6,10 +6,11 @@ import { useStoreActions } from 'easy-peasy';
 const WelcomePage = () => {
   const classes = useStyles();
   const onChangeStatus = useStoreActions((actions) => actions.general.onChangeStatus);
+  const onGetCountries = useStoreActions((actions) => actions.general.onGetCountries);
 
-  const handleGetStarted = (e) => {
-    e.preventDefault();
-    onChangeStatus('country_select');
+  const handleGetStarted = () => {
+    onGetCountries();
+    onChangeStatus({ status: 'country_select' });
   };
 
   return (

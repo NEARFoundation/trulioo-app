@@ -11,7 +11,7 @@ export const general = persist(
   },
   {
     storage: 'localStorage',
-    allow: ['country', 'schema', 'status', 'error'],
+    allow: ['country', 'getCountries', 'getFields', 'session', 'error'],
   },
 );
 

@@ -5,7 +5,7 @@ import { useStyles } from './CountrySelection.styles';
 import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
 
-const CountrySelection = () => {
+const CountrySelection = ({ setLoading }) => {
   const onChangeStatus = useStoreActions((actions) => actions.general.onChangeStatus);
   const setCountry = useStoreActions((actions) => actions.general.setCountry);
   const onGetFields = useStoreActions((actions) => actions.general.onGetFields);
@@ -21,8 +21,8 @@ const CountrySelection = () => {
   useEffect(() => {
     if (watchCountry) {
       setCountry(watchCountry);
-      onChangeStatus('identity_verification');
-      onGetFields('UA');
+      onGetFields({ countryCode: watchCountry, setLoading });
+      onChangeStatus({ status: 'identity_verification' });
     }
   }, [watchCountry]);
 

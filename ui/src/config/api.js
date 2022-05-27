@@ -1,16 +1,71 @@
-import { utils } from '../utils/utils';
+import ky from 'ky';
+
+const headers = {
+  'content-type': 'application/json',
+};
+
+const requestSession = async (session_id) => {
+  return ky
+    .post('api/session', {
+      headers,
+      json: { session_id },
+      timeout: 60000,
+    })
+    .json();
+};
+
+const requestCountries = async () => {
+  const response = await ky
+    .get('api/get-countries', {
+      headers,
+      timeout: 60000,
+    })
+    .json();
+  return response.sort();
+};
 
 const requestFields = async (countryCode) => {
-  //const URL = `/api/getrecommendedfields/${countryCode}`;
-  //const response = await axios.get(URL);
-  //const parsedFields = parseFields(response.data.response);
-  const response = utils.defFields();
-  const parsedFields = utils.parseFields(response);
+  return ky
+    .get(`api/get-fields?country=${countryCode}`, {
+      headers,
+      timeout: 60000,
+    })
+    .json();
+};
 
-  const copiedParsedFields = utils.deepCopy(parsedFields);
-  return utils.parseFieldDates(copiedParsedFields);
+const requestConsents = async (countryCode) => {
+  return ky
+    .get(`api/get-consents?country=${countryCode}`, {
+      headers,
+      timeout: 60000,
+    })
+    .json();
+};
+
+const requestSubdivisions = async (countryCode) => {
+  return ky
+    .get(`api/get-country-subdivisions?country=${countryCode}`, {
+      headers,
+      timeout: 60000,
+    })
+    .json();
+};
+
+const requestSubmitForm = async (body) => {
+  return ky
+    .post('api/verify', {
+      headers,
+      json: { ...body },
+      timeout: 60000,
+    })
+    .json();
 };
 
 export const api = {
   requestFields,
+  requestConsents,
+  requestSession,
+  requestCountries,
+  requestSubdivisions,
+  requestSubmitForm,
 };

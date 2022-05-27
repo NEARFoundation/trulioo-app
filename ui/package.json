@@ -19,11 +19,14 @@
     "@testing-library/user-event": "^13.5.0",
     "easy-peasy": "^5.0.4",
     "i18n-iso-countries": "^7.4.0",
+    "ky": "^0.30.0",
+    "ramda": "^0.28.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.31.2",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-spinners-kit": "^1.9.1",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
@@ -36,7 +39,6 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write  src//**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc"
   },
-  "homepage": ".",
   "eslintConfig": {
     "extends": [
       "react-app",

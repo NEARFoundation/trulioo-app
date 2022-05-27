@@ -1,9 +1,11 @@
-import { setStatus } from './setStatus';
 import { setCountry } from './setCountry';
 import { setFieldsSchema } from './setFieldsSchema';
+import { setSession } from './setSession';
+import { setCountries } from './setCountries';
 
 export const actions = {
-  setStatus,
+  setSession,
+  setCountries,
   setCountry,
   setFieldsSchema,
 };

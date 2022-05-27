@@ -5,7 +5,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { pink } from '@mui/material/colors';
 import { useStoreState } from 'easy-peasy';
-import CreateApplicant from './CreateApplicant/CreateApplicant';
+//import CreateApplicant from './CreateApplicant/CreateApplicant';
 import IdentityVerification from '../IdentityVerification/IdentityVerification';
 //import VerifyAccount from './VerifyAccount/VerifyAccount';
 //import CheckVerification from './CheckVerification/CheckVerification';
@@ -42,7 +42,7 @@ const stepIcons = {
   default: <PanoramaFishEyeIcon color="primary" />,
 };
 
-const KYCSteps = ({ status }) => {
+const KYCSteps = ({ loading, status }) => {
   const [step, setStep] = useState(null);
   const { isRejected } = useStoreState((state) => state.general);
   const onfidoToken = null;
@@ -95,7 +95,7 @@ const KYCSteps = ({ status }) => {
       </Stepper>
       {status && (
         <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
-          {status === 'identity_verification' && <IdentityVerification />}
+          {status === 'identity_verification' && <IdentityVerification loading={loading} />}
           {/* {status === 'registered_token' && <VerifyAccount />}
                     {status === 'verification_in_progress' && <CheckVerification />}
           {status === 'account_is_whitelisted' && <CheckVerification />}

@@ -3,26 +3,17 @@ import { Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { useStyles } from './CountrySelect.styles';
 import SearchIcon from '@mui/icons-material/Search';
-import countries from 'i18n-iso-countries';
-import enLocale from 'i18n-iso-countries/langs/en.json';
 import { useStoreState } from 'easy-peasy';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useState } from 'react';
 
 const CountrySelect = (props) => {
   const { control, name, errors } = props;
+  const [open, setOpen] = useState(false);
   const country = useStoreState((state) => state.general.country);
-  // const [countriesArr, setCountries] = useState([]);
-
-  countries.registerLocale(enLocale);
-
-  const countryObj = countries.getNames('en', { select: 'official' });
-
-  const countryArr = Object.entries(countryObj).map(([key, value]) => {
-    return {
-      name: value,
-      alpha3: key,
-    };
-  });
+  const countriesArr = useStoreState((state) => state.general.getCountries.countries) || [];
+  const loading = open && countriesArr.length === 0;
 
   const classes = useStyles();
 
@@ -34,23 +25,30 @@ const CountrySelect = (props) => {
       render={({ field: { onChange } }) => (
         <Autocomplete
           onChange={(_, data) => {
-            onChange(data?.alpha3 ?? '');
+            onChange(data?.code ?? '');
             return data;
           }}
-          defaultValue={countryArr.find((item) => item.alpha3 === country)}
+          defaultValue={countriesArr.find((item) => item.code === country)}
           id="country"
           className={classes.autocomplete}
-          options={countryArr}
+          options={countriesArr}
+          loading={loading}
+          onOpen={() => {
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
           autoHighlight
           getOptionLabel={(option) => option.name}
-          isOptionEqualToValue={(option, value) => option.alpha3 === value.alpha3}
+          isOptionEqualToValue={(option, value) => option.code === value.code}
           renderOption={(props, option) => (
             <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
               <img
                 loading="lazy"
                 width="20"
-                src={`https://flagcdn.com/w20/${option.alpha3.toLowerCase()}.png`}
-                srcSet={`https://flagcdn.com/w40/${option.alpha3.toLowerCase()}.png 2x`}
+                src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
                 alt=""
               />
               {option.name}
@@ -70,6 +68,12 @@ const CountrySelect = (props) => {
                     <InputAdornment position="start">
                       <SearchIcon />
                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <>
+                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
+                    </>
                   ),
                   disableUnderline: true,
                 }}
