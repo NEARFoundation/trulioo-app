@@ -27,9 +27,7 @@ const App = () => {
       >
         {status === 'new' && <WelcomePage />}
         {status === 'country_select' && <CountrySelection setLoading={setLoading} />}
-        {status === 'identity_verification' && (
-          <KYCSteps loading={loading} setLoading={setLoading} status={status} />
-        )}
+        <KYCSteps loading={loading} setLoading={setLoading} status={status} />
       </Box>
     </>
   );

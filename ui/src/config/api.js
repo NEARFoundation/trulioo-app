@@ -4,11 +4,11 @@ const headers = {
   'content-type': 'application/json',
 };
 
-const requestSession = async (session_id) => {
+const requestSession = async (body) => {
   return ky
     .post('api/session', {
       headers,
-      json: { session_id },
+      json: { ...body },
       timeout: 60000,
     })
     .json();

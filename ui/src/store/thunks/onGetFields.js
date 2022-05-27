@@ -1,7 +1,7 @@
 import { thunk } from 'easy-peasy';
 import { api } from '../../config/api';
-import { helpers } from '../helpers/helpers';
-import { presetTruliooFields } from '../helpers/getFields';
+import { getFields } from '../helpers/getFields';
+import { presetTruliooFields } from '../helpers/presetTruliooFields';
 
 export const onGetFields = thunk(
   async (
@@ -12,22 +12,22 @@ export const onGetFields = thunk(
       setLoading(true);
       const setFieldsSchema = actions.setFieldsSchema;
       const response = await api.requestFields(countryCode);
-      const parsedFields = helpers.parseFields(response);
-      const copiedParsedFields = helpers.deepCopy(parsedFields);
-      const fields = helpers.parseFieldDates(copiedParsedFields);
+      const parsedFields = getFields.parseFields(response);
+      const copiedParsedFields = getFields.deepCopy(parsedFields);
+      const fields = getFields.parseFieldDates(copiedParsedFields);
       const subdivisions = await api.requestSubdivisions(countryCode);
       let consents = await api.requestConsents(countryCode);
-      consents = helpers.generateConsentSchema(consents);
-      helpers.validateAdditionalFields(additionalFields);
+      consents = getFields.generateConsentSchema(consents);
+      getFields.validateAdditionalFields(additionalFields);
       if (fields && fields.properties) {
-        helpers.updateStateProvince(fields.properties, subdivisions);
+        getFields.updateStateProvince(fields.properties, subdivisions);
         if (fields.properties.NationalIds) {
-          helpers.transformNationalIdsForCountry(fields.properties.NationalIds, countryCode);
+          getFields.transformNationalIdsForCountry(fields.properties.NationalIds, countryCode);
         }
       }
       let finalFields = fields;
       if (whiteListedTruliooFields) {
-        finalFields = helpers.getWhiteListedFieldsOnly(fields, whiteListedTruliooFields, {});
+        finalFields = getFields.getWhiteListedFieldsOnly(fields, whiteListedTruliooFields, {});
       }
       if (currentTruliooFields) {
         presetTruliooFields(finalFields.properties, currentTruliooFields);
