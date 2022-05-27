@@ -1,15 +1,18 @@
 import { thunk } from 'easy-peasy';
 import { api } from '../../config/api';
-import { helpers } from '../helpers/helpers';
+import { getFields } from '../helpers/getFields';
 
-export const onSubmitForm = thunk(async (_, form, { getStoreState }) => {
+export const onSubmitForm = thunk(async (_, form, { getStoreState, getStoreActions }) => {
+  const state = getStoreState();
+  const actions = getStoreActions();
   try {
-    const state = getStoreState();
-    const formClone = helpers.deepCopy(form);
-    const truliooFormData = helpers.parseTruliooFields(formClone);
-    const body = helpers.getSubmitBody(truliooFormData);
+    const onChangeStatus = actions.general.onChangeStatus;
+    const formClone = getFields.deepCopy(form);
+    const truliooFormData = getFields.parseTruliooFields(formClone);
+    const body = getFields.getSubmitBody(truliooFormData);
     body.session_id = state.general.session.session_id;
-    await api.requestSubmitForm(body);
+    const { status } = await api.requestSubmitForm(body);
+    onChangeStatus({ status });
   } catch (e) {
     console.log(`Error:${e}`);
   }

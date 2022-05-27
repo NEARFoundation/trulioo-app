@@ -11,7 +11,7 @@ export const IdentityVerification = ({ loading }) => {
   const onChangeStatus = useStoreActions((actions) => actions.general.onChangeStatus);
   const onSubmitForm = useStoreActions((actions) => actions.general.onSubmitForm);
   const fields = useStoreState((state) => state.general.getFields);
-  const countries = useStoreState((state) => state.general.getCountries.countries);
+  const countries = useStoreState((state) => state.general.countries);
 
   const mapStateToProps = (state) => {
     const schema = {

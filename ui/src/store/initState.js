@@ -11,7 +11,7 @@ const _initState = {
     status: null,
   },
   country: null,
-  getCountries: null,
+  countries: [],
   getFields: null,
   isRejected: false,
   messages: null,

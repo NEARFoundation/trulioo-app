@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import React, { useEffect, useState } from 'react';
+import { useStoreActions } from 'easy-peasy';
 import { Box, Button, Typography } from '@mui/material';
-import Clock from '../../general/img/clock.png';
 import Man from '../../general/img/man.png';
 import Hand from '../../general/img/hand.png';
-import { useNavigate } from 'react-router';
 import { useStyles } from './CheckVerification.styles';
+import { MagicSpinner } from 'react-spinners-kit';
 
-const CheckVerification = () => {
-  const { onRegisterSession, setSession } = useStoreActions((actions) => actions.main);
-  const state = useStoreState((state) => state);
-  const navigate = useNavigate();
-  const sessionStatus = state.main.session.status;
+const CheckVerification = ({ status }) => {
+  const { setSession } = useStoreActions((actions) => actions.general);
+  // const state = useStoreState((state) => state);
+  //const navigate = useNavigate();
+  //const sessionStatus = state.general.session.status;
 
   const classes = useStyles();
   const [counter, setCounter] = useState(0);
@@ -32,43 +31,45 @@ const CheckVerification = () => {
     if (counter)
       timer = setTimeout(() => {
         setCounter(counter + 1);
-        onRegisterSession();
+        // onRegisterSession();
       }, 30000);
 
     return () => clearTimeout(timer);
   }, [counter]);
 
-  if (!counter && sessionStatus === 'verification_in_progress') {
+  if (!counter && status === 'verification_in_progress') {
     startCounter();
   }
-  if (counter && sessionStatus === 'account_is_whitelisted') {
+  if (counter && status === 'account_is_whitelisted') {
     stopCounter();
   }
 
   const handleSubmit = () => {
-    navigate('/');
+    //navigate('/');
   };
 
   return (
     <>
-      {sessionStatus === 'verification_in_progress' && (
+      {status === 'identity_verification_in_progress' && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>
-              <img className={classes.img} src={Clock} alt="Check" />
+              <Box>
+                <MagicSpinner color="#555" loading={true} />
+              </Box>
               <Box className={classes.formHeader}>
                 <Typography className={classes.formTitle} variant="h6">
                   Thank you! We are currently checking your data
                 </Typography>
                 <Typography variant="body2" className={classes.formDescription}>
-                  We will send send you email with confirmation. It can take a few days...
+                  This may take a few seconds...
                 </Typography>
               </Box>
             </Box>
           </Box>
         </Box>
       )}
-      {sessionStatus === 'applicant_was_rejected' && (
+      {status === 'applicant_was_rejected' && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>
@@ -96,7 +97,7 @@ const CheckVerification = () => {
           </Box>
         </Box>
       )}
-      {sessionStatus === 'account_is_whitelisted' && (
+      {status === 'account_is_whitelisted' && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>

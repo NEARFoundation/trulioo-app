@@ -5,16 +5,13 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { pink } from '@mui/material/colors';
 import { useStoreState } from 'easy-peasy';
-//import CreateApplicant from './CreateApplicant/CreateApplicant';
 import IdentityVerification from '../IdentityVerification/IdentityVerification';
-//import VerifyAccount from './VerifyAccount/VerifyAccount';
-//import CheckVerification from './CheckVerification/CheckVerification';
+import CheckVerification from './CheckVerification/CheckVerification';
 
 const steps = [
   { label: 'Select Country', value: 'country_select' },
   { label: 'Identity verification', value: 'identity_verification' },
-  { label: 'Verify you account', value: 'verify' },
-  { label: 'Submit your proposal', value: 'proposal' },
+  { label: 'Document verification', value: 'document_verification' },
 ];
 
 function statusToStep(status) {
@@ -22,9 +19,7 @@ function statusToStep(status) {
     select_country: 'select_country',
     new: 'new',
     identity_verification: 'identity_verification',
-    registered: 'verify',
-    registered_token: 'verify',
-    verification_in_progress: 'verify',
+    identity_verification_in_progress: 'identity_verification',
     applicant_was_rejected: 'verify',
     account_is_whitelisted: 'proposal',
   };
@@ -35,8 +30,7 @@ const stepIcons = {
   new: <PanoramaFishEyeIcon color="primary" />,
   registered: <PanoramaFishEyeIcon color="primary" />,
   identity_verification: <PanoramaFishEyeIcon color="primary" />,
-  registered_token: <PanoramaFishEyeIcon color="primary" />,
-  verification_in_progress: <AccessTimeIcon color="primary" />,
+  identity_verification_in_progress: <AccessTimeIcon color="primary" />,
   account_is_whitelisted: <PanoramaFishEyeIcon color="primary" />,
   applicant_was_rejected: <CancelIcon sx={{ color: pink[500] }} />,
   default: <PanoramaFishEyeIcon color="primary" />,
@@ -96,6 +90,7 @@ const KYCSteps = ({ loading, status }) => {
       {status && (
         <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
           {status === 'identity_verification' && <IdentityVerification loading={loading} />}
+          {status === 'identity_verification_in_progress' && <CheckVerification status={status} />}
           {/* {status === 'registered_token' && <VerifyAccount />}
                     {status === 'verification_in_progress' && <CheckVerification />}
           {status === 'account_is_whitelisted' && <CheckVerification />}
