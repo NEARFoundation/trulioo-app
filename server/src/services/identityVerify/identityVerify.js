@@ -49,10 +49,10 @@ export const identityVerify = async (req, res) => {
     );
 
     applicant.status = 'identity_verification_in_progress';
-    applicant.person_info = fields.PersonInfo;
-    applicant.location = fields.Location;
-    applicant.communication = fields.Communication;
-    applicant.tx1_id = response.data.TransactionID;
+    applicant.person_info = fields["PersonInfo"];
+    applicant.location = fields["Location"];
+    applicant.communication = fields["Communication"];
+    applicant.tx1_id = response.data["TransactionID"];
     applicant.verify1_begin_timestamp = new Date();
     await applicant.save();
 
