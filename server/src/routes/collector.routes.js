@@ -16,6 +16,6 @@ export const routes = app => {
   app.get('/:code/api/get-country-subdivisions', getCountrySubdivisions);
   app.post('/:code/api/session', createSession);
   app.post('/:code/api/verify', identityVerify);
-  app.post('/send-check-result', sendCheckResult);
+  app.post('/api/send-check-result', sendCheckResult);
   app.use('/:code/', express.static('public'));
 }

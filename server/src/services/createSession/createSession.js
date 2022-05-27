@@ -23,7 +23,7 @@ export const createSession = async (req, res) => {
       if (forced === "true") {
         applicant = await createApplicant(code, sessionId);
       } else {
-        const lastSession = findLaterSession(code, sessionId);
+        const lastSession = await findLaterSession(code, sessionId);
         if (lastSession) {
           return res.status(400).send({ error: 'This session ID is no longer valid.' });
         }
@@ -50,7 +50,7 @@ export const createSession = async (req, res) => {
 }
 
 async function createApplicant(code, oldSessionId = null) {
-  const storedApplicant = findLaterSession(code, oldSessionId);
+  const storedApplicant = await findLaterSession(code, oldSessionId);
   if (storedApplicant) {
     return null;
   }
