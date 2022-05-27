@@ -6,9 +6,13 @@ const _initState = {
     isError: false,
     description: '',
   },
-  status: 'new',
+  session: {
+    session_id: '',
+    status: null,
+  },
   country: null,
-  schema: null,
+  getCountries: null,
+  getFields: null,
   isRejected: false,
   messages: null,
 };

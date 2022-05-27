@@ -50,6 +50,37 @@ const theme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      defaultProps: { variant: 'filled', InputProps: { disableUnderline: true } },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          fontWeight: '600',
+          fontSize: '14px',
+          color: 'rgba(0, 0, 0, 0.6)',
+          '&::before': {
+            width: '0px',
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: '16px',
+          fontWeight: '700',
+        },
+      },
+    },
+    MuiFilledInput: {
+      styleOverrides: {
+        root: {
+          fontWeight: '700',
+          borderRadius: '12px',
+        },
+      },
+    },
   },
 });
 
