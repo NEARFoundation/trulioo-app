@@ -7,11 +7,18 @@ import CountrySelection from './components/CountrySelection/CountrySelection';
 import KYCSteps from './components/KYCSteps/KYCSteps';
 import { useState } from 'react';
 
+const steps = [
+  'identity_verification_in_progress',
+  'identity_verification_failed',
+  'identity_verification_completed',
+  'document_verification_in_progress',
+  'document_verification_failed',
+  'document_verification_completed',
+];
+
 const App = () => {
-  console.log('App...');
   const [loading, setLoading] = useState(false);
   const status = useStoreState((state) => state.general.session.status);
-  //console.log('status', status);
 
   return (
     <>
@@ -27,7 +34,9 @@ const App = () => {
       >
         {status === 'new' && <WelcomePage />}
         {status === 'country_select' && <CountrySelection setLoading={setLoading} />}
-        <KYCSteps loading={loading} setLoading={setLoading} status={status} />
+        {steps.includes(status) && (
+          <KYCSteps loading={loading} setLoading={setLoading} status={status} />
+        )}
       </Box>
     </>
   );
