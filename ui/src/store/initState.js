@@ -7,6 +7,7 @@ const _initState = {
     description: '',
   },
   session: {
+    pathname: '',
     session_id: '',
     status: null,
   },

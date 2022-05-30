@@ -1,17 +1,19 @@
 import Form from '@rjsf/material-ui/v5';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-//import TextField from '@mui/material/TextField';
-import Divider from '@mui/material/Divider';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import Loader from '../general/Loader/Loader';
-import Typography from '@mui/material/Typography';
+import { useStyles } from './IdentityVerification.styles';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useState } from 'react';
 
 export const IdentityVerification = ({ loading }) => {
+  const classes = useStyles();
+  const [btnLoading, setBtnLoading] = useState(false);
   const onChangeStatus = useStoreActions((actions) => actions.general.onChangeStatus);
-  const onSubmitForm = useStoreActions((actions) => actions.general.onSubmitForm);
+  const setError = useStoreActions((actions) => actions.general.setError);
   const fields = useStoreState((state) => state.general.getFields);
   const countries = useStoreState((state) => state.general.countries);
+  const onSubmitForm = useStoreActions((actions) => actions.general.onSubmitForm);
 
   const mapStateToProps = (state) => {
     const schema = {
@@ -56,7 +58,16 @@ export const IdentityVerification = ({ loading }) => {
     onChangeStatus({ status: 'country_select' });
   };
 
+  const handleError = (error) => {
+    let _description = '';
+    for (const item of error) {
+      _description += item.stack + '\r\n';
+    }
+    setError({ isError: true, description: _description });
+  };
+
   const onSubmit = ({ formData }) => {
+    setBtnLoading(true);
     onSubmitForm(formData);
   };
 
@@ -86,7 +97,7 @@ export const IdentityVerification = ({ loading }) => {
         ) : (
           <>
             {formProps ? (
-              <Box sx={{ width: 580, backgroundColor: '#fff', p: 2 }}>
+              <Box className={classes.root}>
                 <Typography
                   component="h2"
                   sx={{ fontSize: '20px', fontWeight: '700', letterSpacing: 0.15 }}
@@ -98,12 +109,19 @@ export const IdentityVerification = ({ loading }) => {
                   ObjectFieldTemplate={ObjectFieldTemplate}
                   formData={formProps.formData}
                   onSubmit={onSubmit}
+                  onError={handleError}
                 >
-                  <Box>
+                  <Box className={classes.footer}>
                     <Button onClick={handleBackward}>Back</Button>
-                    <Button type="submit" variant="outlined">
+                    <LoadingButton
+                      className={classes.submitBtn}
+                      type="submit"
+                      variant="contained"
+                      disableElevation
+                      loading={btnLoading}
+                    >
                       Next
-                    </Button>
+                    </LoadingButton>
                   </Box>
                 </Form>
               </Box>
