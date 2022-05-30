@@ -1,6 +1,7 @@
 import { action } from 'easy-peasy';
-import { initState as general } from '../initState';
+import { initState } from '../initState';
 
-export const resetState = action((state) => {
-  state.general = general;
-});
+export const resetState = action((state) => ({
+  ...state,
+  ...initState,
+}));

@@ -13,7 +13,8 @@ export const onGetSession = thunk(async (_, payload, { getStoreActions, getStore
   const setSession = actions.general.setSession;
   try {
     const session_id = state.general.session.session_id;
-    const session = await api.requestSession({ session_id, ...payload });
+    let session = await api.requestSession({ session_id, ...payload });
+    session.pathname = window.location.pathname;
     setSession(session);
   } catch (error) {
     console.log(`Error:${error}`);
