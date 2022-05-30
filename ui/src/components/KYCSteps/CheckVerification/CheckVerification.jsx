@@ -7,7 +7,7 @@ import { useStyles } from './CheckVerification.styles';
 import { MagicSpinner } from 'react-spinners-kit';
 
 const CheckVerification = ({ status }) => {
-  const { setSession } = useStoreActions((actions) => actions.general);
+  const { onGetSession, setSession } = useStoreActions((actions) => actions.general);
   // const state = useStoreState((state) => state);
   //const navigate = useNavigate();
   //const sessionStatus = state.general.session.status;
@@ -31,13 +31,13 @@ const CheckVerification = ({ status }) => {
     if (counter)
       timer = setTimeout(() => {
         setCounter(counter + 1);
-        // onRegisterSession();
+        onGetSession();
       }, 30000);
 
     return () => clearTimeout(timer);
   }, [counter]);
 
-  if (!counter && status === 'verification_in_progress') {
+  if (!counter && status === 'identity_verification_in_progress') {
     startCounter();
   }
   if (counter && status === 'account_is_whitelisted') {
