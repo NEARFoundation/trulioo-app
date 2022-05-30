@@ -7,6 +7,7 @@ import { getCountrySubdivisions } from "../services/getCountrySubdivisions/getCo
 import { identityVerify } from "../services/identityVerify/identityVerify.js";
 import { sendCheckResult } from "../services/sendCheckResult/sendCheckResult.js";
 import { testAuthentication } from "../services/testAuthentication/testAuthentication.js";
+import { embedIdToken } from "../services/embedIdToken/embedIdToken.js";
 
 export const routes = app => {
   app.get('/:code/api/test-authentication', testAuthentication);
@@ -17,5 +18,6 @@ export const routes = app => {
   app.post('/:code/api/session', createSession);
   app.post('/:code/api/verify', identityVerify);
   app.post('/api/send-check-result', sendCheckResult);
+  app.post('/:code/trulioo-api/embedids/tokens/:publicKey', embedIdToken);
   app.use('/:code/', express.static('public'));
 }
