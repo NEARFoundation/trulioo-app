@@ -7,16 +7,7 @@ import CountrySelection from './components/CountrySelection/CountrySelection';
 import KYCSteps from './components/KYCSteps/KYCSteps';
 import { useState } from 'react';
 import Message from './components/general/Message/Message';
-
-const steps = [
-  'identity_verification',
-  'identity_verification_in_progress',
-  'identity_verification_failed',
-  'identity_verification_completed',
-  'document_verification_in_progress',
-  'document_verification_failed',
-  'document_verification_completed',
-];
+import { steps } from './config/steps';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
