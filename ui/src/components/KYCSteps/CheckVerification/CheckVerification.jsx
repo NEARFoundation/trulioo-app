@@ -69,14 +69,14 @@ const CheckVerification = ({ status }) => {
           </Box>
         </Box>
       )}
-      {status === 'applicant_was_rejected' && (
+      {status === 'identity_verification_failed' && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>
               <img className={classes.img} src={Man} alt="Rejected" />
               <Box className={classes.formHeader}>
                 <Typography className={classes.formTitle} variant="h6">
-                  Applicant was rejected.
+                  Your account has been rejected
                 </Typography>
                 <Typography variant="body2" className={classes.formDescription}>
                   Sorry, but your data is invalid.
