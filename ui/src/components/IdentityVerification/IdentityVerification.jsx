@@ -5,6 +5,9 @@ import Loader from '../general/Loader/Loader';
 import { useStyles } from './IdentityVerification.styles';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState } from 'react';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import InputAdornment from '@mui/material/InputAdornment';
 
 export const IdentityVerification = ({ loading }) => {
   const classes = useStyles();
@@ -20,7 +23,7 @@ export const IdentityVerification = ({ loading }) => {
       type: 'object',
       properties: {
         countries: {
-          title: 'Countries',
+          title: 'Selected country',
           type: 'string',
           readOnly: true,
           enum: state.countries.map((item) => item.code),
@@ -87,6 +90,56 @@ export const IdentityVerification = ({ loading }) => {
     );
   };
 
+  const CountryWidget = (props) => {
+    const handleChangeCountry = () => {
+      onChangeStatus({ status: 'country_select' });
+    };
+    return (
+      <TextField
+        label={props.label}
+        select
+        variant="filled"
+        className="custom"
+        value={props.value}
+        required={props.required}
+        disabled
+        InputProps={{
+          disableUnderline: true,
+          startAdornment: (
+            <InputAdornment position="start">
+              <img
+                loading="lazy"
+                width="20"
+                src={`https://flagcdn.com/w20/${props.value.toLowerCase()}.png`}
+                srcSet={`https://flagcdn.com/w40/${props.value.toLowerCase()}.png 2x`}
+                alt={props.value}
+              />
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position="end">
+              <Button onClick={handleChangeCountry} sx={{ mr: 2, fontWeight: [700] }}>
+                Edit
+              </Button>
+            </InputAdornment>
+          ),
+        }}
+      >
+        {props.options.enumOptions.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+    );
+  };
+
+  const uiSchema = {
+    countries: {
+      'ui:widget': CountryWidget,
+    },
+  };
+
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
@@ -106,6 +159,7 @@ export const IdentityVerification = ({ loading }) => {
                 </Typography>
                 <Form
                   schema={formProps.schema}
+                  uiSchema={uiSchema}
                   ObjectFieldTemplate={ObjectFieldTemplate}
                   formData={formProps.formData}
                   onSubmit={onSubmit}
