@@ -10,6 +10,7 @@ const requestSession = async (body) => {
       headers,
       json: { ...body },
       timeout: 60000,
+      throwHttpErrors: false,
     })
     .json();
 };

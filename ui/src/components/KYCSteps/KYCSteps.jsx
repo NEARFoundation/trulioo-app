@@ -7,6 +7,7 @@ import { pink } from '@mui/material/colors';
 import { useStoreState } from 'easy-peasy';
 import IdentityVerification from '../IdentityVerification/IdentityVerification';
 import CheckVerification from './CheckVerification/CheckVerification';
+import TruliooEmbedId from './TruliooEmbedId/TruliooEmbedId';
 
 const steps = [
   { label: 'Select Country', value: 'country_select' },
@@ -20,8 +21,9 @@ function statusToStep(status) {
     new: 'new',
     identity_verification: 'identity_verification',
     identity_verification_in_progress: 'identity_verification',
-    applicant_was_rejected: 'verify',
-    account_is_whitelisted: 'proposal',
+    identity_verification_failed: 'identity_verification',
+    identity_verification_completed: 'document_verification',
+    account_is_whitelisted: 'finish',
   };
   return steps[status];
 }
@@ -31,8 +33,9 @@ const stepIcons = {
   registered: <PanoramaFishEyeIcon color="primary" />,
   identity_verification: <PanoramaFishEyeIcon color="primary" />,
   identity_verification_in_progress: <AccessTimeIcon color="primary" />,
+  identity_verification_completed: <PanoramaFishEyeIcon color="primary" />,
+  identity_verification_failed: <CancelIcon sx={{ color: pink[500] }} />,
   account_is_whitelisted: <PanoramaFishEyeIcon color="primary" />,
-  applicant_was_rejected: <CancelIcon sx={{ color: pink[500] }} />,
   default: <PanoramaFishEyeIcon color="primary" />,
 };
 
@@ -91,6 +94,8 @@ const KYCSteps = ({ loading, status }) => {
         <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
           {status === 'identity_verification' && <IdentityVerification loading={loading} />}
           {status === 'identity_verification_in_progress' && <CheckVerification status={status} />}
+          {status === 'identity_verification_failed' && <CheckVerification status={status} />}
+          {status === 'identity_verification_completed' && <TruliooEmbedId />}
           {/* {status === 'registered_token' && <VerifyAccount />}
                     {status === 'verification_in_progress' && <CheckVerification />}
           {status === 'account_is_whitelisted' && <CheckVerification />}
