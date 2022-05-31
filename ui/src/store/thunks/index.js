@@ -4,6 +4,7 @@ import { onGetFields } from './onGetFields';
 import { onGetSession } from './onGetSession';
 import { onSubmitForm } from './onSubmitForm';
 import { onGetCountries } from './onGetCountries';
+import { onDocVerify } from './onDocVerify';
 
 export const thunks = {
   onInitApp,
@@ -12,4 +13,5 @@ export const thunks = {
   onGetFields,
   onGetSession,
   onSubmitForm,
+  onDocVerify,
 };

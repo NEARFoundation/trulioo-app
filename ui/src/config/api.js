@@ -62,6 +62,16 @@ const requestSubmitForm = async (body) => {
     .json();
 };
 
+const requestDocVerify = async (body) => {
+  return ky
+    .post('doc-verify', {
+      headers,
+      json: { ...body },
+      timeout: 60000,
+    })
+    .json();
+};
+
 export const api = {
   requestFields,
   requestConsents,
@@ -69,4 +79,5 @@ export const api = {
   requestCountries,
   requestSubdivisions,
   requestSubmitForm,
+  requestDocVerify,
 };
