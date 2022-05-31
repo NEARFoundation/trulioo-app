@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import Loader from '../../general/Loader/Loader';
+import { useStoreActions } from 'easy-peasy';
 
 const PUBLIC_KEY = 'b87efd86e9364be799acc6104e81156d'; /*TODO: send to .env*/
 
 const TruliooEmbedId = () => {
   const [loading, setLoading] = useState(true);
+  const onDocVerify = useStoreActions((actions) => actions.general.onDocVerify);
 
   const handleResponse = (e) => {
-    console.log('handleResponse e:', e);
+    onDocVerify(e);
   };
 
   const onInitialRenderComplete = (e) => {
