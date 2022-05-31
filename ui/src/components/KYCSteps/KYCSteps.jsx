@@ -4,7 +4,6 @@ import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { pink } from '@mui/material/colors';
-import { useStoreState } from 'easy-peasy';
 import IdentityVerification from '../IdentityVerification/IdentityVerification';
 import CheckVerification from './CheckVerification/CheckVerification';
 import TruliooEmbedId from './TruliooEmbedId/TruliooEmbedId';
@@ -22,38 +21,29 @@ function statusToStep(status) {
     identity_verification: 'identity_verification',
     identity_verification_in_progress: 'identity_verification',
     identity_verification_failed: 'identity_verification',
+    document_verification_failed: 'document_verification',
     identity_verification_completed: 'document_verification',
-    account_is_whitelisted: 'finish',
+    document_verification_completed: 'finish',
   };
   return steps[status];
 }
 
 const stepIcons = {
   new: <PanoramaFishEyeIcon color="primary" />,
-  registered: <PanoramaFishEyeIcon color="primary" />,
   identity_verification: <PanoramaFishEyeIcon color="primary" />,
   identity_verification_in_progress: <AccessTimeIcon color="primary" />,
   identity_verification_completed: <PanoramaFishEyeIcon color="primary" />,
   identity_verification_failed: <CancelIcon sx={{ color: pink[500] }} />,
-  account_is_whitelisted: <PanoramaFishEyeIcon color="primary" />,
+  document_verification: <CancelIcon sx={{ color: pink[500] }} />,
+  document_verification_completed: <PanoramaFishEyeIcon color="primary" />,
   default: <PanoramaFishEyeIcon color="primary" />,
 };
 
 const KYCSteps = ({ loading, status }) => {
   const [step, setStep] = useState(null);
-  const { isRejected } = useStoreState((state) => state.general);
-  const onfidoToken = null;
 
   useEffect(() => {
     (async () => {
-      if (!isRejected) {
-        if (status === 'registered') {
-          // await onRegisterSession();
-          if (!onfidoToken) {
-            //   await onGenerateSDKToken();
-          }
-        }
-      }
       setStep(statusToStep(status));
     })();
   }, [status]);
@@ -66,7 +56,7 @@ const KYCSteps = ({ loading, status }) => {
     return index < activeStep();
   };
 
-  const getIcon = (status, index) => {
+  const getStepIcon = (status, index) => {
     if (activeStep() === index) return stepIcons[status];
     if (completedSteps(index)) return null;
     return stepIcons['default'];
@@ -84,7 +74,7 @@ const KYCSteps = ({ loading, status }) => {
       <Stepper sx={{ maxWidth: 580, marginTop: 4 }} activeStep={activeStep()} alternativeLabel>
         {steps.map((step, index) => (
           <Step key={step.label}>
-            <StepButton color="inherit" icon={getIcon(status, index)}>
+            <StepButton color="inherit" icon={getStepIcon(status, index)}>
               {step.label}
             </StepButton>
           </Step>
@@ -96,10 +86,6 @@ const KYCSteps = ({ loading, status }) => {
           {status === 'identity_verification_in_progress' && <CheckVerification status={status} />}
           {status === 'identity_verification_failed' && <CheckVerification status={status} />}
           {status === 'identity_verification_completed' && <TruliooEmbedId />}
-          {/* {status === 'registered_token' && <VerifyAccount />}
-                    {status === 'verification_in_progress' && <CheckVerification />}
-          {status === 'account_is_whitelisted' && <CheckVerification />}
-          {status === 'applicant_was_rejected' && <CheckVerification />}*/}
         </Box>
       )}
     </Box>

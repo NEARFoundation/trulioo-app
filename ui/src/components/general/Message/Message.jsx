@@ -1,4 +1,4 @@
-import { Modal, Box, Typography } from '@mui/material';
+import { Modal, Box, Typography, Button } from '@mui/material';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const style = {
@@ -35,6 +35,16 @@ const Message = () => {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {description}
           </Typography>
+          <Box display="flex" justifyContent="flex-end" sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleClose}
+              disableElevation
+              sx={{ borderRadius: '12px' }}
+            >
+              Got it
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </div>

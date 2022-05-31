@@ -26,10 +26,11 @@ const WelcomePage = () => {
                 your identity
               </Box>
             </Box>
-            <Box display="flex" sx={{ paddingRight: 2, paddingLeft: 2 }}>
+            <Box display="flex" sx={{ paddingRight: 2, paddingLeft: 2, mt: 4 }}>
               <Button
                 sx={{
                   borderRadius: 3,
+                  p: '12px 37px',
                 }}
                 color="primary"
                 variant="contained"

@@ -7,10 +7,7 @@ import { useStyles } from './CheckVerification.styles';
 import { MagicSpinner } from 'react-spinners-kit';
 
 const CheckVerification = ({ status }) => {
-  const { onGetSession, setSession } = useStoreActions((actions) => actions.general);
-  // const state = useStoreState((state) => state);
-  //const navigate = useNavigate();
-  //const sessionStatus = state.general.session.status;
+  const { onGetSession } = useStoreActions((actions) => actions.general);
 
   const classes = useStyles();
   const [counter, setCounter] = useState(0);
@@ -23,7 +20,7 @@ const CheckVerification = ({ status }) => {
   };
 
   const handleReset = () => {
-    setSession({ status: 'new', isRejected: true });
+    onGetSession({ forced: true });
   };
 
   useEffect(() => {
@@ -97,6 +94,7 @@ const CheckVerification = ({ status }) => {
           </Box>
         </Box>
       )}
+      {/*TODO: change final status*/}
       {status === 'account_is_whitelisted' && (
         <Box className={classes.root}>
           <Box className={classes.container}>
