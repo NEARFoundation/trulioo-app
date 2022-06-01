@@ -62,6 +62,16 @@ const requestSubmitForm = async (body) => {
     .json();
 };
 
+const sendCheckResult = async () => {
+  return ky
+    .post('api/send-check-result', {
+      headers,
+      json: {},
+      timeout: 60000,
+    })
+    .json();
+};
+
 const requestDocVerify = async (body) => {
   return ky
     .post('doc-verify', {
@@ -76,6 +86,7 @@ export const api = {
   requestFields,
   requestConsents,
   requestSession,
+  sendCheckResult,
   requestCountries,
   requestSubdivisions,
   requestSubmitForm,

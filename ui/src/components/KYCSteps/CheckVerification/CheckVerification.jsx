@@ -25,29 +25,37 @@ const CheckVerification = ({ status }) => {
 
   useEffect(() => {
     let timer;
-    if (counter)
+    if (counter) {
       timer = setTimeout(() => {
         setCounter(counter + 1);
         onGetSession();
       }, 30000);
-
+    }
     return () => clearTimeout(timer);
   }, [counter]);
 
-  if (!counter && status === 'identity_verification_in_progress') {
+  if (
+    !counter &&
+    ['identity_verification_in_progress', 'document_verification_in_progress'].includes(status)
+  ) {
     startCounter();
   }
-  if (counter && status === 'account_is_whitelisted') {
+  if (
+    counter &&
+    ['identity_verification_completed', 'document_verification_completed'].includes(status)
+  ) {
     stopCounter();
   }
 
   const handleSubmit = () => {
-    //navigate('/');
+    //navigate('/'); /*TODO: */
   };
 
   return (
     <>
-      {status === 'identity_verification_in_progress' && (
+      {['identity_verification_in_progress', 'document_verification_in_progress'].includes(
+        status,
+      ) && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>
