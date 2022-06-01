@@ -23,9 +23,7 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
   loader: {
-    borderRadius: theme.spacing(2),
     padding: theme.spacing(3),
-    backgroundColor: '#ccc',
   },
 });
 

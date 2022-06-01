@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useStyles } from './Loader.styles';
 import { MagicSpinner } from 'react-spinners-kit';
 import React from 'react';
@@ -13,7 +13,7 @@ const Loader = () => {
           <Box className={classes.loader}>
             <MagicSpinner color="#555" loading={true} />
           </Box>
-          Loading...
+          <Typography sx={{ color: '#555' }}>Loading...</Typography>
         </Box>
       </Box>
     </Box>

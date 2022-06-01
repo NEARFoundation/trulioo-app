@@ -62,7 +62,6 @@ const styles = (theme) => ({
   button: {
     paddingRight: '49px !important',
     paddingLeft: '49px !important',
-    borderRadius: 12,
   },
 });
 

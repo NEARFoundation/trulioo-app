@@ -94,8 +94,35 @@ const CheckVerification = ({ status }) => {
           </Box>
         </Box>
       )}
-      {/*TODO: change final status*/}
-      {status === 'account_is_whitelisted' && (
+      {status === 'document_verification_failed' && (
+        <Box className={classes.root}>
+          <Box className={classes.container}>
+            <Box className={classes.form}>
+              <img className={classes.img} src={Man} alt="Rejected" />
+              <Box className={classes.formHeader}>
+                <Typography className={classes.formTitle} variant="h6">
+                  Your account has been rejected
+                </Typography>
+                <Typography variant="body2" className={classes.formDescription}>
+                  Sorry, but your data is invalid.
+                </Typography>
+                <Box className={classes.formFooter}>
+                  <Button
+                    className={classes.button}
+                    color="primary"
+                    variant="contained"
+                    disableElevation
+                    onClick={handleReset}
+                  >
+                    Try again
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      )}
+      {status === 'document_verification_completed' && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>
@@ -105,21 +132,21 @@ const CheckVerification = ({ status }) => {
                   Your account has been approved.
                 </Typography>
                 <Typography variant="body2" className={classes.formDescription}>
-                  Now you can submit DAO proposal to get paid.
+                  Now you can go to the next step.
                 </Typography>
+                <Box className={classes.formFooter}>
+                  <Button
+                    className={classes.button}
+                    color="primary"
+                    variant="contained"
+                    onClick={handleSubmit}
+                    disableElevation
+                  >
+                    Next
+                  </Button>
+                </Box>
               </Box>
             </Box>
-          </Box>
-          <Box className={classes.formFooter}>
-            <Button
-              className={classes.button}
-              color="primary"
-              variant="contained"
-              onClick={handleSubmit}
-              disableElevation
-            >
-              Next
-            </Button>
           </Box>
         </Box>
       )}
