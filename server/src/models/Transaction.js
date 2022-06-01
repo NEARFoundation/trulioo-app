@@ -8,11 +8,11 @@ const schema = new Schema({
     unique: true,
     required: true,
   },
-  rawBody: String,
   transactionRecordId: String,
-  status: String,
   transactionTimestamp: Date,
   processed: Boolean,
 });
+
+schema.index({transactionTimestamp: 1, processed: 1}, {unique: false});
 
 export const Transaction = model('Transaction', schema);

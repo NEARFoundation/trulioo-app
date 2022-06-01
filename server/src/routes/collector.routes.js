@@ -1,13 +1,14 @@
 import express from "express";
 import { createSession } from "../services/createSession/createSession.js";
-import { getCountryCodes } from "../services/getCountries/getCountryCodes.js";
-import { getFields } from "../services/getFields/getFields.js";
+import { documentVerificationStart } from "../services/documentVerificationStart/documentVerificationStart.js";
+import { embedIdToken } from "../services/embedIdToken/embedIdToken.js";
 import { getConsents } from "../services/getConsents/getConsents.js";
+import { getCountryCodes } from "../services/getCountries/getCountryCodes.js";
 import { getCountrySubdivisions } from "../services/getCountrySubdivisions/getCountrySubdivisions.js";
+import { getFields } from "../services/getFields/getFields.js";
 import { identityVerify } from "../services/identityVerify/identityVerify.js";
 import { sendCheckResult } from "../services/sendCheckResult/sendCheckResult.js";
 import { testAuthentication } from "../services/testAuthentication/testAuthentication.js";
-import { embedIdToken } from "../services/embedIdToken/embedIdToken.js";
 
 export const routes = app => {
   app.get('/:code/api/test-authentication', testAuthentication);
@@ -19,5 +20,6 @@ export const routes = app => {
   app.post('/:code/api/verify', identityVerify);
   app.post('/api/send-check-result', sendCheckResult);
   app.post('/:code/trulioo-api/embedids/tokens/:publicKey', embedIdToken);
+  app.post('/:code/doc-verify', documentVerificationStart);
   app.use('/:code/', express.static('public'));
 }

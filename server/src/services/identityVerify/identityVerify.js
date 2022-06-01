@@ -1,7 +1,6 @@
-import { Applicant } from "../../models/Applicant.js";
 import { ASYNC_CALLBACK_URL } from "../../config/trulioo.config.js";
 import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
-import { findLaterSession } from "../createSession/createSession.js";
+import { checkSession } from "../createSession/createSession.js";
 
 export const identityVerify = async (req, res) => {
   try {
@@ -10,21 +9,9 @@ export const identityVerify = async (req, res) => {
       return invalidCode(res);
     }
 
-    const code = req.params.code;
-    const sessionId = req.body["session_id"];
-    if (!sessionId) {
-      return res.status(400).send({ error: 'Session ID cannot be empty.' });
-    }
-    let applicant = await Applicant.findOne({session_id: sessionId});
-    if (!applicant) {
-      return res.status(400).send({ error: 'Session not found.' });
-    }
-    const lastSession = await findLaterSession(code, sessionId);
-    if (lastSession) {
-      return res.status(400).send({ error: 'This session ID is no longer valid.' });
-    }
-    if (applicant.status !== 'new') {
-      return res.status(400).send({ error: 'Verification cannot be performed at this stage.' });
+    const { sessionFailed, applicant } = await checkSession(req, res, 'new');
+    if (sessionFailed) {
+      return sessionFailed;
     }
 
     const { country, consents, fields } = req.body;

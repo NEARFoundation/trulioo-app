@@ -7,9 +7,8 @@ export const sendCheckResult = async (req, res) => {
 
     const transactionId = req.body["TransactionId"];
     const transactionRecordId = req.body["TransactionRecordId"];
-    const status = req.body["Status"];
 
-    if (transactionId && transactionRecordId && status === "Completed") {
+    if (transactionId && transactionRecordId && req.body["Status"] === "Completed") {
       const transaction = await Transaction.findOne({ transactionId: transactionId });
       if (transaction) {
         console.log('The transaction has already been processed.');
@@ -18,9 +17,7 @@ export const sendCheckResult = async (req, res) => {
 
       await Transaction.create({
         transactionId: transactionId,
-        rawBody: req.rawBody,
         transactionRecordId: transactionRecordId,
-        status: status,
         transactionTimestamp: new Date(),
         processed: false
       });
