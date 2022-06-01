@@ -20,7 +20,7 @@ export const createSession = async (req, res) => {
         return res.status(400).send({ error: 'Session not found.' });
       }
 
-      if (forced === "true") {
+      if (forced) {
         applicant = await createApplicant(code, sessionId);
       } else {
         const lastSession = await findLaterSession(code, sessionId);
@@ -30,7 +30,7 @@ export const createSession = async (req, res) => {
       }
 
     } else {
-      if (forced === "true") {
+      if (forced) {
         return res.status(400).send({ error: 'Session ID cannot be empty.' });
       }
       applicant = await createApplicant(code);

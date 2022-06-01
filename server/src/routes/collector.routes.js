@@ -7,7 +7,7 @@ import { getCountryCodes } from "../services/getCountries/getCountryCodes.js";
 import { getCountrySubdivisions } from "../services/getCountrySubdivisions/getCountrySubdivisions.js";
 import { getFields } from "../services/getFields/getFields.js";
 import { identityVerify } from "../services/identityVerify/identityVerify.js";
-import { sendCheckResult } from "../services/sendCheckResult/sendCheckResult.js";
+import { checkResult } from "../services/checkResult/checkResult.js";
 import { testAuthentication } from "../services/testAuthentication/testAuthentication.js";
 
 export const routes = app => {
@@ -18,7 +18,7 @@ export const routes = app => {
   app.get('/:code/api/get-country-subdivisions', getCountrySubdivisions);
   app.post('/:code/api/session', createSession);
   app.post('/:code/api/verify', identityVerify);
-  app.post('/api/send-check-result', sendCheckResult);
+  app.post('/api/send-check-result', checkResult);
   app.post('/:code/trulioo-api/embedids/tokens/:publicKey', embedIdToken);
   app.post('/:code/doc-verify', documentVerificationStart);
   app.use('/:code/', express.static('public'));

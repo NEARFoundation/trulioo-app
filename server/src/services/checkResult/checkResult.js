@@ -1,28 +1,20 @@
 import { Transaction } from "../../models/Transaction.js";
 import { Applicant } from "../../models/Applicant.js";
 
-export const sendCheckResult = async (req, res) => {
+export const checkResult = async (req, res) => {
   try {
     // TODO: Check the source of the request
 
+    const truliooInstance = req.app.get('trulioo');
     const transactionId = req.body["TransactionId"];
     const transactionRecordId = req.body["TransactionRecordId"];
 
     if (transactionId && transactionRecordId && req.body["Status"] === "Completed") {
-      const transaction = await Transaction.findOne({ transactionId: transactionId });
-      if (transaction) {
+      const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
+      if (!txResult) {
         console.log('The transaction has already been processed.');
         return res.send({});
       }
-
-      await Transaction.create({
-        transactionId: transactionId,
-        transactionRecordId: transactionRecordId,
-        transactionTimestamp: new Date(),
-        processed: false
-      });
-
-      eventHandling(req, transactionId).then();
     } else {
       console.log('This event is being ignored.');
     }
@@ -38,10 +30,26 @@ export const sendCheckResult = async (req, res) => {
   }
 }
 
-const eventHandling = async (req, transactionId) => {
+export const createTransaction = async (transactionId, transactionRecordId, truliooInstance) => {
+  const transaction = await Transaction.findOne({ transactionId: transactionId });
+  if (transaction) {
+    return false;
+  }
+
+  await Transaction.create({
+    transactionId: transactionId,
+    transactionRecordId: transactionRecordId,
+    transactionTimestamp: new Date(),
+    processed: false
+  });
+
+  eventHandling(truliooInstance, transactionId).then();
+  return true;
+}
+
+export const eventHandling = async (truliooInstance, transactionId) => {
   try {
     console.log(`Handling event: ${transactionId}`);
-    const truliooInstance = req.app.get('trulioo');
     const transaction = await Transaction.findOne({ transactionId: transactionId });
 
     if (transaction) {
