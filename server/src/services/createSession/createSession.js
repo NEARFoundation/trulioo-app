@@ -52,7 +52,7 @@ export const createSession = async (req, res) => {
 async function createApplicant(code, oldSessionId = null) {
   const storedApplicant = await findLaterSession(code, oldSessionId);
   if (storedApplicant) {
-    return null;
+    return storedApplicant.status === "new" ? storedApplicant : null;
   }
   const sessionId = createUniqueId();
   const applicant = new Applicant({
@@ -66,6 +66,30 @@ async function createApplicant(code, oldSessionId = null) {
   return applicant;
 }
 
-export const findLaterSession = async (code, oldSessionId = null) => {
+const findLaterSession = async (code, oldSessionId = null) => {
   return Applicant.findOne({code: code, old_session_id: {$eq: oldSessionId}});
+}
+
+export const checkSession = async (req, res, expectedStatus) => {
+  let sessionFailed = null;
+  let applicant = null;
+  const sessionId = req.body["session_id"];
+  if (!sessionId) {
+    sessionFailed =  res.status(400).send({ error: 'Session ID cannot be empty.' });
+  } else {
+    applicant = await Applicant.findOne({session_id: sessionId});
+    if (!applicant) {
+      sessionFailed = res.status(400).send({ error: 'Session not found.' });
+    } else {
+      const lastSession = await findLaterSession(req.params.code, sessionId);
+      if (lastSession) {
+        sessionFailed = res.status(400).send({ error: 'This session ID is no longer valid.' });
+      } else {
+        if (applicant.status !== expectedStatus) {
+          sessionFailed = res.status(400).send({ error: 'Verification cannot be performed at this stage.' });
+        }
+      }
+    }
+  }
+  return {sessionFailed, applicant};
 }

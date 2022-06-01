@@ -18,6 +18,7 @@ const schema = new Schema({
   tx2_id: String,
   tx1_record_id: String,
   tx2_record_id: String,
+  fe_tx_id: String,
   result1: Object,
   result2: Object,
   verify1_begin_timestamp: Date,
@@ -29,5 +30,6 @@ const schema = new Schema({
 schema.index({code: 1, old_session_id: 1}, {unique: true});
 schema.index({tx1_id: 1}, {unique: false});
 schema.index({tx2_id: 1}, {unique: false});
+schema.index({verify2_begin_timestamp: 1, status: 1, tx2_id: 1}, {unique: false});
 
 export const Applicant = model('Applicant', schema);
