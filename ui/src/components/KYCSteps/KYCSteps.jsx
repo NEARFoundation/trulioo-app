@@ -35,6 +35,7 @@ const stepIcons = {
   identity_verification_completed: <PanoramaFishEyeIcon color="primary" />,
   identity_verification_failed: <CancelIcon sx={{ color: pink[500] }} />,
   document_verification: <CancelIcon sx={{ color: pink[500] }} />,
+  document_verification_in_progress: <AccessTimeIcon color="primary" />,
   document_verification_failed: <CancelIcon sx={{ color: pink[500] }} />,
   document_verification_completed: <PanoramaFishEyeIcon color="primary" />,
   default: <PanoramaFishEyeIcon color="primary" />,
@@ -72,7 +73,7 @@ const KYCSteps = ({ loading, status }) => {
         alignItems: 'center',
       }}
     >
-      {stepperSteps.includes(status) && (
+      {status !== 'document_verification_completed' && (
         <Stepper sx={{ maxWidth: 580, marginTop: 4 }} activeStep={activeStep()} alternativeLabel>
           {stepperSteps.map((step, index) => (
             <Step key={step.label}>
@@ -89,6 +90,7 @@ const KYCSteps = ({ loading, status }) => {
           {status === 'identity_verification_in_progress' && <CheckVerification status={status} />}
           {status === 'identity_verification_failed' && <CheckVerification status={status} />}
           {status === 'identity_verification_completed' && <TruliooEmbedId />}
+          {status === 'document_verification_in_progress' && <CheckVerification status={status} />}
           {status === 'document_verification_failed' && <CheckVerification status={status} />}
           {status === 'document_verification_completed' && <CheckVerification status={status} />}
         </Box>
