@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { createSchedules } from "./services/cronSchedule/cronSchedule.js";
 import express from 'express';
 import mongoose from 'mongoose';
 import { routes } from "./routes/collector.routes.js";
@@ -13,6 +14,7 @@ app.use(loggingRequestAndResponse);
 app.set('trulioo', truliooInstance);
 
 routes(app);
+createSchedules(app);
 app.listen(process.env.PORT);
 
 // TODO: create a service
