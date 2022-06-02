@@ -3,6 +3,7 @@ import { persist } from 'easy-peasy';
 const _initState = {
   isLoading: false,
   error: {
+    isAppError: false,
     isError: false,
     description: '',
   },

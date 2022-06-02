@@ -8,29 +8,35 @@ import KYCSteps from './components/KYCSteps/KYCSteps';
 import { useState } from 'react';
 import Message from './components/general/Message/Message';
 import { steps } from './config/steps';
+import AppError from './components/AppError/AppError';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
   const status = useStoreState((state) => state.general.session.status);
+  const isAppError = useStoreState((state) => state.general.error.isAppError);
 
   return (
     <>
       <Header />
-      <Box
-        component="main"
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundColor: '#f7f7f7',
-        }}
-      >
-        {status === 'new' && <WelcomePage />}
-        {status === 'country_select' && <CountrySelection setLoading={setLoading} />}
-        {steps.includes(status) && (
-          <KYCSteps loading={loading} setLoading={setLoading} status={status} />
-        )}
-      </Box>
+      {!isAppError ? (
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#f7f7f7',
+          }}
+        >
+          {status === 'new' && <WelcomePage />}
+          {status === 'country_select' && <CountrySelection setLoading={setLoading} />}
+          {steps.includes(status) && (
+            <KYCSteps loading={loading} setLoading={setLoading} status={status} />
+          )}
+        </Box>
+      ) : (
+        <AppError />
+      )}
       <Message />
     </>
   );
