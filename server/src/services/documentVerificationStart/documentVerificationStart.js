@@ -1,5 +1,5 @@
 import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
-import { checkSession } from "../createSession/createSession.js";
+import { checkSession } from "../sessionService/sessionService.js";
 
 export const documentVerificationStart = async (req, res) => {
   try {

@@ -1,5 +1,5 @@
 import express from "express";
-import { createSession } from "../services/createSession/createSession.js";
+import { createSession } from "../services/sessionService/sessionService.js";
 import { documentVerificationStart } from "../services/documentVerificationStart/documentVerificationStart.js";
 import { embedIdToken } from "../services/embedIdToken/embedIdToken.js";
 import { getConsents } from "../services/getConsents/getConsents.js";
