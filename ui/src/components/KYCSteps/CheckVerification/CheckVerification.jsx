@@ -8,6 +8,10 @@ import { MagicSpinner } from 'react-spinners-kit';
 
 const CheckVerification = ({ status }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
+  const isInProgress =
+    status === 'identity_verification_in_progress' || 'document_verification_in_progress';
+  const isCompleted =
+    status === 'identity_verification_completed' || 'document_verification_completed';
 
   const classes = useStyles();
   const [counter, setCounter] = useState(0);
@@ -34,28 +38,20 @@ const CheckVerification = ({ status }) => {
     return () => clearTimeout(timer);
   }, [counter]);
 
-  if (
-    !counter &&
-    ['identity_verification_in_progress', 'document_verification_in_progress'].includes(status)
-  ) {
+  if (!counter && isInProgress) {
     startCounter();
   }
-  if (
-    counter &&
-    ['identity_verification_completed', 'document_verification_completed'].includes(status)
-  ) {
+  if (counter && isCompleted) {
     stopCounter();
   }
 
   const handleSubmit = () => {
-    //navigate('/'); /*TODO: */
+    //navigate('/'); /*TODO: define navigate*/
   };
 
   return (
     <>
-      {['identity_verification_in_progress', 'document_verification_in_progress'].includes(
-        status,
-      ) && (
+      {isInProgress && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>
