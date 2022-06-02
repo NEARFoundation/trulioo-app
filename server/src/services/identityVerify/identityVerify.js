@@ -1,6 +1,6 @@
 import { ASYNC_CALLBACK_URL } from "../../config/trulioo.config.js";
 import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
-import { checkSession } from "../createSession/createSession.js";
+import { checkSession } from "../sessionService/sessionService.js";
 
 export const identityVerify = async (req, res) => {
   try {

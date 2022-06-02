@@ -9,34 +9,38 @@ export const createSession = async (req, res) => {
       return invalidCode(res);
     }
 
-    const sessionId = req.body["session_id"];
+    let sessionId = req.body["session_id"];
     const forced = req.body["forced"];
     const code = req.params.code;
     let applicant;
 
     if (sessionId) {
-      applicant = await Applicant.findOne({session_id: sessionId});
-      if (!applicant) {
-        return res.status(400).send({ error: 'Session not found.' });
+      const lastSession = await findLastSession(code);
+      if (sessionId !== lastSession.session_id) {
+        if (lastSession.status !== "new") {
+          return res.status(400).send({ error: 'This URL can only be used from the browser of the computer ' +
+              'on which the session was started earlier.' });
+        }
+        sessionId = lastSession.session_id;
       }
-
+      applicant = lastSession;
       if (forced) {
         applicant = await createApplicant(code, sessionId);
-      } else {
-        const lastSession = await findLaterSession(code, sessionId);
-        if (lastSession) {
-          return res.status(400).send({ error: 'This session ID is no longer valid.' });
-        }
       }
 
     } else {
       if (forced) {
         return res.status(400).send({ error: 'Session ID cannot be empty.' });
       }
-      applicant = await createApplicant(code);
-    }
-    if (!applicant) {
-      return res.status(400).send({ error: 'The session ID for this URL is already registered.' });
+      applicant = await findLastSession(code);
+      if (!applicant) {
+        applicant = await createApplicant(code);
+      } else {
+        if (applicant.status !== "new") {
+          return res.status(400).send({ error: 'The session for this URL is already registered in another browser ' +
+              'or on another computer.' });
+        }
+      }
     }
 
     res.send({ session_id: applicant.session_id, status: applicant.status });
@@ -50,10 +54,6 @@ export const createSession = async (req, res) => {
 }
 
 async function createApplicant(code, oldSessionId = null) {
-  const storedApplicant = await findLaterSession(code, oldSessionId);
-  if (storedApplicant) {
-    return storedApplicant.status === "new" ? storedApplicant : null;
-  }
   const sessionId = createUniqueId();
   const applicant = new Applicant({
     session_id: sessionId,
@@ -66,7 +66,17 @@ async function createApplicant(code, oldSessionId = null) {
   return applicant;
 }
 
-const findLaterSession = async (code, oldSessionId = null) => {
+const findLastSession = async (code) => {
+  let session = await findNextSession(code, null);
+  let nextSession = session ? await findNextSession(code, session.session_id) : null;
+  while (nextSession) {
+    session = nextSession;
+    nextSession = await findNextSession(code, session.session_id);
+  }
+  return session;
+}
+
+const findNextSession = async (code, oldSessionId = null) => {
   return Applicant.findOne({code: code, old_session_id: {$eq: oldSessionId}});
 }
 
@@ -81,12 +91,17 @@ export const checkSession = async (req, res, expectedStatus) => {
     if (!applicant) {
       sessionFailed = res.status(400).send({ error: 'Session not found.' });
     } else {
-      const lastSession = await findLaterSession(req.params.code, sessionId);
-      if (lastSession) {
-        sessionFailed = res.status(400).send({ error: 'This session ID is no longer valid.' });
+      const code = req.params.code;
+      if (code !== applicant.code) {
+        sessionFailed = res.status(400).send({ error: 'Invalid session ID.' });
       } else {
-        if (applicant.status !== expectedStatus) {
-          sessionFailed = res.status(400).send({ error: 'Verification cannot be performed at this stage.' });
+        const nextSession = await findNextSession(code, sessionId);
+        if (nextSession) {
+          sessionFailed = res.status(400).send({ error: 'This session ID is no longer valid.' });
+        } else {
+          if (applicant.status !== expectedStatus) {
+            sessionFailed = res.status(400).send({ error: 'Verification cannot be performed at this stage.' });
+          }
         }
       }
     }
