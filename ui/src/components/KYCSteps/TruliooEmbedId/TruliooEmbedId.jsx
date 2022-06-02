@@ -8,6 +8,7 @@ const TruliooEmbedId = () => {
   const [loading, setLoading] = useState(true);
   const onDocVerify = useStoreActions((actions) => actions.general.onDocVerify);
   const setError = useStoreActions((actions) => actions.general.setError);
+
   const handleResponse = (e) => {
     onDocVerify(e);
   };

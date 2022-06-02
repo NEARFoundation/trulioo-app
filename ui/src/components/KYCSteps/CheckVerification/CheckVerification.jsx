@@ -9,9 +9,13 @@ import { MagicSpinner } from 'react-spinners-kit';
 const CheckVerification = ({ status }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
   const isInProgress =
-    status === 'identity_verification_in_progress' || 'document_verification_in_progress';
+    status === 'identity_verification_in_progress' ||
+    status === 'document_verification_in_progress';
   const isCompleted =
-    status === 'identity_verification_completed' || 'document_verification_completed';
+    status === 'identity_verification_completed' || status === 'document_verification_completed';
+
+  const isFailed =
+    status === 'document_verification_failed' || status === 'identity_verification_failed';
 
   const classes = useStyles();
   const [counter, setCounter] = useState(0);
@@ -70,7 +74,7 @@ const CheckVerification = ({ status }) => {
           </Box>
         </Box>
       )}
-      {status === 'identity_verification_failed' && (
+      {isFailed && (
         <Box className={classes.root}>
           <Box className={classes.container}>
             <Box className={classes.form}>
@@ -83,44 +87,16 @@ const CheckVerification = ({ status }) => {
                   Sorry, but your data is invalid.
                 </Typography>
               </Box>
-            </Box>
-          </Box>
-          <Box className={classes.formFooter}>
-            <Button
-              className={classes.button}
-              color="primary"
-              variant="contained"
-              disableElevation
-              onClick={handleReset}
-            >
-              Try again
-            </Button>
-          </Box>
-        </Box>
-      )}
-      {status === 'document_verification_failed' && (
-        <Box className={classes.root}>
-          <Box className={classes.container}>
-            <Box className={classes.form}>
-              <img className={classes.img} src={Man} alt="Rejected" />
-              <Box className={classes.formHeader}>
-                <Typography className={classes.formTitle} variant="h6">
-                  Your account has been rejected
-                </Typography>
-                <Typography variant="body2" className={classes.formDescription}>
-                  Sorry, but your data is invalid.
-                </Typography>
-                <Box className={classes.formFooter}>
-                  <Button
-                    className={classes.button}
-                    color="primary"
-                    variant="contained"
-                    disableElevation
-                    onClick={handleReset}
-                  >
-                    Try again
-                  </Button>
-                </Box>
+              <Box className={classes.formFooter}>
+                <Button
+                  className={classes.button}
+                  color="primary"
+                  variant="contained"
+                  disableElevation
+                  onClick={handleReset}
+                >
+                  Try again
+                </Button>
               </Box>
             </Box>
           </Box>
@@ -138,17 +114,17 @@ const CheckVerification = ({ status }) => {
                 <Typography variant="body2" className={classes.formDescription}>
                   Now you can go to the next step.
                 </Typography>
-                <Box className={classes.formFooter}>
-                  <Button
-                    className={classes.button}
-                    color="primary"
-                    variant="contained"
-                    onClick={handleSubmit}
-                    disableElevation
-                  >
-                    Next
-                  </Button>
-                </Box>
+              </Box>
+              <Box className={classes.formFooter}>
+                <Button
+                  className={classes.button}
+                  color="primary"
+                  variant="contained"
+                  onClick={handleSubmit}
+                  disableElevation
+                >
+                  Next
+                </Button>
               </Box>
             </Box>
           </Box>
