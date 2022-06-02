@@ -16,12 +16,12 @@ const stepperSteps = [
 
 function statusToStep(status) {
   const steps = {
-    select_country: 'select_country',
     new: 'new',
+    select_country: 'select_country',
     identity_verification: 'identity_verification',
     identity_verification_in_progress: 'identity_verification',
     identity_verification_failed: 'identity_verification',
-    identity_verification_completed: 'identity_verification',
+    identity_verification_completed: 'document_verification',
     document_verification_in_progress: 'document_verification',
     document_verification_failed: 'document_verification',
   };

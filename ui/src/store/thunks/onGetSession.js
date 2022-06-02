@@ -17,7 +17,7 @@ export const onGetSession = thunk(async (_, payload, { getStoreActions, getStore
     let session = await api.requestSession({ session_id, ...payload });
     if (session.error) return setError({ isError: true, description: session.error });
     session.pathname = window.location.pathname;
-    //session.status = 'document_verification_completed'; /*TODO: remove on prod*/
+    //session.status = 'identity_verification_in_progress'; /*TODO: remove on prod*/
     setSession(session);
   } catch (error) {
     console.log(error);
