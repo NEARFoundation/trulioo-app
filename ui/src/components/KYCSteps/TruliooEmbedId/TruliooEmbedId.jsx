@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Loader from '../../general/Loader/Loader';
 import { useStoreActions } from 'easy-peasy';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 const PUBLIC_KEY = process.env.REACT_APP_TRULIOO_PUBLIC_KEY;
 
@@ -49,9 +51,11 @@ const TruliooEmbedId = () => {
   return (
     <>
       {loading && <Loader />}
-      <div>
-        <div id="trulioo-embedid" />
-      </div>
+      <Box sx={{ width: '100%' }}>
+        <Container>
+          <div id="trulioo-embedid" />
+        </Container>
+      </Box>
     </>
   );
 };

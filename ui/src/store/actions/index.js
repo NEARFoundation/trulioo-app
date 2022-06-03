@@ -4,6 +4,7 @@ import { setSession } from './setSession';
 import { setCountries } from './setCountries';
 import { resetState } from './resetState';
 import { setError } from './setError';
+import { clearError } from './clearError';
 
 export const actions = {
   setError,
@@ -12,4 +13,5 @@ export const actions = {
   setCountry,
   setFieldsSchema,
   resetState,
+  clearError,
 };
