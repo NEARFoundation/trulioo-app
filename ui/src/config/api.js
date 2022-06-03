@@ -74,7 +74,7 @@ const sendCheckResult = async () => {
 
 const requestDocVerify = async (body) => {
   return ky
-    .post('doc-verify', {
+    .post('api/doc-verify', {
       headers,
       json: { ...body },
       timeout: 60000,
