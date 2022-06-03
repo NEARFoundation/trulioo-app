@@ -46,7 +46,9 @@ const styles = (theme) => ({
   },
   formDescription: {
     color: '#555',
-    textAlign: 'left',
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    textAlign: 'center',
     fontSize: '16px !important',
   },
   formFooter: {
