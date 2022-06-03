@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import ErrorIcon from '../general/img/error.png';
 import { useStyles } from './AppError.styles';
 
-const AppError = () => {
+const AppError = ({ description }) => {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
@@ -14,7 +14,7 @@ const AppError = () => {
               An error has occurred.
             </Typography>
             <Typography variant="body2" className={classes.formDescription}>
-              Sorry, but you cannot continue verification.
+              {description}
             </Typography>
           </Box>
         </Box>

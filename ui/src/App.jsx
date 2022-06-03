@@ -13,7 +13,7 @@ import AppError from './components/AppError/AppError';
 const App = () => {
   const [loading, setLoading] = useState(false);
   const status = useStoreState((state) => state.general.session.status);
-  const isAppError = useStoreState((state) => state.general.error.isAppError);
+  const { isAppError, description } = useStoreState((state) => state.general.error);
 
   return (
     <>
@@ -35,7 +35,7 @@ const App = () => {
           )}
         </Box>
       ) : (
-        <AppError />
+        <AppError description={description} />
       )}
       <Message />
     </>
