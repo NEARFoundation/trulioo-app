@@ -4,46 +4,43 @@ import { createUniqueId } from "../../helpers/createUniqueId.js";
 
 export const createSession = async (req, res) => {
   try {
-    const checkResult = await checkCode(req);
-    if (!checkResult) {
-      return invalidCode(res);
-    }
-
     let sessionId = req.body["session_id"];
     const forced = req.body["forced"];
     const code = req.params.code;
-    let applicant;
+    let applicant = await findLastSession(code);
+    const checkCodeResult = await checkCode(req);
 
-    if (sessionId) {
-      const lastSession = await findLastSession(code);
-      if (sessionId !== lastSession.session_id) {
-        if (lastSession.status !== "new") {
-          return res.status(400).send({ error: 'This URL can only be used from the browser of the computer ' +
-              'on which the session was started earlier.' });
-        }
-        sessionId = lastSession.session_id;
-      }
-      applicant = lastSession;
-      if (forced) {
-        applicant = await createApplicant(code, sessionId);
-      }
-
-    } else {
-      if (forced) {
-        return res.status(400).send({ error: 'Session ID cannot be empty.' });
-      }
-      applicant = await findLastSession(code);
-      if (!applicant) {
-        applicant = await createApplicant(code);
-      } else {
-        if (applicant.status !== "new") {
+    if (!checkCodeResult && (!applicant || applicant.status !== "document_verification_completed")) {
+      return invalidCode(res);
+    }
+    if (!sessionId && forced) {
+      return res.status(400).send({ error: 'Session ID cannot be empty.' });
+    }
+    if (applicant) {
+      if (applicant.status !== "new") {
+        if (sessionId) {
+          if (sessionId !== applicant.sessionId) {
+            return res.status(400).send({ error: 'This URL can only be used from the browser of the computer ' +
+                'on which the session was started earlier.' });
+          }
+        } else {
           return res.status(400).send({ error: 'The session for this URL is already registered in another browser ' +
               'or on another computer.' });
         }
+      } else {
+        if (sessionId !== applicant.sessionId) {
+          applicant = await updateSessionId(applicant.sessionId);
+          sessionId = applicant.sessionId;
+        }
       }
+      if (forced) {
+        applicant = await createApplicant(code, sessionId);
+      }
+    } else {
+      applicant = await createApplicant(code);
     }
 
-    res.send({ session_id: applicant.session_id, status: applicant.status });
+    res.send({ session_id: applicant.sessionId, status: applicant.status });
 
   } catch (e) {
     console.log(e);
@@ -56,51 +53,65 @@ export const createSession = async (req, res) => {
 async function createApplicant(code, oldSessionId = null) {
   const sessionId = createUniqueId();
   const applicant = new Applicant({
-    session_id: sessionId,
+    sessionId: sessionId,
     code: code,
-    session_timestamp: new Date(),
+    sessionTimestamp: new Date(),
     status: "new",
-    old_session_id: oldSessionId
+    oldSessionId: oldSessionId
   });
   await applicant.save();
   return applicant;
 }
 
+async function updateSessionId(sessionId) {
+  const applicant = await Applicant.findOne({sessionId: sessionId});
+  if (applicant) {
+    applicant.sessionId = createUniqueId();
+    applicant.save();
+  }
+  return applicant;
+}
+
 const findLastSession = async (code) => {
   let session = await findNextSession(code, null);
-  let nextSession = session ? await findNextSession(code, session.session_id) : null;
+  let nextSession = session ? await findNextSession(code, session.sessionId) : null;
   while (nextSession) {
     session = nextSession;
-    nextSession = await findNextSession(code, session.session_id);
+    nextSession = await findNextSession(code, session.sessionId);
   }
   return session;
 }
 
 const findNextSession = async (code, oldSessionId = null) => {
-  return Applicant.findOne({code: code, old_session_id: {$eq: oldSessionId}});
+  return Applicant.findOne({code: code, oldSessionId: {$eq: oldSessionId}});
 }
 
 export const checkSession = async (req, res, expectedStatus) => {
-  let sessionFailed = null;
+  let sessionFailed = false;
   let applicant = null;
   const sessionId = req.body["session_id"];
   if (!sessionId) {
-    sessionFailed =  res.status(400).send({ error: 'Session ID cannot be empty.' });
+    res.status(400).send({ error: 'Session ID cannot be empty.' })
+    sessionFailed = true;
   } else {
-    applicant = await Applicant.findOne({session_id: sessionId});
+    applicant = await Applicant.findOne({sessionId: sessionId});
     if (!applicant) {
-      sessionFailed = res.status(400).send({ error: 'Session not found.' });
+      res.status(400).send({ error: 'Session not found.' });
+      sessionFailed = true;
     } else {
       const code = req.params.code;
       if (code !== applicant.code) {
-        sessionFailed = res.status(400).send({ error: 'Invalid session ID.' });
+        res.status(400).send({ error: 'Invalid session ID.' });
+        sessionFailed = true;
       } else {
         const nextSession = await findNextSession(code, sessionId);
         if (nextSession) {
-          sessionFailed = res.status(400).send({ error: 'This session ID is no longer valid.' });
+          res.status(400).send({ error: 'This session ID is no longer valid.' });
+          sessionFailed = true;
         } else {
           if (applicant.status !== expectedStatus) {
-            sessionFailed = res.status(400).send({ error: 'Verification cannot be performed at this stage.' });
+            res.status(400).send({ error: 'Verification cannot be performed at this stage.' });
+            sessionFailed = true;
           }
         }
       }

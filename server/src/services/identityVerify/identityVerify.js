@@ -1,4 +1,4 @@
-import { ASYNC_CALLBACK_URL } from "../../config/trulioo.config.js";
+import { ASYNC_CALLBACK_URL, EXTERNAL_SERVER_URL } from "../../config/trulioo.config.js";
 import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
 import { checkSession } from "../sessionService/sessionService.js";
 
@@ -23,7 +23,7 @@ export const identityVerify = async (req, res) => {
         "AcceptTruliooTermsAndConditions": true,
         "CleansedAddress": false,
         "ConfigurationName": "Identity Verification",
-        "CallBackUrl": ASYNC_CALLBACK_URL,
+        "CallBackUrl": `${EXTERNAL_SERVER_URL}/${req.params.code}/${ASYNC_CALLBACK_URL}`,
         "ConsentForDataSources": consents,
         "CountryCode": country,
         "DataFields": fields
@@ -36,11 +36,11 @@ export const identityVerify = async (req, res) => {
     );
 
     applicant.status = 'identity_verification_in_progress';
-    applicant.person_info = fields["PersonInfo"];
+    applicant.personInfo = fields["PersonInfo"];
     applicant.location = fields["Location"];
     applicant.communication = fields["Communication"];
-    applicant.tx1_id = response.data["TransactionID"];
-    applicant.verify1_begin_timestamp = new Date();
+    applicant.txId1 = response.data["TransactionID"];
+    applicant.verifyBeginTimestamp1 = new Date();
     await applicant.save();
 
     res.send({ status: applicant.status });

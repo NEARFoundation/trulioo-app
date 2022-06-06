@@ -1,9 +1,14 @@
-import { Transaction } from "../../models/Transaction.js";
 import { Applicant } from "../../models/Applicant.js";
+import { Transaction } from "../../models/Transaction.js";
+import { checkCode, disableCode, invalidCode } from "../../helpers/codeUtils.js";
 
 export const checkResult = async (req, res) => {
   try {
     // TODO: Check the source of the request
+    const checkResult = await checkCode(req);
+    if (!checkResult) {
+      return invalidCode(res);
+    }
 
     const truliooInstance = req.app.get('trulioo');
     const transactionId = req.body["TransactionId"];
@@ -55,7 +60,7 @@ export const eventHandling = async (truliooInstance, transactionId) => {
     if (transaction) {
       const transactionRecordId = transaction["transactionRecordId"];
 
-      let applicant = await Applicant.findOne({tx1_id: transactionId});
+      let applicant = await Applicant.findOne({txId1: transactionId});
 
       if (applicant) {
         if (applicant.status === "identity_verification_in_progress") {
@@ -63,9 +68,9 @@ export const eventHandling = async (truliooInstance, transactionId) => {
 
           if (response1.data && response1.data["Record"]) {
             const status = response1.data["Record"]["RecordStatus"];
-            applicant.tx1_record_id = transactionRecordId;
+            applicant.txRecordId1 = transactionRecordId;
             applicant.result1 = response1.data;
-            applicant.verify1_end_timestamp = new Date();
+            applicant.verifyEndTimestamp1 = new Date();
             applicant.status = status === "match" ?
               "identity_verification_completed" :
               "identity_verification_failed";
@@ -83,7 +88,7 @@ export const eventHandling = async (truliooInstance, transactionId) => {
           console.log("Applicant must have 'identity_verification_in_progress' status.");
         }
       } else {
-        applicant = await Applicant.findOne({tx2_id: transactionId});
+        applicant = await Applicant.findOne({txId2: transactionId});
         if (applicant) {
 
           if (applicant.status === "document_verification_in_progress") {
@@ -91,9 +96,9 @@ export const eventHandling = async (truliooInstance, transactionId) => {
 
             if (response2.data && response2.data["Record"]) {
               const status = response2.data["Record"]["RecordStatus"];
-              applicant.tx2_record_id = transactionRecordId;
+              applicant.txRecordId2 = transactionRecordId;
               applicant.result2 = response2.data;
-              applicant.verify2_end_timestamp = new Date();
+              applicant.verifyEndTimestamp2 = new Date();
               applicant.status = status === "match" ?
                 "document_verification_completed" :
                 "document_verification_failed";
@@ -101,6 +106,10 @@ export const eventHandling = async (truliooInstance, transactionId) => {
 
               transaction.processed = true;
               await transaction.save();
+
+              if (applicant.status === "document_verification_completed") {
+                await disableCode(applicant.code);
+              }
 
               console.log(`The applicant was granted the status: '${applicant.status}'`);
 

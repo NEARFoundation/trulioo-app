@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:5.0.2
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+    ports:
+      - "${MONGODB_LOCAL_PORT}:${MONGODB_DOCKER_PORT}"
+    volumes:
+      - db:/data/db
+  server:
+    image: ivaniuk17/near-labs:trulioo_app_0.1.0
+    depends_on:
+      - mongodb
+    restart: always
+    volumes:
+      - /var/www/trulioo_app:/var/www/trulioo_app
+    ports:
+      - "${APP_LOCAL_PORT_HTTPS}:${APP_DOCKER_PORT}"
+    environment:
+      - MONGO
+      - APP_LOCAL_PORT_HTTP
+      - APP_LOCAL_PORT_HTTPS
+      - X_TRULIOO_API_KEY
+      - TRULIOO_PRODUCTION
+      - EXTERNAL_SERVER_URL
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:

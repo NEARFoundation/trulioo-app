@@ -18,8 +18,11 @@ export const routes = app => {
   app.get('/:code/api/get-country-subdivisions', getCountrySubdivisions);
   app.post('/:code/api/session', createSession);
   app.post('/:code/api/verify', identityVerify);
-  app.post('/api/send-check-result', checkResult);
+  app.post('/:code/api/send-check-result', checkResult);
   app.post('/:code/trulioo-api/embedids/tokens/:publicKey', embedIdToken);
-  app.post('/:code/doc-verify', documentVerificationStart);
+  app.post('/:code/api/doc-verify', documentVerificationStart);
   app.use('/:code/', express.static('public'));
+  app.get('*', function(req, res){
+    res.redirect('/error/');
+  });
 }
