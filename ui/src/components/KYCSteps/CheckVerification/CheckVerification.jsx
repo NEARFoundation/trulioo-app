@@ -5,8 +5,12 @@ import Man from '../../general/img/man.png';
 import Hand from '../../general/img/hand.png';
 import { useStyles } from './CheckVerification.styles';
 import { MagicSpinner } from 'react-spinners-kit';
+import { useNavigate } from 'react-router-dom';
+
+const finishPath = process.env.REACT_APP_FINISH_SUBMIT_PATH || '/';
 
 const CheckVerification = ({ status }) => {
+  const navigate = useNavigate();
   const { onGetSession } = useStoreActions((actions) => actions.general);
   const isInProgress =
     status === 'identity_verification_in_progress' ||
@@ -50,7 +54,7 @@ const CheckVerification = ({ status }) => {
   }
 
   const handleSubmit = () => {
-    //navigate('/'); /*TODO: define navigate*/
+    navigate(finishPath);
   };
 
   return (
