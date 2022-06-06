@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Message from './components/general/Message/Message';
 import { steps } from './config/steps';
 import AppError from './components/AppError/AppError';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,7 @@ const App = () => {
   const { isAppError, description } = useStoreState((state) => state.general.error);
 
   return (
-    <>
+    <Router>
       <Header />
       {!isAppError ? (
         <Box
@@ -38,7 +39,7 @@ const App = () => {
         <AppError description={description} />
       )}
       <Message />
-    </>
+    </Router>
   );
 };
 
