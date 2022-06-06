@@ -8,7 +8,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME
       - MONGO_INITDB_ROOT_PASSWORD
     ports:
-      - "${MONGODB_LOCAL_PORT}:${MONGODB_DOCKER_PORT}"
+      - "${MONGODB_DOCKER_PORT}:${MONGODB_LOCAL_PORT}"
     volumes:
       - db:/data/db
   server:
@@ -19,7 +19,7 @@ services:
     volumes:
       - /var/www/trulioo_app:/var/www/trulioo_app
     ports:
-      - "${APP_LOCAL_PORT_HTTPS}:${APP_DOCKER_PORT}"
+      - "${APP_DOCKER_PORT}:${APP_LOCAL_PORT_HTTPS}"
     environment:
       - MONGO
       - APP_LOCAL_PORT_HTTP
