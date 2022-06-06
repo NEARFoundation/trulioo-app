@@ -20,8 +20,8 @@ export const onSubmitForm = thunk(
       const truliooFormData = getFields.parseTruliooFields(formClone);
       const body = getFields.getSubmitBody(truliooFormData);
       body.session_id = state.general.session.session_id;
-      const status = await api.requestSubmitForm(body);
-      if (status.error) return await onError({ actions, error: status.error });
+      const { status, error } = await api.requestSubmitForm(body);
+      if (error) return await onError({ actions, error });
       onChangeStatus({ status });
     } catch (e) {
       console.log(`Error:${e}`);
