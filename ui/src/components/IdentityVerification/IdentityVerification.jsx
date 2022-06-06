@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 export const IdentityVerification = ({ loading }) => {
   const classes = useStyles();
-  const [btnLoading, setBtnLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const onChangeStatus = useStoreActions((actions) => actions.general.onChangeStatus);
   const setError = useStoreActions((actions) => actions.general.setError);
   const fields = useStoreState((state) => state.general.getFields);
@@ -70,8 +70,7 @@ export const IdentityVerification = ({ loading }) => {
   };
 
   const onSubmit = ({ formData }) => {
-    setBtnLoading(true);
-    onSubmitForm(formData);
+    onSubmitForm({ formData, setSubmitLoading });
   };
 
   const ObjectFieldTemplate = (props) => {
@@ -172,7 +171,7 @@ export const IdentityVerification = ({ loading }) => {
                       type="submit"
                       variant="contained"
                       disableElevation
-                      loading={btnLoading}
+                      loading={submitLoading}
                     >
                       Next
                     </LoadingButton>
