@@ -27,6 +27,8 @@ services:
       - X_TRULIOO_API_KEY
       - TRULIOO_PRODUCTION
       - EXTERNAL_SERVER_URL
+      - USE_SSL
+      - CRT_PATH
     stdin_open: true
     tty: true
 
