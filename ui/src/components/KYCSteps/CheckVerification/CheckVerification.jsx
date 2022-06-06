@@ -7,7 +7,7 @@ import { useStyles } from './CheckVerification.styles';
 import { MagicSpinner } from 'react-spinners-kit';
 import { useNavigate } from 'react-router-dom';
 
-const finishPath = process.env.REACT_APP_FINISH_SUBMIT_PATH || '/';
+const finishPath = process.env.REACT_APP_FINISH_SUBMIT_PATH || 'https://near.org';
 
 const CheckVerification = ({ status }) => {
   const navigate = useNavigate();
