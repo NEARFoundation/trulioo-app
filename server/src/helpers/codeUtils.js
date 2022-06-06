@@ -11,7 +11,7 @@ export const checkCode = async (req) => {
 }
 
 export const invalidCode = (res) => {
-  return res.status(404).send({ error: 'This code is incorrect or has been used before' });
+  return res.status(404).send({ error: 'This URL is incorrect or has been used before' });
 }
 
 export const createNewCode = async (expiryDate) => {

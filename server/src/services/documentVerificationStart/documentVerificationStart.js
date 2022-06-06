@@ -19,8 +19,8 @@ export const documentVerificationStart = async (req, res) => {
     }
 
     applicant.status = 'document_verification_in_progress';
-    applicant.fe_tx_id = experienceTransactionId;
-    applicant.verify2_begin_timestamp = new Date();
+    applicant.feTxId = experienceTransactionId;
+    applicant.verifyBeginTimestamp2 = new Date();
     await applicant.save();
 
     res.send({ status: applicant.status });

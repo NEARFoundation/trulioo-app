@@ -7,28 +7,17 @@ export const rawBody = bodyParser.json({
 });
 
 export const loggingRequestAndResponse = (req, res, next) => {
-  let resWrite = res.write;
-  let resEnd = res.end;
-  let chunks = [];
+  if (req.url.match(/\/\w+\/trulioo-api\/\w+/) || req.url.match(/\/\w+\/api\/\w+/)) {
+    const resSend = res.send;
 
-  res.write = function (chunk) {
-    chunks.push(chunk);
-    resWrite.apply(res, arguments);
-  };
-
-  res.end = function (chunk) {
-    if (chunk) {
-      chunks.push(chunk);
+    res.send = function (chunk, ...args) {
+      if (typeof chunk === 'string') {
+        console.log(`${(new Date()).toISOString()} Url: ${req.path}`);
+        console.log(`Request: ${req.rawBody}`);
+        console.log(`Response: ${chunk}`);
+      }
+      resSend.apply(res, [chunk, ...args]);
     }
-    let body = chunks.join();
-
-    console.log("Url: " + req.path);
-    console.log("Request:");
-    console.log(req.rawBody);
-    console.log("Response:");
-    console.log(body);
-
-    resEnd.apply(res, arguments);
-  };
+  }
   next();
 }

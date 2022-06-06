@@ -2,34 +2,34 @@ import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 const schema = new Schema({
-  session_id: {
+  sessionId: {
     type: String,
     index: true,
     unique: true,
     required: true,
   },
   code: String,
-  session_timestamp: Date,
+  sessionTimestamp: Date,
   status: String,
-  person_info: Object,
+  personInfo: Object,
   location: Object,
   communication: Object,
-  tx1_id: String,
-  tx2_id: String,
-  tx1_record_id: String,
-  tx2_record_id: String,
-  fe_tx_id: String,
+  txId1: String,
+  txId2: String,
+  txRecordId1: String,
+  txRecordId2: String,
+  feTxId: String,
   result1: Object,
   result2: Object,
-  verify1_begin_timestamp: Date,
-  verify1_end_timestamp: Date,
-  verify2_begin_timestamp: Date,
-  verify2_end_timestamp: Date,
-  old_session_id: String
+  verifyBeginTimestamp1: Date,
+  verifyEndTimestamp1: Date,
+  verifyBeginTimestamp2: Date,
+  verifyEndTimestamp2: Date,
+  oldSessionId: String
 });
-schema.index({code: 1, old_session_id: 1}, {unique: true});
-schema.index({tx1_id: 1}, {unique: false});
-schema.index({tx2_id: 1}, {unique: false});
-schema.index({verify2_begin_timestamp: 1, status: 1, tx2_id: 1}, {unique: false});
+schema.index({code: 1, oldSessionId: 1}, {unique: true});
+schema.index({txId1: 1}, {unique: false});
+schema.index({txId2: 1}, {unique: false});
+schema.index({verifyBeginTimestamp2: 1, status: 1, txId2: 1}, {unique: false});
 
 export const Applicant = model('Applicant', schema);

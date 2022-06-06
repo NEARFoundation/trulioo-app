@@ -1,4 +1,6 @@
+import { cacheExpirationPeriod, Fields } from "../../models/Fields.js";
 import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
+import { hoursDifference } from "../../helpers/hoursDifference.js";
 
 export const getFields = async (req, res) => {
   try {
@@ -7,10 +9,20 @@ export const getFields = async (req, res) => {
       return invalidCode(res);
     }
 
-    const truliooInstance = req.app.get('trulioo');
     const { country } = req.query;
-    const response = await truliooInstance.get(`/configuration/v1/recommendedfields/Identity%20Verification/${country}`);
-    res.send(checkFieldsData(response.data));
+    let fieldsRecord = await Fields.findOne({country: country});
+    if (fieldsRecord && hoursDifference(new Date(), fieldsRecord.timestamp) < cacheExpirationPeriod) {
+      res.send(fieldsRecord.fields);
+    } else {
+      const fields = await getFieldsFromTrulioo(country, req.app.get('trulioo'));
+      if (!fieldsRecord) {
+        fieldsRecord = new Fields({country: country});
+      }
+      fieldsRecord.fields = fields;
+      fieldsRecord.timestamp = new Date();
+      fieldsRecord.save();
+      res.send(fields);
+    }
 
   } catch (e) {
     console.log(e);
@@ -36,4 +48,9 @@ function checkFieldsData(data) {
     }
   }
   return data;
+}
+
+async function getFieldsFromTrulioo(country, truliooInstance) {
+  const response = await truliooInstance.get(`/configuration/v1/recommendedfields/Identity%20Verification/${country}`);
+  return checkFieldsData(response.data);
 }

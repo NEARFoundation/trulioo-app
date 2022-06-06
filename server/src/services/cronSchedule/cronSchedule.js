@@ -26,15 +26,15 @@ export const createSchedules = app => {
       const dateEnd = new Date(Date.now() - delayBeforeStartCheck * 1000);
       const applicants = await Applicant.find(
         {
-          verify2_begin_timestamp: {$lt: dateEnd, $gte: dateBegin},
+          verifyBeginTimestamp2: {$lt: dateEnd, $gte: dateBegin},
           status: {$eq: 'document_verification_in_progress'},
-          tx2_id: {$eq: null}
+          txId2: {$eq: null}
         }
       );
 
       applicants.map(async applicant => {
         try {
-          const txId = applicant.fe_tx_id;
+          const txId = applicant.feTxId;
           console.log(`Transaction ID ${txId}`);
 
           const response = await axios.get(
@@ -62,7 +62,7 @@ export const createSchedules = app => {
                 const transactionRecordId = step["transactionRecordId"];
 
                 if (transactionId && transactionRecordId) {
-                  applicant.tx2_id = transactionId;
+                  applicant.txId2 = transactionId;
                   await applicant.save();
 
                   const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
