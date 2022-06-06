@@ -19,21 +19,23 @@ app.set('trulioo', truliooInstance);
 routes(app);
 createSchedules(app);
 
-const options = {
-  key: fs.readFileSync("/var/www/trulioo_app/server.key"),
-  cert: fs.readFileSync("/var/www/trulioo_app/server.crt"),
-  dhparam: fs.readFileSync("/var/www/trulioo_app/dh-strong.pem"),
-};
-app.use(helmet());
-
 // Set HTTP port
 app.listen(process.env.APP_LOCAL_PORT_HTTP || 8080);
 
-// Set HTTPS port, listen for requests
-const PORT = process.env.APP_LOCAL_PORT_HTTPS || 8443;
-https.createServer(options, app).listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+if (process.env.USE_SSL === 'true') {
+  const crtPath = (process.env.CRT_PATH || '~/cert').replace(/\/+$/, '');
+  const options = {
+    key: fs.readFileSync(`${crtPath}/server.key`),
+    cert: fs.readFileSync(`${crtPath}/server.crt`),
+    dhparam: fs.readFileSync(`${crtPath}/dh-strong.pem`),
+  };
+  app.use(helmet());
+  // Set HTTPS port, listen for requests
+  const PORT = process.env.APP_LOCAL_PORT_HTTPS || 8443;
+  https.createServer(options, app).listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+}
 
 // TODO: create a admin service
 //let expiryDate = new Date();
