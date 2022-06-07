@@ -17,7 +17,7 @@ services:
       - mongodb
     restart: always
     volumes:
-      - /var/www/trulioo_app:/var/www/trulioo_app
+      - "${CRT_PATH}:${CRT_PATH}"
     ports:
       - "${APP_DOCKER_PORT}:${APP_LOCAL_PORT_HTTPS}"
     environment:
