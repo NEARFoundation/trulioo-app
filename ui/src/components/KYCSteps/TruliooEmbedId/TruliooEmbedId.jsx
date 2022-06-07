@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import Loader from '../../general/Loader/Loader';
 import { useStoreActions } from 'easy-peasy';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import { Box, Container } from '@mui/material';
 
-const PUBLIC_KEY = process.env.REACT_APP_TRULIOO_PUBLIC_KEY;
-
-const TruliooEmbedId = () => {
+const TruliooEmbedId = ({ publicKey }) => {
   const [loading, setLoading] = useState(true);
   const onDocVerify = useStoreActions((actions) => actions.general.onDocVerify);
   const setError = useStoreActions((actions) => actions.general.setError);
@@ -35,10 +32,10 @@ const TruliooEmbedId = () => {
 
   useEffect(() => {
     const script = document.createElement('script');
-    if (PUBLIC_KEY) {
+    if (publicKey) {
       script.src = 'https://js.trulioo.com/latest/main.js';
       script.async = true;
-      script.onload = () => scriptLoaded(PUBLIC_KEY);
+      script.onload = () => scriptLoaded(publicKey);
       document.body.appendChild(script);
     } else {
       setError({ isError: true, description: 'The Trulioo public key must be defined.' });

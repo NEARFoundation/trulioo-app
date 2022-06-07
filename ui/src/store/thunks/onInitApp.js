@@ -4,9 +4,10 @@ export const onInitApp = thunk(async (actions, payload, { getStoreState }) => {
   try {
     const pathname = window.location.pathname;
     const { setInit } = payload;
-    const { onGetSession, resetState, clearError } = actions;
+    const { onGetAppConfig, onGetSession, resetState, clearError } = actions;
     const state = getStoreState();
     const pathCode = state.general.session.pathname;
+    await onGetAppConfig();
     clearError();
     if (pathname !== pathCode) resetState();
     await onGetSession();

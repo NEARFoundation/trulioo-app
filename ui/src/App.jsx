@@ -14,6 +14,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const App = () => {
   const [loading, setLoading] = useState(false);
   const status = useStoreState((state) => state.general.session.status);
+  const { trulioo_public_key, finish_redirect_url } = useStoreState(
+    (state) => state.general.appConfig,
+  );
   const { isAppError, description } = useStoreState((state) => state.general.error);
 
   return (
@@ -32,7 +35,13 @@ const App = () => {
           {status === 'new' && <WelcomePage />}
           {status === 'country_select' && <CountrySelection setLoading={setLoading} />}
           {steps.includes(status) && (
-            <KYCSteps loading={loading} setLoading={setLoading} status={status} />
+            <KYCSteps
+              loading={loading}
+              setLoading={setLoading}
+              status={status}
+              redirectUrl={finish_redirect_url}
+              publicKey={trulioo_public_key}
+            />
           )}
         </Box>
       ) : (

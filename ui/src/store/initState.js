@@ -7,6 +7,10 @@ const _initState = {
     isError: false,
     description: '',
   },
+  appConfig: {
+    trulioo_public_key: null,
+    finish_redirect_url: null,
+  },
   session: {
     pathname: '',
     session_id: '',
