@@ -3,9 +3,8 @@ import { thunk } from 'easy-peasy';
 export const onInitApp = thunk(async (actions, payload) => {
   try {
     const { setInit } = payload;
-    const { onGetAppConfig, onGetSession, clearError } = actions;
+    const { onGetSession, clearError } = actions;
     clearError();
-    await onGetAppConfig();
     await onGetSession();
     setInit(true);
   } catch (e) {
