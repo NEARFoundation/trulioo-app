@@ -38,7 +38,7 @@ const stepIcons = {
   default: <PanoramaFishEyeIcon color="primary" />,
 };
 
-const KYCSteps = ({ loading, status }) => {
+const KYCSteps = ({ loading, status, publicKey, redirectUrl }) => {
   const [step, setStep] = useState(null);
   const isFinished = status === 'document_verification_completed';
   const isCheckProcess =
@@ -91,8 +91,8 @@ const KYCSteps = ({ loading, status }) => {
       {status && (
         <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
           {status === 'identity_verification' && <IdentityVerification loading={loading} />}
-          {isCheckProcess && <CheckVerification status={status} />}
-          {status === 'identity_verification_completed' && <TruliooEmbedId />}
+          {isCheckProcess && <CheckVerification status={status} redirectUrl={redirectUrl} />}
+          {status === 'identity_verification_completed' && <TruliooEmbedId publicKey={publicKey} />}
         </Box>
       )}
     </Box>

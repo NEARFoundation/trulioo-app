@@ -4,6 +4,15 @@ const headers = {
   'content-type': 'application/json',
 };
 
+const requestAppParams = async () => {
+  return ky
+    .get(`api/get-parameters`, {
+      headers,
+      timeout: 60000,
+    })
+    .json();
+};
+
 const requestSession = async (body) => {
   return ky
     .post('api/session', {
@@ -84,6 +93,7 @@ const requestDocVerify = async (body) => {
 };
 
 export const api = {
+  requestAppParams,
   requestFields,
   requestConsents,
   requestSession,
