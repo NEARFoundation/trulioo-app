@@ -5,8 +5,7 @@ import { Box, Container } from '@mui/material';
 
 const TruliooEmbedId = ({ publicKey }) => {
   const [loading, setLoading] = useState(true);
-  const onDocVerify = useStoreActions((actions) => actions.general.onDocVerify);
-  const setError = useStoreActions((actions) => actions.general.setError);
+  const { onDocVerify } = useStoreActions((actions) => actions.general);
 
   const handleResponse = (e) => {
     onDocVerify(e);
@@ -37,8 +36,6 @@ const TruliooEmbedId = ({ publicKey }) => {
       script.async = true;
       script.onload = () => scriptLoaded(publicKey);
       document.body.appendChild(script);
-    } else {
-      setError({ isError: true, description: 'The Trulioo public key must be defined.' });
     }
     return () => {
       document.body.removeChild(script);

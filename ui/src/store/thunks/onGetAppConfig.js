@@ -3,10 +3,11 @@ import { api } from '../../config/api';
 
 export const onGetAppConfig = thunk(async (actions) => {
   try {
-    const { setAppConfig } = actions;
-    const appConfig = await api.requestAppParams();
-    setAppConfig(appConfig);
+    const { setPublicKey, setRedirectUrl } = actions;
+    const { trulioo_public_key, finish_redirect_url } = await api.requestAppParams();
+    setPublicKey(trulioo_public_key);
+    setRedirectUrl(finish_redirect_url);
   } catch (e) {
-    console.log(`Error onInit App:${e}`);
+    console.log(`Error get appConfig:${e}`);
   }
 });
