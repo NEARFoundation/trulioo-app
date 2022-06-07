@@ -25,10 +25,12 @@ services:
       - APP_LOCAL_PORT_HTTP
       - APP_LOCAL_PORT_HTTPS
       - X_TRULIOO_API_KEY
+      - TRULIOO_PUBLIC_KEY
       - TRULIOO_PRODUCTION
       - EXTERNAL_SERVER_URL
       - USE_SSL
       - CRT_PATH
+      - COMPLETE_PROCESS_REDIRECT_URL
     stdin_open: true
     tty: true
 
