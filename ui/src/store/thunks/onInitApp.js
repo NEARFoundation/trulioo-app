@@ -1,15 +1,11 @@
 import { thunk } from 'easy-peasy';
 
-export const onInitApp = thunk(async (actions, payload, { getStoreState }) => {
+export const onInitApp = thunk(async (actions, payload) => {
   try {
-    const pathname = window.location.pathname;
     const { setInit } = payload;
-    const { onGetAppConfig, onGetSession, resetState, clearError } = actions;
-    const state = getStoreState();
-    const pathCode = state.general.session.pathname;
-    await onGetAppConfig();
+    const { onGetAppConfig, onGetSession, clearError } = actions;
     clearError();
-    if (pathname !== pathCode) resetState();
+    await onGetAppConfig();
     await onGetSession();
     setInit(true);
   } catch (e) {

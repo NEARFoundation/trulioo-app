@@ -11,11 +11,7 @@ const _initState = {
     trulioo_public_key: null,
     finish_redirect_url: null,
   },
-  session: {
-    pathname: '',
-    session_id: '',
-    status: null,
-  },
+  session: {},
   country: null,
   countries: [],
   getFields: null,
