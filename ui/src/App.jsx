@@ -13,7 +13,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const status = useStoreState((state) => state.general.session.status);
+  const pathname = window.location.pathname;
+  const status = useStoreState((state) => state.general.session[pathname]?.status);
+
   const { isAppError, description } = useStoreState((state) => state.general.error);
 
   return (

@@ -1,5 +1,6 @@
 import { action } from 'easy-peasy';
 
 export const setSession = action((state, payload) => {
-  state.session = { ...state.session, ...payload };
+  const pathname = window.location.pathname;
+  state.session[pathname] = { ...state.session[pathname], ...payload };
 });
