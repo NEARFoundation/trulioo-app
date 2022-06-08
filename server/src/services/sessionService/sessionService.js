@@ -7,15 +7,17 @@ export const createSession = async (req, res) => {
     let sessionId = req.body["session_id"];
     const forced = req.body["forced"];
     const code = req.params.code;
-    let applicant = await findLastSession(code);
-    const checkCodeResult = await checkCode(req);
 
-    if (!checkCodeResult && (!applicant || applicant.status !== "document_verification_completed")) {
+    const checkCodeResult = await checkCode(req);
+    if (!checkCodeResult) {
       return invalidCode(res);
     }
+
     if (!sessionId && forced) {
       return res.status(400).send({ error: 'Session ID cannot be empty.' });
     }
+
+    let applicant = await findLastSession(code);
     if (applicant) {
       if (applicant.status !== "new") {
         if (sessionId) {
@@ -72,10 +74,10 @@ async function updateSessionId(sessionId) {
   return applicant;
 }
 
-const findLastSession = async (code) => {
+export const findLastSession = async (code) => {
   let session = await findNextSession(code, null);
   let nextSession = session ? await findNextSession(code, session.sessionId) : null;
-  while (nextSession) {
+  while (nextSession && session.sessionId !== nextSession.sessionId) {
     session = nextSession;
     nextSession = await findNextSession(code, session.sessionId);
   }
