@@ -1,5 +1,6 @@
 import { Code } from "../models/Code.js";
 import { createUniqueId } from "./createUniqueId.js";
+import { findLastSession } from "../services/sessionService/sessionService.js";
 
 export const checkCode = async (req) => {
   const code = req.params.code;
@@ -7,7 +8,9 @@ export const checkCode = async (req) => {
     return false;
   }
   const storedCode = await Code.findOne({code: code});
-  return storedCode !== null && new Date() < storedCode.expiryDate && storedCode.enabled;
+  const applicant = await findLastSession(code);
+  return storedCode !== null && new Date() < storedCode.expiryDate &&
+    (storedCode.enabled || applicant && applicant.status === "document_verification_completed");
 }
 
 export const invalidCode = (res) => {
