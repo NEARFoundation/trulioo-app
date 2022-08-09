@@ -92,6 +92,38 @@ const requestDocVerify = async (body) => {
     .json();
 };
 
+const requestTransactions = async () => {
+  return new Promise((resolve) => {
+    resolve({
+      data: [
+        {
+          id: '62976633e092d0fa03b47249',
+          transactionId: '6a73d9de-a74a-4b45-9771-b117e46f0d26',
+          transactionRecordId: '20ab3dac-4d6c-9f00-58ac-7cfb0a12854d',
+          transactionTimestamp: '1654089267504',
+          processed: true,
+        },
+      ],
+    });
+  });
+};
+
+const requestOneTimeUrls = async () => {
+  return new Promise((resolve) => {
+    resolve({
+      data: [
+        {
+          id: '628f26dc3db33bc068b59bda',
+          code: 'ede6bf79b5314371aeda432558522369',
+          codeTimestamp: 1653548764514,
+          expiryDate: 1656140764441,
+          enabled: true,
+        },
+      ],
+    });
+  });
+};
+
 export const api = {
   requestAppParams,
   requestFields,
@@ -102,4 +134,6 @@ export const api = {
   requestSubdivisions,
   requestSubmitForm,
   requestDocVerify,
+  requestTransactions,
+  requestOneTimeUrls,
 };

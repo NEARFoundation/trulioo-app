@@ -5,7 +5,7 @@ import { useStyles } from './AppError.styles';
 const AppError = ({ description }) => {
   const classes = useStyles();
   return (
-    <Box className={classes.root}>
+    <Box id="main" className={classes.root}>
       <Box className={classes.container}>
         <Box className={classes.form}>
           <img className={classes.img} src={ErrorIcon} alt="Error" />
