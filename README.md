@@ -7,17 +7,18 @@ Frontend and backend for Trulioo KYC
 - node.js > v14
 - yarn
 - mongodb
-- ngrok
+  - optional: [MongoDB Compass](https://www.mongodb.com/try/download/compass) (In “Version” dropdown, you can choose Readonly)
+- [ngrok](https://ngrok.com/download)
 
 ## Installation
 
 ```sh
-# 1. Make sure the required dependencies above are installed, and that mongodb is running
+# 1. Make sure the required dependencies above are installed, and that mongodb is running. There seems to be no setup or data population required.
 
 # 2. Run the following command
 cp server/.env.dist server/.env
 
-# 3. Edit server/.env
+# 3. Edit values in `server/.env`. See https://my.1password.com/vaults/if2irxw2lpt6pd7h4t6ietepty/allitems/a5ryfgfk4eja6kmyjusnirl56q.
 
 # 4. Install dependencies with the following commands
 cd server && yarn install
@@ -27,13 +28,12 @@ cd ../ui && yarn install
 ## Development
 
 ```sh
-# 1. Run the following command to have a proxy with https
+# 1. Run the following command so that your local server will have a publicly-accessible URL using https
 ngrok http 8080
 
-# 2. Copy the url with https and paste it in server/.env as a value of EXTERNAL_SERVER_URL
+# 2. Copy the URL with https and paste it in server/.env as the value for EXTERNAL_SERVER_URL
 
-# 3. Temporary hack to create a KYC url:
-# Edit src/index.js and uncomment those lines
+# 3. (Temporary hack to create a KYC URL) Edit server/src/index.js and uncomment these lines in it:
 # // let expiryDate = new Date();
 # // expiryDate.setDate(expiryDate.getDate() + 30);
 # // await createNewCode(expiryDate);
@@ -41,8 +41,9 @@ ngrok http 8080
 # 4. Run the following command
 yarn start-dev
 
-# 5. Go to your mongodb databse with MongoDBCompass for example (or any other explorer) and naviagte to the codes table
-# 6. Copy the value code of one of the entries of the codes table
-# 7. Go to the url from EXTERNAL_SERVER_URL from ngrok followed by / and the code
+# 5. Use MongoDB Compass or any other tool to connect to your database (such as mongodb://localhost:27017/) and browse the `trulioo/codes` table of your Mongo database.
+# 6. Copy the value code of one of the entries of the codes table (such as 6c7079b6022347ada53f37f489fc773a)
+# 7. Go to the URL from EXTERNAL_SERVER_URL from ngrok followed by / and the code (such as https://b755-104-176-165-201.ngrok.io/6c7079b6022347ada53f37f489fc773a)
+# 8. You can use fake data (as long as it passes validation) when filling out the forms to test.
 ```
 
