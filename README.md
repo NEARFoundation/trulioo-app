@@ -45,3 +45,4 @@ yarn start-dev
 # 6. Copy the value code of one of the entries of the codes table
 # 7. Go to the url from EXTERNAL_SERVER_URL from ngrok followed by / and the code
 ```
+
