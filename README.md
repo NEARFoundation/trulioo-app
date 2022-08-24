@@ -7,8 +7,8 @@ Frontend and backend for Trulioo KYC
 - node.js > v14
 - yarn
 - mongodb
-  - optional: [MongoDB Compass](https://www.mongodb.com/try/download/compass) (In “Version” dropdown, you can choose Readonly)
-- [ngrok](https://ngrok.com/download)
+  - Optional: [MongoDB Compass](https://www.mongodb.com/try/download/compass) (In “Version” dropdown, you can choose Readonly)
+- For development: [ngrok](https://ngrok.com/download)
 
 ## Installation
 
@@ -46,4 +46,3 @@ yarn start-dev
 # 7. Go to the URL from EXTERNAL_SERVER_URL from ngrok followed by / and the code (such as https://b755-104-176-165-201.ngrok.io/6c7079b6022347ada53f37f489fc773a)
 # 8. You can use fake data (as long as it passes validation) when filling out the forms to test.
 ```
-
