@@ -30,6 +30,7 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
+  "prettier": "@nearfoundation/near-prettier-config",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -60,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@nearfoundation/near-prettier-config": "^1.0.1",
     "env-cmd": "^10.1.0",
     "eslint": "^8.22.0",
     "eslint-config-near": "^1.0.1",
