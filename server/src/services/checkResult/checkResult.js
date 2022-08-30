@@ -2,53 +2,6 @@ import { checkCode, disableCode, invalidCode } from '../../helpers/codeUtils';
 import { Applicant } from '../../models/Applicant';
 import { Transaction } from '../../models/Transaction';
 
-export const checkResult = async (request, response) => {
-  try {
-    // TODO: Check the source of the request
-    const checkResult = await checkCode(request);
-    if (!checkResult) {
-      return invalidCode(response);
-    }
-
-    const truliooInstance = request.app.get('trulioo');
-    const transactionId = request.body.TransactionId;
-    const transactionRecordId = request.body.TransactionRecordId;
-
-    if (transactionId && transactionRecordId && request.body.Status === 'Completed') {
-      const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
-      if (!txResult) {
-        console.log('The transaction has already been processed.');
-        return response.send({});
-      }
-    } else {
-      console.log('This event is being ignored.');
-    }
-
-    response.send({});
-  } catch (error) {
-    console.log('Webhook error:');
-    console.log(error);
-    response.status(500).send({ error: 'Internal server error. Please try again later.' });
-  }
-};
-
-export const createTransaction = async (transactionId, transactionRecordId, truliooInstance) => {
-  const transaction = await Transaction.findOne({ transactionId });
-  if (transaction) {
-    return false;
-  }
-
-  await Transaction.create({
-    transactionId,
-    transactionRecordId,
-    transactionTimestamp: new Date(),
-    processed: false,
-  });
-
-  eventHandling(truliooInstance, transactionId).then();
-  return true;
-};
-
 export const eventHandling = async (truliooInstance, transactionId) => {
   try {
     console.log(`Handling event: ${transactionId}`);
@@ -119,5 +72,52 @@ export const eventHandling = async (truliooInstance, transactionId) => {
   } catch (error) {
     console.log('Unknown error:');
     console.log(error);
+  }
+};
+
+export const createTransaction = async (transactionId, transactionRecordId, truliooInstance) => {
+  const transaction = await Transaction.findOne({ transactionId });
+  if (transaction) {
+    return false;
+  }
+
+  await Transaction.create({
+    transactionId,
+    transactionRecordId,
+    transactionTimestamp: new Date(),
+    processed: false,
+  });
+
+  eventHandling(truliooInstance, transactionId).then();
+  return true;
+};
+
+export const checkResult = async (request, response) => {
+  try {
+    // TODO: Check the source of the request
+    const checkCodeResult = await checkCode(request);
+    if (!checkCodeResult) {
+      return invalidCode(response);
+    }
+
+    const truliooInstance = request.app.get('trulioo');
+    const transactionId = request.body.TransactionId;
+    const transactionRecordId = request.body.TransactionRecordId;
+
+    if (transactionId && transactionRecordId && request.body.Status === 'Completed') {
+      const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
+      if (!txResult) {
+        console.log('The transaction has already been processed.');
+        return response.send({});
+      }
+    } else {
+      console.log('This event is being ignored.');
+    }
+
+    response.send({});
+  } catch (error) {
+    console.log('Webhook error:');
+    console.log(error);
+    response.status(500).send({ error: 'Internal server error. Please try again later.' });
   }
 };

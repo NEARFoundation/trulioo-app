@@ -36,6 +36,7 @@ function checkFieldsData(data) {
     for (const [groupId, group] of Object.entries(data.properties)) {
       if (group && group.required) {
         const newRequired = [];
+        // eslint-disable-next-line array-callback-return
         group.required.map((item) => {
           if (group.properties[item]) {
             newRequired.push(item);

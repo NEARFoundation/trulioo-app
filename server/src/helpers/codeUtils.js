@@ -1,7 +1,7 @@
-import { Code } from "../models/Code.js";
-import { findLastSession } from "../services/sessionService/sessionService.js";
+import { Code } from '../models/Code';
+import { findLastSession } from '../services/sessionService/sessionService';
 
-import { createUniqueId } from "./createUniqueId.js";
+import { createUniqueId } from './createUniqueId';
 
 export const checkCode = async (request) => {
   const code = request.params.code;
@@ -9,15 +9,14 @@ export const checkCode = async (request) => {
     return false;
   }
 
-  const storedCode = await Code.findOne({code});
+  const storedCode = await Code.findOne({ code });
   const applicant = await findLastSession(code);
-  return storedCode !== null && new Date() < storedCode.expiryDate &&
-    (storedCode.enabled || applicant && applicant.status === "document_verification_completed");
-}
+  return storedCode !== null && new Date() < storedCode.expiryDate && (storedCode.enabled || (applicant && applicant.status === 'document_verification_completed'));
+};
 
-export const invalidCode = (res) => {
-  return res.status(404).send({ error: 'This URL is incorrect or has been used before' });
-}
+export const invalidCode = (response) => {
+  return response.status(404).send({ error: 'This URL is incorrect or has been used before' });
+};
 
 export const createNewCode = async (expiryDate) => {
   const codeTimestamp = new Date();
@@ -27,7 +26,7 @@ export const createNewCode = async (expiryDate) => {
 
   let code = createUniqueId();
   let attempts = 1;
-  let storedCode = await Code.findOne({code});
+  let storedCode = await Code.findOne({ code });
   while (storedCode) {
     attempts++;
     if (attempts > 3) {
@@ -35,25 +34,25 @@ export const createNewCode = async (expiryDate) => {
     }
 
     code = createUniqueId();
-    storedCode = await Code.findOne({code});
+    storedCode = await Code.findOne({ code });
   }
 
   const codeEntity = new Code({
     code,
     codeTimestamp: new Date(),
     expiryDate: new Date(expiryDate),
-    enabled: true
+    enabled: true,
   });
   await codeEntity.save();
   return codeEntity;
-}
+};
 
 export const disableCode = async (code) => {
-  const storedCode = await Code.findOne({code});
+  const storedCode = await Code.findOne({ code });
   if (!storedCode) {
     throw new Error('Code not found.');
   }
 
   storedCode.enabled = false;
   await storedCode.save();
-}
+};

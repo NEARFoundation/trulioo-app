@@ -37,10 +37,10 @@ export const createSession = async (request, response) => {
       if (applicant.status !== 'new') {
         if (sessionId) {
           if (sessionId !== applicant.sessionId) {
-            return response.status(400).send({ error: 'This URL can only be used from the browser of the computer ' + 'on which the session was started earlier.' });
+            return response.status(400).send({ error: 'This URL can only be used from the browser of the computer on which the session was started earlier.' });
           }
         } else {
-          return response.status(400).send({ error: 'The session for this URL is already registered in another browser ' + 'or on another computer.' });
+          return response.status(400).send({ error: 'The session for this URL is already registered in another browser or on another computer.' });
         }
       } else if (sessionId !== applicant.sessionId) {
         applicant = await updateSessionId(applicant.sessionId);
@@ -88,20 +88,11 @@ export const checkSession = async (request, response, expectedStatus) => {
   let sessionFailed = false;
   let applicant = null;
   const sessionId = request.body.session_id;
-  if (!sessionId) {
-    response.status(400).send({ error: 'Session ID cannot be empty.' });
-    sessionFailed = true;
-  } else {
+  if (sessionId) {
     applicant = await Applicant.findOne({ sessionId });
-    if (!applicant) {
-      response.status(400).send({ error: 'Session not found.' });
-      sessionFailed = true;
-    } else {
+    if (applicant) {
       const code = request.params.code;
-      if (code !== applicant.code) {
-        response.status(400).send({ error: 'Invalid session ID.' });
-        sessionFailed = true;
-      } else {
+      if (code === applicant.code) {
         const nextSession = await findNextSession(code, sessionId);
         if (nextSession) {
           response.status(400).send({ error: 'This session ID is no longer valid.' });
@@ -110,8 +101,17 @@ export const checkSession = async (request, response, expectedStatus) => {
           response.status(400).send({ error: 'Verification cannot be performed at this stage.' });
           sessionFailed = true;
         }
+      } else {
+        response.status(400).send({ error: 'Invalid session ID.' });
+        sessionFailed = true;
       }
+    } else {
+      response.status(400).send({ error: 'Session not found.' });
+      sessionFailed = true;
     }
+  } else {
+    response.status(400).send({ error: 'Session ID cannot be empty.' });
+    sessionFailed = true;
   }
 
   return { sessionFailed, applicant };
