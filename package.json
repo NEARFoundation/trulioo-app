@@ -5,6 +5,7 @@
   "scripts": {
     "start-dev": "(yarn build:ui) && (cd server && yarn start-dev)",
     "build:ui": "./scripts/build_ui.sh",
-    "postinstall": "(cd ui && yarn install) && (cd server && yarn install)"
+    "postinstall": "(cd ui && yarn install) && (cd server && yarn install)",
+    "lint": "eslint ./src --fix"
   }
 }
