@@ -6,6 +6,6 @@
     "dev": "(yarn build:ui) && (cd server && yarn dev)",
     "build:ui": "./scripts/build_ui.sh",
     "postinstall": "(cd ui && yarn install) && (cd server && yarn install)",
-    "lint": "server/node_modules/.bin/eslint ./server/src --fix && ui/node_modules/.bin/eslint ./ui/src --fix"
+    "lint": "server/node_modules/.bin/eslint ./server --fix && ui/node_modules/.bin/eslint ./ui --fix"
   }
 }
