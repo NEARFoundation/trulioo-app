@@ -43,7 +43,6 @@ const taxIdNumberNamesByCountry = {
 const convertToNameTypeObjectArray = (natIdNameObject, type) =>
   Object.fromEntries(
     Object.entries(natIdNameObject).map((natIdEntry) => {
-      // eslint-disable-next-line no-param-reassign
       natIdEntry[1] = [
         {
           name: natIdEntry[1],
@@ -55,13 +54,12 @@ const convertToNameTypeObjectArray = (natIdNameObject, type) =>
   );
 
 const mergeObjectsWithSameKey = (...objects) =>
+  // eslint-disable-next-line unicorn/no-array-reduce
   objects.reduce((combinedObject, currentObject) => {
-    Object.keys(currentObject).forEach((key) => {
-      // eslint-disable-next-line no-param-reassign
-      combinedObject[key] = combinedObject[key]
-        ? combinedObject[key].concat(currentObject[key])
-        : currentObject[key];
-    });
+    for (const key of Object.keys(currentObject)) {
+      combinedObject[key] = combinedObject[key] ? combinedObject[key].concat(currentObject[key]) : currentObject[key];
+    }
+
     return combinedObject;
   });
 
@@ -86,18 +84,13 @@ const mergeObjectsWithSameKey = (...objects) =>
  * }
  */
 const combineTypesToSingleObject = () => {
-  const nationalIdObject = convertToNameTypeObjectArray(
-    nationalIdNamesByCountry,
-    idTypes.nationalId,
-  );
+  const nationalIdObject = convertToNameTypeObjectArray(nationalIdNamesByCountry, idTypes.nationalId);
   const healthObject = convertToNameTypeObjectArray(healthNamesByCountry, idTypes.health);
-  const socialServiceObject = convertToNameTypeObjectArray(
-    socialServiceNamesByCountry,
-    idTypes.socialService,
-  );
+  const socialServiceObject = convertToNameTypeObjectArray(socialServiceNamesByCountry, idTypes.socialService);
   const taxIdObject = convertToNameTypeObjectArray(taxIdNumberNamesByCountry, idTypes.taxIdNumber);
 
   return mergeObjectsWithSameKey(nationalIdObject, healthObject, socialServiceObject, taxIdObject);
 };
 
+// eslint-disable-next-line no-undef
 module.exports = combineTypesToSingleObject();

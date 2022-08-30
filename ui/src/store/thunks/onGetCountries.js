@@ -7,7 +7,7 @@ export const onGetCountries = thunk(async (actions) => {
   try {
     const setCountries = actions.setCountries;
     const response = await api.requestCountries();
-    const countries = localeCountriesArray.filter((v) => response.includes(v.code));
+    const countries = localeCountriesArray.filter((country) => response.includes(country.code));
     setCountries(countries);
   } catch (error) {
     console.log(`Error:${error}`);

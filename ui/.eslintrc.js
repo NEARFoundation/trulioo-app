@@ -1,3 +1,5 @@
+// TODO: Discuss whether our shared Eslint rules should be updated such that we won't need to define these overrides.
+
 /* eslint-env node */
 
 module.exports = {
@@ -9,6 +11,7 @@ module.exports = {
   },
   rules: {
     'canonical/sort-keys': 'off',
+    'jsonc/sort-keys': 'off',
     'no-console': 'off',
   },
 };
