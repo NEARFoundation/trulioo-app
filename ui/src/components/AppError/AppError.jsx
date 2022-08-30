@@ -1,5 +1,7 @@
 import { Box, Typography } from '@mui/material';
+
 import ErrorIcon from '../general/img/error.png';
+
 import { useStyles } from './AppError.styles';
 
 const AppError = ({ description }) => {

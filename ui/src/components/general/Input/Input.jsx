@@ -1,6 +1,7 @@
-import { TextField } from '@mui/material';
-import { useStyles } from './Input.styles';
 import { ErrorMessage } from '@hookform/error-message';
+import { TextField } from '@mui/material';
+
+import { useStyles } from './Input.styles';
 
 const Input = (props) => {
   const classes = useStyles();

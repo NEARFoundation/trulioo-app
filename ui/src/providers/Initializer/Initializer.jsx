@@ -1,6 +1,7 @@
-import { cloneElement, useEffect, useState } from 'react';
-import Loader from '../../components/general/Loader/Loader';
 import Box from '@mui/material/Box';
+import { cloneElement, useEffect, useState } from 'react';
+
+import Loader from '../../components/general/Loader/Loader';
 
 export const Initializer = ({ store, children }) => {
   const [isInit, setInit] = useState(false);

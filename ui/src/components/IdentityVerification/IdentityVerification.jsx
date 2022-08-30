@@ -1,13 +1,16 @@
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Box, Button, Divider, Typography } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import Form from '@rjsf/material-ui/v5';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { Box, Button, Divider, Typography } from '@mui/material';
-import Loader from '../general/Loader/Loader';
-import { useStyles } from './IdentityVerification.styles';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import InputAdornment from '@mui/material/InputAdornment';
+
+import Loader from '../general/Loader/Loader';
+
+import { useStyles } from './IdentityVerification.styles';
+
 
 export const IdentityVerification = ({ loading }) => {
   const classes = useStyles();
@@ -41,10 +44,12 @@ export const IdentityVerification = ({ loading }) => {
       if (state.fields.additionalFields) {
         schema.properties = { ...schema.properties, ...state.fields.additionalFields };
       }
+
       if (state.fields.consents) {
         schema.properties.Consents = state.fields.consents;
       }
     }
+
     return {
       fields: state.fields,
       schema,
@@ -66,6 +71,7 @@ export const IdentityVerification = ({ loading }) => {
     for (const item of error) {
       _description += item.stack + '\r\n';
     }
+
     setError({ isError: true, description: _description });
   };
 
@@ -93,6 +99,7 @@ export const IdentityVerification = ({ loading }) => {
     const handleChangeCountry = () => {
       onChangeStatus({ status: 'country_select' });
     };
+
     return (
       <TextField
         label={props.label}

@@ -1,15 +1,18 @@
 import './App.css';
-import WelcomePage from './components/WelcomePage/WelcomePage';
-import Header from './components/Header/Header';
 import Box from '@mui/material/Box';
 import { useStoreState } from 'easy-peasy';
-import CountrySelection from './components/CountrySelection/CountrySelection';
-import KYCSteps from './components/KYCSteps/KYCSteps';
 import { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import AppError from './components/AppError/AppError';
+import CountrySelection from './components/CountrySelection/CountrySelection';
+import Header from './components/Header/Header';
+import KYCSteps from './components/KYCSteps/KYCSteps';
+import WelcomePage from './components/WelcomePage/WelcomePage';
 import Message from './components/general/Message/Message';
 import { steps } from './config/steps';
-import AppError from './components/AppError/AppError';
-import { BrowserRouter as Router } from 'react-router-dom';
+
+
 
 const App = () => {
   const [loading, setLoading] = useState(false);

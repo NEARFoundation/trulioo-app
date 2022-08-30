@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import Loader from '../../general/Loader/Loader';
-import { useStoreActions } from 'easy-peasy';
 import { Box, Container } from '@mui/material';
+import { useStoreActions } from 'easy-peasy';
+import { useEffect, useState } from 'react';
+
+import Loader from '../../general/Loader/Loader';
 
 const TruliooEmbedId = ({ publicKey }) => {
   const [loading, setLoading] = useState(true);
@@ -20,9 +21,9 @@ const TruliooEmbedId = ({ publicKey }) => {
   const scriptLoaded = (publicKey) => {
     new window.TruliooClient({
       publicKey,
-      accessTokenURL: `${window.location.pathname.substring(
+      accessTokenURL: `${window.location.pathname.slice(
         0,
-        window.location.pathname.length - 1,
+        Math.max(0, window.location.pathname.length - 1),
       )}`,
       handleResponse,
       onInitialRenderComplete,
@@ -37,6 +38,7 @@ const TruliooEmbedId = ({ publicKey }) => {
       script.onload = () => scriptLoaded(publicKey);
       document.body.appendChild(script);
     }
+
     return () => {
       document.body.removeChild(script);
     };

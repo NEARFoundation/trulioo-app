@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Stepper, Step, StepButton, Box } from '@mui/material';
-import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CancelIcon from '@mui/icons-material/Cancel';
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import { Stepper, Step, StepButton, Box } from '@mui/material';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useEffect, useState } from 'react';
+
 import IdentityVerification from '../IdentityVerification/IdentityVerification';
+
 import CheckVerification from './CheckVerification/CheckVerification';
 import TruliooEmbedId from './TruliooEmbedId/TruliooEmbedId';
-import { useStoreActions, useStoreState } from 'easy-peasy';
+
 
 const stepperSteps = [
   { label: 'Select Country', value: 'country_select' },
@@ -77,7 +80,7 @@ const KYCSteps = ({ loading, status }) => {
   const getStepIcon = (status, index) => {
     if (activeStep() === index) return stepIcons[status];
     if (completedSteps(index)) return null;
-    return stepIcons['default'];
+    return stepIcons.default;
   };
 
   return (

@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useStoreActions } from 'easy-peasy';
 import { Box, Button, Typography } from '@mui/material';
-import Man from '../../general/img/man.png';
-import Hand from '../../general/img/hand.png';
-import { useStyles } from './CheckVerification.styles';
+import { useStoreActions } from 'easy-peasy';
+import React, { useEffect, useState } from 'react';
 import { MagicSpinner } from 'react-spinners-kit';
+
+import Hand from '../../general/img/hand.png';
+import Man from '../../general/img/man.png';
+
+import { useStyles } from './CheckVerification.styles';
+
 
 const CheckVerification = ({ status, redirectUrl }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
@@ -23,6 +26,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
   const startCounter = () => {
     setCounter(counter + 1);
   };
+
   const stopCounter = () => {
     setCounter(0);
   };
@@ -37,14 +41,16 @@ const CheckVerification = ({ status, redirectUrl }) => {
       timer = setTimeout(() => {
         setCounter(counter + 1);
         onGetSession();
-      }, 30000);
+      }, 30_000);
     }
+
     return () => clearTimeout(timer);
   }, [counter]);
 
   if (!counter && isInProgress) {
     startCounter();
   }
+
   if (counter && isCompleted) {
     stopCounter();
   }

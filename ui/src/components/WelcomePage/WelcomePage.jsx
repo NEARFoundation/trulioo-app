@@ -1,7 +1,10 @@
-import FaceId from '../../images/face_id.jpg';
 import { Box, Button } from '@mui/material';
-import { useStyles } from './WelcomePage.styles';
 import { useStoreActions } from 'easy-peasy';
+
+import FaceId from '../../images/face_id.jpg';
+
+import { useStyles } from './WelcomePage.styles';
+
 
 const WelcomePage = () => {
   const classes = useStyles();
