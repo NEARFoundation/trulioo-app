@@ -1,6 +1,7 @@
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
-import { hoursDifference } from '../../helpers/hoursDifference';
-import { cacheExpirationPeriod, Consents } from '../../models/Consents';
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { hoursDifference } from '../../helpers/hoursDifference.js';
+import { cacheExpirationPeriod, Consents } from '../../models/Consents.js';
 
 export const getConsents = async (request, response) => {
   try {

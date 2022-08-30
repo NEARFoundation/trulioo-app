@@ -1,4 +1,5 @@
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
 
 export const testAuthentication = async (request, response) => {
   try {

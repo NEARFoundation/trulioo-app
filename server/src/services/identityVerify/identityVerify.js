@@ -1,6 +1,7 @@
-import { ASYNC_CALLBACK_URL, EXTERNAL_SERVER_URL } from '../../config/trulioo.config';
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
-import { checkSession } from '../sessionService/sessionService';
+/* eslint-disable import/extensions */
+import { ASYNC_CALLBACK_URL, EXTERNAL_SERVER_URL } from '../../config/trulioo.config.js';
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { checkSession } from '../sessionService/sessionService.js';
 
 export const identityVerify = async (request, response) => {
   try {

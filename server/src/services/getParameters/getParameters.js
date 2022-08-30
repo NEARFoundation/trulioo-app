@@ -1,6 +1,7 @@
-import { completeProcessRedirectUrl } from '../../config/app.config';
-import { truliooPublicKey } from '../../config/trulioo.config';
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
+/* eslint-disable import/extensions */
+import { completeProcessRedirectUrl } from '../../config/app.config.js';
+import { truliooPublicKey } from '../../config/trulioo.config.js';
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
 
 export const getParameters = async (request, response) => {
   try {

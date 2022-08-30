@@ -1,6 +1,7 @@
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
-import { hoursDifference } from '../../helpers/hoursDifference';
-import { cacheExpirationPeriod, Countries } from '../../models/Countries';
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { hoursDifference } from '../../helpers/hoursDifference.js';
+import { cacheExpirationPeriod, Countries } from '../../models/Countries.js';
 
 export const getCountryCodes = async (request, response) => {
   try {

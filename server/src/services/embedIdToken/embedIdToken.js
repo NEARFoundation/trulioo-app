@@ -1,7 +1,8 @@
+/* eslint-disable import/extensions */
 import axios from 'axios';
 
-import { EMBED_ID_TOKEN_URL, truliooApiKey } from '../../config/trulioo.config';
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
+import { EMBED_ID_TOKEN_URL, truliooApiKey } from '../../config/trulioo.config.js';
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
 
 export const embedIdToken = async (request, response) => {
   try {

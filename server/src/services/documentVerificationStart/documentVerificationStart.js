@@ -1,5 +1,6 @@
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
-import { checkSession } from '../sessionService/sessionService';
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { checkSession } from '../sessionService/sessionService.js';
 
 export const documentVerificationStart = async (request, response) => {
   try {

@@ -1,6 +1,7 @@
-import { checkCode, disableCode, invalidCode } from '../../helpers/codeUtils';
-import { Applicant } from '../../models/Applicant';
-import { Transaction } from '../../models/Transaction';
+/* eslint-disable import/extensions */
+import { checkCode, disableCode, invalidCode } from '../../helpers/codeUtils.js';
+import { Applicant } from '../../models/Applicant.js';
+import { Transaction } from '../../models/Transaction.js';
 
 export const eventHandling = async (truliooInstance, transactionId) => {
   try {

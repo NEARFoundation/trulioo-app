@@ -1,6 +1,7 @@
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
-import { hoursDifference } from '../../helpers/hoursDifference';
-import { cacheExpirationPeriod, Fields } from '../../models/Fields';
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { hoursDifference } from '../../helpers/hoursDifference.js';
+import { cacheExpirationPeriod, Fields } from '../../models/Fields.js';
 
 export const getFields = async (request, response) => {
   try {

@@ -1,6 +1,7 @@
-import { checkCode, invalidCode } from '../../helpers/codeUtils';
-import { createUniqueId } from '../../helpers/createUniqueId';
-import { Applicant } from '../../models/Applicant';
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { createUniqueId } from '../../helpers/createUniqueId.js';
+import { Applicant } from '../../models/Applicant.js';
 
 const findNextSession = async (code, oldSessionId = null) => {
   return Applicant.findOne({ code, oldSessionId: { $eq: oldSessionId } });

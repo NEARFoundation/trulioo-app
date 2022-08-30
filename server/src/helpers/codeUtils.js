@@ -1,7 +1,7 @@
-import { Code } from '../models/Code';
-import { findLastSession } from '../services/sessionService/sessionService';
+import { Code } from '../models/Code.js';
+import { findLastSession } from '../services/sessionService/sessionService.js';
 
-import { createUniqueId } from './createUniqueId';
+import { createUniqueId } from './createUniqueId.js';
 
 export const checkCode = async (request) => {
   const code = request.params.code;

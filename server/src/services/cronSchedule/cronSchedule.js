@@ -1,11 +1,12 @@
+/* eslint-disable import/extensions */
 import axios from 'axios';
 import cron from 'node-cron';
 
-import { delayBeforeStartCheck, docVStatusUpdateSchedule as documentVStatusUpdateSchedule, maxSearchDept, transactionStatusUpdateSchedule } from '../../config/cron.config';
-import { EXPERIENCE_TRANSACTION_URL, truliooApiKey } from '../../config/trulioo.config';
-import { Applicant } from '../../models/Applicant';
-import { Transaction } from '../../models/Transaction';
-import { createTransaction, eventHandling } from '../checkResult/checkResult';
+import { delayBeforeStartCheck, docVStatusUpdateSchedule as documentVStatusUpdateSchedule, maxSearchDept, transactionStatusUpdateSchedule } from '../../config/cron.config.js';
+import { EXPERIENCE_TRANSACTION_URL, truliooApiKey } from '../../config/trulioo.config.js';
+import { Applicant } from '../../models/Applicant.js';
+import { Transaction } from '../../models/Transaction.js';
+import { createTransaction, eventHandling } from '../checkResult/checkResult.js';
 
 async function updateDocumentVStatuses(app) {
   try {

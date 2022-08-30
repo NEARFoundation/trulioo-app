@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import 'dotenv/config';
 import fs from 'fs';
 import https from 'https';
@@ -6,10 +7,12 @@ import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 
-import { truliooInstance } from './config/trulioo.config';
-import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse';
-import { routes } from './routes/collector.routes';
-import { createSchedules } from './services/cronSchedule/cronSchedule';
+import { truliooInstance } from './config/trulioo.config.js';
+// eslint-disable-next-line no-unused-vars
+import { createNewCode } from './helpers/codeUtils.js';
+import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse.js';
+import { routes } from './routes/collector.routes.js';
+import { createSchedules } from './services/cronSchedule/cronSchedule.js';
 
 await mongoose.connect(process.env.MONGO);
 const app = express();
