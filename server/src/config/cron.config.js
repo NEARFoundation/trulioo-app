@@ -1,4 +1,5 @@
 // Document verification status update schedule
+// eslint-disable-next-line unicorn/prevent-abbreviations
 export const docVStatusUpdateSchedule = process.env.DOCV_STATUS_UPDATE_SCHEDULE || '*/1 * * * *';
 // Delay before starting status check (in seconds)
 export const delayBeforeStartCheck = process.env.DELAY_BEFORE_START_STATUS_CHECK || 60;

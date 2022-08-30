@@ -1,18 +1,18 @@
-import express from "express";
+import express from 'express';
 
-import { checkResult } from "../services/checkResult/checkResult.js";
-import { documentVerificationStart } from "../services/documentVerificationStart/documentVerificationStart.js";
-import { embedIdToken } from "../services/embedIdToken/embedIdToken.js";
-import { getConsents } from "../services/getConsents/getConsents.js";
-import { getCountryCodes } from "../services/getCountries/getCountryCodes.js";
-import { getCountrySubdivisions } from "../services/getCountrySubdivisions/getCountrySubdivisions.js";
-import { getFields } from "../services/getFields/getFields.js";
-import { getParameters } from "../services/getParameters/getParameters.js";
-import { identityVerify } from "../services/identityVerify/identityVerify.js";
-import { createSession } from "../services/sessionService/sessionService.js";
-import { testAuthentication } from "../services/testAuthentication/testAuthentication.js";
+import { checkResult } from '../services/checkResult/checkResult';
+import { documentVerificationStart } from '../services/documentVerificationStart/documentVerificationStart';
+import { embedIdToken } from '../services/embedIdToken/embedIdToken';
+import { getConsents } from '../services/getConsents/getConsents';
+import { getCountryCodes } from '../services/getCountries/getCountryCodes';
+import { getCountrySubdivisions } from '../services/getCountrySubdivisions/getCountrySubdivisions';
+import { getFields } from '../services/getFields/getFields';
+import { getParameters } from '../services/getParameters/getParameters';
+import { identityVerify } from '../services/identityVerify/identityVerify';
+import { createSession } from '../services/sessionService/sessionService';
+import { testAuthentication } from '../services/testAuthentication/testAuthentication';
 
-export const routes = app => {
+export const routes = (app) => {
   app.get('/:code/api/test-authentication', testAuthentication);
   app.get('/:code/api/get-countries', getCountryCodes);
   app.get('/:code/api/get-fields', getFields);
@@ -25,7 +25,7 @@ export const routes = app => {
   app.post('/:code/trulioo-api/embedids/tokens/:publicKey', embedIdToken);
   app.post('/:code/api/doc-verify', documentVerificationStart);
   app.use('/:code/', express.static('public'));
-  app.get('*', (request, res)=> {
-    res.redirect('/error/');
+  app.get('*', (request, response) => {
+    response.redirect('/error/');
   });
-}
+};

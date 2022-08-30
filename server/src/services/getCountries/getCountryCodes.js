@@ -1,17 +1,17 @@
-import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
-import { hoursDifference } from "../../helpers/hoursDifference.js";
-import { cacheExpirationPeriod, Countries } from "../../models/Countries.js";
+import { checkCode, invalidCode } from '../../helpers/codeUtils';
+import { hoursDifference } from '../../helpers/hoursDifference';
+import { cacheExpirationPeriod, Countries } from '../../models/Countries';
 
-export const getCountryCodes = async (request, res) => {
+export const getCountryCodes = async (request, response) => {
   try {
     const checkResult = await checkCode(request);
     if (!checkResult) {
-      return invalidCode(res);
+      return invalidCode(response);
     }
 
     let countriesRecord = await Countries.findOne({});
     if (countriesRecord && hoursDifference(new Date(), countriesRecord.timestamp) < cacheExpirationPeriod) {
-      res.send(countriesRecord.countries);
+      response.send(countriesRecord.countries);
     } else {
       const countries = await getCountriesFromTrulioo(request.app.get('trulioo'));
       if (!countriesRecord) {
@@ -21,16 +21,13 @@ export const getCountryCodes = async (request, res) => {
       countriesRecord.countries = countries;
       countriesRecord.timestamp = new Date();
       countriesRecord.save();
-      res.send(countries);
+      response.send(countries);
     }
-
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send({ error: 'The list of countries cannot be obtained. Please try again.' });
+    response.status(500).send({ error: 'The list of countries cannot be obtained. Please try again.' });
   }
-}
+};
 
 async function getCountriesFromTrulioo(truliooInstance) {
   const response = await truliooInstance.get(`/configuration/v1/countrycodes/Identity%20Verification`);

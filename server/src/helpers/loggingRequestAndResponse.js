@@ -1,25 +1,25 @@
-import bodyParser from "express";
+import bodyParser from 'express';
 
 export const rawBody = bodyParser.json({
-  verify(request, res, buf) {
+  verify(request, response, buf) {
     request.rawBody = buf.toString();
-  }
+  },
 });
 
-export const loggingRequestAndResponse = (request, res, next) => {
-  if (/\/\w+\/trulioo-api\/\w+/.test(request.url) || /\/\w+\/api\/\w+/.test(request.url)) {
-    const resSend = res.send;
+export const loggingRequestAndResponse = (request, response, next) => {
+  if (/\/\w+\/trulioo-api\/\w+/u.test(request.url) || /\/\w+\/api\/\w+/u.test(request.url)) {
+    const responseSend = response.send;
 
-    res.send = function (chunk, ...args) {
+    response.send = function (chunk, ...args) {
       if (typeof chunk === 'string') {
-        console.log(`${(new Date()).toISOString()} Url: ${request.path}`);
+        console.log(`${new Date().toISOString()} Url: ${request.path}`);
         console.log(`Request: ${request.rawBody}`);
         console.log(`Response: ${chunk}`);
       }
 
-      resSend.apply(res, [chunk, ...args]);
-    }
+      responseSend.apply(response, [chunk, ...args]);
+    };
   }
 
   next();
-}
+};

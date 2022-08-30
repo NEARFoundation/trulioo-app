@@ -1,18 +1,17 @@
-import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
+import { checkCode, invalidCode } from '../../helpers/codeUtils';
 
-export const testAuthentication = async (request, res) => {
+export const testAuthentication = async (request, response) => {
   try {
     const checkResult = await checkCode(request);
     if (!checkResult) {
-      return invalidCode(res);
+      return invalidCode(response);
     }
 
     const truliooInstance = request.app.get('trulioo');
     await truliooInstance.get(`/connection/v1/testauthentication`);
-    res.send({result: true});
-
+    response.send({ result: true });
   } catch (error) {
     console.log(error);
-    res.send({result: false});
+    response.send({ result: false });
   }
-}
+};

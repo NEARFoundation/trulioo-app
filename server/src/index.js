@@ -6,11 +6,10 @@ import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 
-import { truliooInstance } from './config/trulioo.config.js';
-import { createNewCode } from './helpers/codeUtils.js';
-import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse.js';
-import { routes } from './routes/collector.routes.js';
-import { createSchedules } from './services/cronSchedule/cronSchedule.js';
+import { truliooInstance } from './config/trulioo.config';
+import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse';
+import { routes } from './routes/collector.routes';
+import { createSchedules } from './services/cronSchedule/cronSchedule';
 
 await mongoose.connect(process.env.MONGO);
 const app = express();
@@ -25,7 +24,7 @@ createSchedules(app);
 app.listen(process.env.APP_LOCAL_PORT_HTTP || 8_080);
 
 if (process.env.USE_SSL === 'true') {
-  const crtPath = (process.env.CRT_PATH || '~/cert').replace(/\/+$/, '');
+  const crtPath = (process.env.CRT_PATH || '~/cert').replace(/\/+$/u, '');
   const options = {
     key: fs.readFileSync(`${crtPath}/server.key`),
     cert: fs.readFileSync(`${crtPath}/server.crt`),

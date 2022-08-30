@@ -1,21 +1,21 @@
-import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
-import { checkSession } from "../sessionService/sessionService.js";
+import { checkCode, invalidCode } from '../../helpers/codeUtils';
+import { checkSession } from '../sessionService/sessionService';
 
-export const documentVerificationStart = async (request, res) => {
+export const documentVerificationStart = async (request, response) => {
   try {
     const checkResult = await checkCode(request);
     if (!checkResult) {
-      return invalidCode(res);
+      return invalidCode(response);
     }
 
-    const { sessionFailed, applicant } = await checkSession(request, res, 'identity_verification_completed');
+    const { sessionFailed, applicant } = await checkSession(request, response, 'identity_verification_completed');
     if (sessionFailed) {
       return sessionFailed;
     }
 
     const { experienceTransactionId, status } = request.body;
     if (status !== 200 || !experienceTransactionId) {
-      return res.status(400).send({ error: 'Document verification has not started.' });
+      return response.status(400).send({ error: 'Document verification has not started.' });
     }
 
     applicant.status = 'document_verification_in_progress';
@@ -23,12 +23,9 @@ export const documentVerificationStart = async (request, res) => {
     applicant.verifyBeginTimestamp2 = new Date();
     await applicant.save();
 
-    res.send({ status: applicant.status });
-
+    response.send({ status: applicant.status });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send({ error: 'Failed to start verification. Please try again.' });
+    response.status(500).send({ error: 'Failed to start verification. Please try again.' });
   }
-}
+};
