@@ -39,7 +39,7 @@ ngrok http 8080
 # // await createNewCode(expiryDate);
 
 # 4. Run the following command
-yarn start-dev
+yarn dev
 
 # 5. Use MongoDB Compass or any other tool to connect to your database (such as mongodb://localhost:27017/) and browse the `trulioo/codes` table of your Mongo database.
 # 6. Copy the value code of one of the entries of the codes table (such as 6c7079b6022347ada53f37f489fc773a)
