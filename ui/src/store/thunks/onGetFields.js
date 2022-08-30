@@ -1,4 +1,5 @@
 import { thunk } from 'easy-peasy';
+
 import { api } from '../../config/api';
 import { getFields } from '../helpers/getFields';
 import { presetTruliooFields } from '../helpers/presetTruliooFields';
@@ -25,13 +26,16 @@ export const onGetFields = thunk(
           getFields.transformNationalIdsForCountry(fields.properties.NationalIds, countryCode);
         }
       }
+
       let finalFields = fields;
       if (whiteListedTruliooFields) {
         finalFields = getFields.getWhiteListedFieldsOnly(fields, whiteListedTruliooFields, {});
       }
+
       if (currentTruliooFields) {
         presetTruliooFields(finalFields.properties, currentTruliooFields);
       }
+
       setFieldsSchema({
         fields: finalFields,
         consents,
@@ -41,8 +45,8 @@ export const onGetFields = thunk(
         },
       });
       setLoading(false);
-    } catch (e) {
-      console.log(`Error:${e}`);
+    } catch (error) {
+      console.log(`Error:${error}`);
     }
   },
 );

@@ -1,4 +1,5 @@
 import { thunk } from 'easy-peasy';
+
 import { api } from '../../config/api';
 
 export const onGetAppConfig = thunk(async (actions) => {
@@ -7,7 +8,7 @@ export const onGetAppConfig = thunk(async (actions) => {
     const { trulioo_public_key, finish_redirect_url } = await api.requestAppParams();
     setPublicKey(trulioo_public_key);
     setRedirectUrl(finish_redirect_url);
-  } catch (e) {
-    console.log(`Error get appConfig:${e}`);
+  } catch (error) {
+    console.log(`Error get appConfig:${error}`);
   }
 });

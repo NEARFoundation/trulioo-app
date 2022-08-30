@@ -1,10 +1,11 @@
-const presetTruliooFields = (schemaObj, formDataObj) => {
-  for (const [formDataKey, formDataVal] of Object.entries(formDataObj)) {
-    if (schemaObj[formDataKey] && !schemaObj[formDataKey].properties) {
-      schemaObj[formDataKey].default = formDataVal;
+const presetTruliooFields = (schemaObject, formDataObject) => {
+  for (const [formDataKey, formDataValue] of Object.entries(formDataObject)) {
+    if (schemaObject[formDataKey] && !schemaObject[formDataKey].properties) {
+      schemaObject[formDataKey].default = formDataValue;
     }
-    if (schemaObj[formDataKey] && schemaObj[formDataKey].properties) {
-      presetTruliooFields(schemaObj[formDataKey].properties, formDataVal);
+
+    if (schemaObject[formDataKey] && schemaObject[formDataKey].properties) {
+      presetTruliooFields(schemaObject[formDataKey].properties, formDataValue);
     }
   }
 };

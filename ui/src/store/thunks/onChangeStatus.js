@@ -4,7 +4,7 @@ export const onChangeStatus = thunk(async (actions, payload) => {
   try {
     const setSession = actions.setSession;
     setSession(payload);
-  } catch (e) {
-    console.log(`Error:${e}`);
+  } catch (error) {
+    console.log(`Error:${error}`);
   }
 });

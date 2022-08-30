@@ -1,4 +1,5 @@
 import { thunk } from 'easy-peasy';
+
 import { api } from '../../config/api';
 import { getFields } from '../helpers/getFields';
 
