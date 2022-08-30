@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { Code } from '../models/Code.js';
 import { findLastSession } from '../services/sessionService/sessionService.js';
 

@@ -54,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.18.6",
     "@nearfoundation/near-prettier-config": "^1.0.1",
     "env-cmd": "^10.1.0",
     "eslint": "^8.22.0",
