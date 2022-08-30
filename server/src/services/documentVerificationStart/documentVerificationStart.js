@@ -1,19 +1,19 @@
 import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
 import { checkSession } from "../sessionService/sessionService.js";
 
-export const documentVerificationStart = async (req, res) => {
+export const documentVerificationStart = async (request, res) => {
   try {
-    const checkResult = await checkCode(req);
+    const checkResult = await checkCode(request);
     if (!checkResult) {
       return invalidCode(res);
     }
 
-    const { sessionFailed, applicant } = await checkSession(req, res, 'identity_verification_completed');
+    const { sessionFailed, applicant } = await checkSession(request, res, 'identity_verification_completed');
     if (sessionFailed) {
       return sessionFailed;
     }
 
-    const { experienceTransactionId, status } = req.body;
+    const { experienceTransactionId, status } = request.body;
     if (status !== 200 || !experienceTransactionId) {
       return res.status(400).send({ error: 'Document verification has not started.' });
     }
@@ -25,8 +25,8 @@ export const documentVerificationStart = async (req, res) => {
 
     res.send({ status: applicant.status });
 
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     res
       .status(500)
       .send({ error: 'Failed to start verification. Please try again.' });

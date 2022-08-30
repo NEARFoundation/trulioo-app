@@ -1,20 +1,20 @@
+import { checkCode, disableCode, invalidCode } from "../../helpers/codeUtils.js";
 import { Applicant } from "../../models/Applicant.js";
 import { Transaction } from "../../models/Transaction.js";
-import { checkCode, disableCode, invalidCode } from "../../helpers/codeUtils.js";
 
-export const checkResult = async (req, res) => {
+export const checkResult = async (request, res) => {
   try {
     // TODO: Check the source of the request
-    const checkResult = await checkCode(req);
+    const checkResult = await checkCode(request);
     if (!checkResult) {
       return invalidCode(res);
     }
 
-    const truliooInstance = req.app.get('trulioo');
-    const transactionId = req.body["TransactionId"];
-    const transactionRecordId = req.body["TransactionRecordId"];
+    const truliooInstance = request.app.get('trulioo');
+    const transactionId = request.body.TransactionId;
+    const transactionRecordId = request.body.TransactionRecordId;
 
-    if (transactionId && transactionRecordId && req.body["Status"] === "Completed") {
+    if (transactionId && transactionRecordId && request.body.Status === "Completed") {
       const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
       if (!txResult) {
         console.log('The transaction has already been processed.');
@@ -26,9 +26,9 @@ export const checkResult = async (req, res) => {
 
     res.send({});
 
-  } catch (e) {
+  } catch (error) {
     console.log('Webhook error:');
-    console.log(e);
+    console.log(error);
     res
       .status(500)
       .send({ error: 'Internal server error. Please try again later.' });
@@ -36,14 +36,14 @@ export const checkResult = async (req, res) => {
 }
 
 export const createTransaction = async (transactionId, transactionRecordId, truliooInstance) => {
-  const transaction = await Transaction.findOne({ transactionId: transactionId });
+  const transaction = await Transaction.findOne({ transactionId });
   if (transaction) {
     return false;
   }
 
   await Transaction.create({
-    transactionId: transactionId,
-    transactionRecordId: transactionRecordId,
+    transactionId,
+    transactionRecordId,
     transactionTimestamp: new Date(),
     processed: false
   });
@@ -55,10 +55,10 @@ export const createTransaction = async (transactionId, transactionRecordId, trul
 export const eventHandling = async (truliooInstance, transactionId) => {
   try {
     console.log(`Handling event: ${transactionId}`);
-    const transaction = await Transaction.findOne({ transactionId: transactionId });
+    const transaction = await Transaction.findOne({ transactionId });
 
     if (transaction) {
-      const transactionRecordId = transaction["transactionRecordId"];
+      const transactionRecordId = transaction.transactionRecordId;
 
       let applicant = await Applicant.findOne({txId1: transactionId});
 
@@ -66,8 +66,8 @@ export const eventHandling = async (truliooInstance, transactionId) => {
         if (applicant.status === "identity_verification_in_progress") {
           const response1 = await truliooInstance.get(`/verifications/v1/transactionrecord/${transactionRecordId}`);
 
-          if (response1.data && response1.data["Record"]) {
-            const status = response1.data["Record"]["RecordStatus"];
+          if (response1.data && response1.data.Record) {
+            const status = response1.data.Record.RecordStatus;
             applicant.txRecordId1 = transactionRecordId;
             applicant.result1 = response1.data;
             applicant.verifyEndTimestamp1 = new Date();
@@ -94,8 +94,8 @@ export const eventHandling = async (truliooInstance, transactionId) => {
           if (applicant.status === "document_verification_in_progress") {
             const response2 = await truliooInstance.get(`/verifications/v1/transactionrecord/${transactionRecordId}`);
 
-            if (response2.data && response2.data["Record"]) {
-              const status = response2.data["Record"]["RecordStatus"];
+            if (response2.data && response2.data.Record) {
+              const status = response2.data.Record.RecordStatus;
               applicant.txRecordId2 = transactionRecordId;
               applicant.result2 = response2.data;
               applicant.verifyEndTimestamp2 = new Date();
@@ -126,8 +126,8 @@ export const eventHandling = async (truliooInstance, transactionId) => {
     } else {
       console.log('Transaction not found.')
     }
-  } catch (e) {
+  } catch (error) {
     console.log('Unknown error:');
-    console.log(e);
+    console.log(error);
   }
 }

@@ -1,10 +1,10 @@
-import { cacheExpirationPeriod, Countries } from "../../models/Countries.js";
 import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
 import { hoursDifference } from "../../helpers/hoursDifference.js";
+import { cacheExpirationPeriod, Countries } from "../../models/Countries.js";
 
-export const getCountryCodes = async (req, res) => {
+export const getCountryCodes = async (request, res) => {
   try {
-    const checkResult = await checkCode(req);
+    const checkResult = await checkCode(request);
     if (!checkResult) {
       return invalidCode(res);
     }
@@ -13,18 +13,19 @@ export const getCountryCodes = async (req, res) => {
     if (countriesRecord && hoursDifference(new Date(), countriesRecord.timestamp) < cacheExpirationPeriod) {
       res.send(countriesRecord.countries);
     } else {
-      const countries = await getCountriesFromTrulioo(req.app.get('trulioo'));
+      const countries = await getCountriesFromTrulioo(request.app.get('trulioo'));
       if (!countriesRecord) {
         countriesRecord = new Countries({});
       }
+
       countriesRecord.countries = countries;
       countriesRecord.timestamp = new Date();
       countriesRecord.save();
       res.send(countries);
     }
 
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     res
       .status(500)
       .send({ error: 'The list of countries cannot be obtained. Please try again.' });

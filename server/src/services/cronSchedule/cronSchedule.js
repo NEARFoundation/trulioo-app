@@ -1,29 +1,30 @@
-import { Applicant } from "../../models/Applicant.js";
 import axios from "axios";
-import { createTransaction, eventHandling } from "../checkResult/checkResult.js";
 import cron from "node-cron";
+
 import {
   delayBeforeStartCheck,
-  docVStatusUpdateSchedule,
+  docVStatusUpdateSchedule as documentVStatusUpdateSchedule,
   maxSearchDept,
   transactionStatusUpdateSchedule
 } from "../../config/cron.config.js";
 import { EXPERIENCE_TRANSACTION_URL, truliooApiKey } from "../../config/trulioo.config.js";
+import { Applicant } from "../../models/Applicant.js";
 import { Transaction } from "../../models/Transaction.js";
+import { createTransaction, eventHandling } from "../checkResult/checkResult.js";
 
 export const createSchedules = app => {
-  cron.schedule(docVStatusUpdateSchedule, async () =>  {
-    await updateDocVStatuses(app);
+  cron.schedule(documentVStatusUpdateSchedule, async () =>  {
+    await updateDocumentVStatuses(app);
   }, { scheduled: true })
   cron.schedule(transactionStatusUpdateSchedule, async () =>  {
     await updateTxStatuses(app);
   }, { scheduled: true })
 
-  async function updateDocVStatuses(app) {
+  async function updateDocumentVStatuses(app) {
     try {
       const truliooInstance = app.get('trulioo');
-      const dateBegin = new Date(Date.now() - maxSearchDept * 60 * 60 * 1000);
-      const dateEnd = new Date(Date.now() - delayBeforeStartCheck * 1000);
+      const dateBegin = new Date(Date.now() - maxSearchDept * 60 * 60 * 1_000);
+      const dateEnd = new Date(Date.now() - delayBeforeStartCheck * 1_000);
       const applicants = await Applicant.find(
         {
           verifyBeginTimestamp2: {$lt: dateEnd, $gte: dateBegin},
@@ -54,12 +55,12 @@ export const createSchedules = app => {
 
             if (steps) {
               const step = steps.find(element => {
-                return element["transactionType"] === "EmbedID" && element["stepName"] === "DocVStep";
+                return element.transactionType === "EmbedID" && element.stepName === "DocVStep";
               });
 
               if (step) {
-                const transactionId = step["transactionId"];
-                const transactionRecordId = step["transactionRecordId"];
+                const transactionId = step.transactionId;
+                const transactionRecordId = step.transactionRecordId;
 
                 if (transactionId && transactionRecordId) {
                   applicant.txId2 = transactionId;
@@ -76,21 +77,21 @@ export const createSchedules = app => {
             }
           }
 
-        } catch (e) {
-          console.log(e);
+        } catch (error) {
+          console.log(error);
         }
       });
 
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   }
 
   async function updateTxStatuses(app) {
     try {
       const truliooInstance = app.get('trulioo');
-      const dateBegin = new Date(Date.now() - maxSearchDept * 60 * 60 * 1000);
-      const dateEnd = new Date(Date.now() - delayBeforeStartCheck * 1000);
+      const dateBegin = new Date(Date.now() - maxSearchDept * 60 * 60 * 1_000);
+      const dateEnd = new Date(Date.now() - delayBeforeStartCheck * 1_000);
       const transactions = await Transaction.find(
         {
           transactionTimestamp: {$lt: dateEnd, $gte: dateBegin},
@@ -102,8 +103,8 @@ export const createSchedules = app => {
         await eventHandling(truliooInstance, tx.transactionId);
       });
 
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   }
 }
