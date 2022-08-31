@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import fs from 'fs';
 import https from 'https';
 
@@ -6,11 +7,11 @@ import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 
-import { truliooInstance } from './config/trulioo.config';
-import { createNewCode } from './helpers/codeUtils';
-import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse';
-import { routes } from './routes/collector.routes';
-import { createSchedules } from './services/cronSchedule/cronSchedule';
+import { truliooInstance } from './config/trulioo.config.js';
+import { createNewCode } from './helpers/codeUtils.js';
+import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse.js';
+import { routes } from './routes/collector.routes.js';
+import { createSchedules } from './services/cronSchedule/cronSchedule.js';
 
 dotenv.config();
 
