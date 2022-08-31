@@ -9,6 +9,8 @@ import Man from '../../general/img/man.png';
 
 import { useStyles } from './CheckVerification.styles';
 
+const DELAY_MILLISECONDS = 30_000;
+
 const CheckVerification = ({ status, redirectUrl }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
   const isInProgress = status === 'identity_verification_in_progress' || status === 'document_verification_in_progress';
@@ -34,13 +36,15 @@ const CheckVerification = ({ status, redirectUrl }) => {
   useEffect(() => {
     let timer;
     if (counter) {
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         setCounter(counter + 1);
         onGetSession();
-      }, 30_000);
+      }, DELAY_MILLISECONDS);
     }
 
-    return () => clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+    };
   }, [counter]);
 
   if (!counter && isInProgress) {
