@@ -6,6 +6,6 @@
     "dev": "(yarn build:ui) && (cd server && yarn dev)",
     "build:ui": "./scripts/build_ui.sh",
     "postinstall": "(cd ui && yarn install) && (cd server && yarn install)",
-    "lint": "cd server && yarn lint; cd ../ui && yarn lint;"
+    "lint": "cd server && yarn lint && cd ../ui && yarn lint"
   }
 }
