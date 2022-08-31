@@ -3,20 +3,8 @@ import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
 import { createUniqueId } from '../../helpers/createUniqueId.js';
 import { Applicant } from '../../models/Applicant.js';
 
-const findNextSession = async (code, oldSessionId = null) => {
-  return Applicant.findOne({ code, oldSessionId: { $eq: oldSessionId } });
-};
-
-export const findLastSession = async (code) => {
-  let session = await findNextSession(code, null);
-  let nextSession = session ? await findNextSession(code, session.sessionId) : null;
-  while (nextSession && session.sessionId !== nextSession.sessionId) {
-    session = nextSession;
-    nextSession = await findNextSession(code, session.sessionId);
-  }
-
-  return session;
-};
+import { findLastSession } from './findLastSession.js';
+import { findNextSession } from './findNextSession.js';
 
 export const createSession = async (request, response) => {
   try {

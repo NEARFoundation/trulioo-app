@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import { Code } from '../models/Code.js';
-import { findLastSession } from '../services/sessionService/sessionService.js';
+import { findLastSession } from '../services/sessionService/findLastSession.js';
 
 import { createUniqueId } from './createUniqueId.js';
 
