@@ -67,6 +67,7 @@ export const IdentityVerification = ({ loading }) => {
   };
 
   const handleError = (error) => {
+    // eslint-disable-next-line canonical/id-match
     let _description = '';
     for (const item of error) {
       _description += item.stack + '\r\n';
