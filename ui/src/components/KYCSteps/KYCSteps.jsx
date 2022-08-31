@@ -18,7 +18,7 @@ const stepperSteps = [
   { label: 'Document verification', value: 'document_verification' },
 ];
 
-function statusToStep(status) {
+const statusToStep = (status) => {
   const steps = {
     select_country: 'select_country',
     identity_verification: 'identity_verification',
@@ -29,7 +29,7 @@ function statusToStep(status) {
     document_verification_failed: 'document_verification',
   };
   return steps[status];
-}
+};
 
 const stepIcons = {
   identity_verification: <PanoramaFishEyeIcon color="primary" />,
