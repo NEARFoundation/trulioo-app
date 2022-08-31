@@ -1,16 +1,13 @@
+import { colors } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { StoreProvider } from 'easy-peasy';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import './index.css';
 import App from './App';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { colors } from '@mui/material';
-
 import { Initializer } from './providers/Initializer/Initializer';
 import { store } from './store';
-
-import { StoreProvider } from 'easy-peasy';
 
 const theme = createTheme({
   breakpoints: {
