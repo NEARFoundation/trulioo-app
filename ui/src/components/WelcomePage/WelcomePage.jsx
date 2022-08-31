@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable id-length */
 import { Box, Button } from '@mui/material';
 import { useStoreActions } from 'easy-peasy';
 

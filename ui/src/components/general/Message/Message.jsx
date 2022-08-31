@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable id-length */
 import { Modal, Box, Typography, Button } from '@mui/material';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
