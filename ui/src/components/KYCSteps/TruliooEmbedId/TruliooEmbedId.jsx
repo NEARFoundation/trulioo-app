@@ -20,9 +20,9 @@ const TruliooEmbedId = ({ publicKey }) => {
     }
   };
 
-  const scriptLoaded = (publicKey) => {
+  const scriptLoaded = (scriptLoadedPublicKey) => {
     new window.TruliooClient({
-      publicKey,
+      publicKey: scriptLoadedPublicKey,
       accessTokenURL: `${window.location.pathname.slice(0, Math.max(0, window.location.pathname.length - 1))}`,
       handleResponse,
       onInitialRenderComplete,

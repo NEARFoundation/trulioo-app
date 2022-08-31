@@ -76,8 +76,8 @@ const KYCSteps = ({ loading, status }) => {
     return index < activeStep();
   };
 
-  const getStepIcon = (status, index) => {
-    if (activeStep() === index) return stepIcons[status];
+  const getStepIcon = (stepIconStatus, index) => {
+    if (activeStep() === index) return stepIcons[stepIconStatus];
     if (completedSteps(index)) return null;
     return stepIcons.default;
   };
@@ -93,10 +93,10 @@ const KYCSteps = ({ loading, status }) => {
     >
       {!isFinished && (
         <Stepper sx={{ maxWidth: 580, marginTop: 4 }} activeStep={activeStep()} alternativeLabel>
-          {stepperSteps.map((step, index) => (
-            <Step key={step.label}>
+          {stepperSteps.map((stepperStep, index) => (
+            <Step key={stepperStep.label}>
               <StepButton color="inherit" icon={getStepIcon(status, index)}>
-                {step.label}
+                {stepperStep.label}
               </StepButton>
             </Step>
           ))}
