@@ -10,12 +10,12 @@ const TruliooEmbedId = ({ publicKey }) => {
   const [loading, setLoading] = useState(true);
   const { onDocVerify } = useStoreActions((actions) => actions.general);
 
-  const handleResponse = (e) => {
-    onDocVerify(e);
+  const handleResponse = (event) => {
+    onDocVerify(event);
   };
 
-  const onInitialRenderComplete = (e) => {
-    if (e.status === 200) {
+  const onInitialRenderComplete = (event) => {
+    if (event.status === 200) {
       setLoading(false);
     }
   };
