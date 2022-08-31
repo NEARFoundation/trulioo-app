@@ -8,6 +8,38 @@ import { Applicant } from '../../models/Applicant.js';
 import { Transaction } from '../../models/Transaction.js';
 import { createTransaction, eventHandling } from '../checkResult/checkResult.js';
 
+const fetchTransaction = async (txId) => {
+  console.log(`Transaction ID ${txId}`);
+  const response = await axios.get(`${EXPERIENCE_TRANSACTION_URL}/${txId}`, {
+    headers: {
+      'x-trulioo-api-key': truliooApiKey,
+    },
+  });
+
+  const status = response.data ? response.data.status : 'unknown';
+  console.log(`Status: ${status}`);
+
+  return { status, steps: response?.data?.steps };
+};
+
+/**
+ * // TODO: Document what this is doing and why.
+ *
+ * @param {Array} steps
+ * @returns {object}
+ */
+// eslint-disable-next-line unicorn/prevent-abbreviations
+const getEmbedIDDocVStep = (steps) => {
+  return steps.find((element) => {
+    return element.transactionType === 'EmbedID' && element.stepName === 'DocVStep';
+  });
+};
+
+/**
+ * // TODO: Document what this is doing and why.
+ *
+ * @param {Express app?} app
+ */
 async function updateDocumentVStatuses(app) {
   try {
     const truliooInstance = app.get('trulioo');
@@ -22,39 +54,23 @@ async function updateDocumentVStatuses(app) {
     applicants.map(async (applicant) => {
       try {
         const txId = applicant.feTxId;
-        console.log(`Transaction ID ${txId}`);
+        const { status, steps } = await fetchTransaction(txId);
 
-        const response = await axios.get(`${EXPERIENCE_TRANSACTION_URL}/${txId}`, {
-          headers: {
-            'x-trulioo-api-key': truliooApiKey,
-          },
-        });
+        if (status === 'complete' && steps) {
+          const step = getEmbedIDDocVStep(steps);
 
-        const status = response.data ? response.data.status : 'unknown';
-        console.log(`Status: ${status}`);
+          if (step) {
+            const { transactionId, transactionRecordId } = step;
 
-        if (status === 'complete') {
-          const steps = response.data.steps;
+            if (transactionId && transactionRecordId) {
+              applicant.txId2 = transactionId; // This line has: error  Possible race condition: `applicant.txId2` might be assigned based on an outdated state of `applicant`  require-atomic-updates
+              await applicant.save();
 
-          if (steps) {
-            const step = steps.find((element) => {
-              return element.transactionType === 'EmbedID' && element.stepName === 'DocVStep';
-            });
-
-            if (step) {
-              const transactionId = step.transactionId;
-              const transactionRecordId = step.transactionRecordId;
-
-              if (transactionId && transactionRecordId) {
-                applicant.txId2 = transactionId;
-                await applicant.save();
-
-                const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
-                if (txResult) {
-                  console.log('The transaction was successfully created');
-                } else {
-                  console.log('The transaction has already been processed.');
-                }
+              const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
+              if (txResult) {
+                console.log('The transaction was successfully created.');
+              } else {
+                console.log('The transaction has already been processed.');
               }
             }
           }

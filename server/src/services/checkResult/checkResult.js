@@ -3,6 +3,12 @@ import { checkCode, disableCode, invalidCode } from '../../helpers/codeUtils.js'
 import { Applicant } from '../../models/Applicant.js';
 import { Transaction } from '../../models/Transaction.js';
 
+/**
+ * // TODO: Document what this is doing and why. And break it down into smaller testable functions.
+ *
+ * @param {*} truliooInstance
+ * @param {*} transactionId
+ */
 export const eventHandling = async (truliooInstance, transactionId) => {
   try {
     console.log(`Handling event: ${transactionId}`);
@@ -95,7 +101,7 @@ export const createTransaction = async (transactionId, transactionRecordId, trul
 
 export const checkResult = async (request, response) => {
   try {
-    // TODO: Check the source of the request
+    // TODO: Check the source of the request. Karolina said "This part is needed to check the source of request if it's received from Trulioo to protect from hackers."
     const checkCodeResult = await checkCode(request);
     if (!checkCodeResult) {
       return invalidCode(response);
