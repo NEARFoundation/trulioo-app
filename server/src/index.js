@@ -1,18 +1,18 @@
-/* eslint-disable import/extensions */
-import 'dotenv/config';
 import fs from 'fs';
 import https from 'https';
 
+import * as dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 
-import { truliooInstance } from './config/trulioo.config.js';
-// eslint-disable-next-line no-unused-vars
-import { createNewCode } from './helpers/codeUtils.js';
-import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse.js';
-import { routes } from './routes/collector.routes.js';
-import { createSchedules } from './services/cronSchedule/cronSchedule.js';
+import { truliooInstance } from './config/trulioo.config';
+import { createNewCode } from './helpers/codeUtils';
+import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse';
+import { routes } from './routes/collector.routes';
+import { createSchedules } from './services/cronSchedule/cronSchedule';
+
+dotenv.config();
 
 await mongoose.connect(process.env.MONGO);
 const app = express();
@@ -41,7 +41,8 @@ if (process.env.USE_SSL === 'true') {
   });
 }
 
-// TODO: create a admin service
-// let expiryDate = new Date();
-// expiryDate.setDate(expiryDate.getDate() + 30);
-// await createNewCode(expiryDate);
+if (process.env.FORCE_CREATE_CODE === 'true') {
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + 30);
+  await createNewCode(expiryDate);
+}
