@@ -36,6 +36,29 @@ const getEmbedIDDocVStep = (steps) => {
 };
 
 /**
+ * // TODO: Document what this is doing and why (including clarifying what the unusual txId2 property is). And refactor / rename this function to be more appropriate.
+ *
+ * @param {*} truliooInstance
+ * @param {*} applicant
+ * @param {*} step
+ */
+const ifStepHasIdsSaveApplicantAndCreateTransaction = async (truliooInstance, applicant, step) => {
+  const { transactionId, transactionRecordId } = step;
+
+  if (transactionId && transactionRecordId) {
+    applicant.txId2 = transactionId; // Before splitting out this function, this line had: error  Possible race condition: `applicant.txId2` might be assigned based on an outdated state of `applicant`  require-atomic-updates
+    await applicant.save();
+
+    const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
+    if (txResult) {
+      console.log('The transaction was successfully created.');
+    } else {
+      console.log('The transaction has already been processed.');
+    }
+  }
+};
+
+/**
  * // TODO: Document what this is doing and why.
  *
  * @param {Express app?} app
@@ -60,19 +83,7 @@ async function updateDocumentVStatuses(app) {
           const step = getEmbedIDDocVStep(steps);
 
           if (step) {
-            const { transactionId, transactionRecordId } = step;
-
-            if (transactionId && transactionRecordId) {
-              applicant.txId2 = transactionId; // This line has: error  Possible race condition: `applicant.txId2` might be assigned based on an outdated state of `applicant`  require-atomic-updates
-              await applicant.save();
-
-              const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
-              if (txResult) {
-                console.log('The transaction was successfully created.');
-              } else {
-                console.log('The transaction has already been processed.');
-              }
-            }
+            await ifStepHasIdsSaveApplicantAndCreateTransaction(truliooInstance, applicant, step);
           }
         }
       } catch (error) {
