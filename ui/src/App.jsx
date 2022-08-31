@@ -23,7 +23,9 @@ const App = () => {
   return (
     <Router>
       <Header />
-      {!isAppError ? (
+      {isAppError ? (
+        <AppError description={description} />
+      ) : (
         <Box
           component="main"
           sx={{
@@ -37,8 +39,6 @@ const App = () => {
           {status === 'country_select' && <CountrySelection setLoading={setLoading} />}
           {steps.includes(status) && <KYCSteps loading={loading} setLoading={setLoading} status={status} />}
         </Box>
-      ) : (
-        <AppError description={description} />
       )}
       <Message />
     </Router>
