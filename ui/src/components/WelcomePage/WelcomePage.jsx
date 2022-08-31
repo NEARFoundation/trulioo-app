@@ -24,7 +24,7 @@ const WelcomePage = () => {
           <Box className={classes.textBlock}>
             <Box className={classes.title}>
               <Box component="h2" sx={{ fontWeight: [700], fontSize: 60, m: 0 }}>
-                Let's verify
+                Let’s verify
               </Box>
               <Box component="h2" sx={{ fontWeight: [700], fontSize: 60, m: 0 }}>
                 your identity
