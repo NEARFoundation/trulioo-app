@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';

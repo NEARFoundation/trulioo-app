@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import { ErrorMessage } from '@hookform/error-message';
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField, Autocomplete, InputAdornment } from '@mui/material';

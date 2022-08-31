@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Button, Typography } from '@mui/material';
 import { useStoreActions } from 'easy-peasy';
 import React, { useEffect, useState } from 'react';
@@ -8,17 +9,12 @@ import Man from '../../general/img/man.png';
 
 import { useStyles } from './CheckVerification.styles';
 
-
 const CheckVerification = ({ status, redirectUrl }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
-  const isInProgress =
-    status === 'identity_verification_in_progress' ||
-    status === 'document_verification_in_progress';
-  const isCompleted =
-    status === 'identity_verification_completed' || status === 'document_verification_completed';
+  const isInProgress = status === 'identity_verification_in_progress' || status === 'document_verification_in_progress';
+  const isCompleted = status === 'identity_verification_completed' || status === 'document_verification_completed';
 
-  const isFailed =
-    status === 'document_verification_failed' || status === 'identity_verification_failed';
+  const isFailed = status === 'document_verification_failed' || status === 'identity_verification_failed';
 
   const classes = useStyles();
   const [counter, setCounter] = useState(0);
@@ -94,13 +90,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
                 </Typography>
               </Box>
               <Box className={classes.formFooter}>
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  variant="contained"
-                  disableElevation
-                  onClick={handleReset}
-                >
+                <Button className={classes.button} color="primary" variant="contained" disableElevation onClick={handleReset}>
                   Try again
                 </Button>
               </Box>
@@ -122,13 +112,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
                 </Typography>
               </Box>
               <Box className={classes.formFooter}>
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  variant="contained"
-                  onClick={handleSubmit}
-                  disableElevation
-                >
+                <Button className={classes.button} color="primary" variant="contained" onClick={handleSubmit} disableElevation>
                   Next
                 </Button>
               </Box>

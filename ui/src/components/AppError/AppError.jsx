@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import { Box, Typography } from '@mui/material';
 
 import ErrorIcon from '../general/img/error.png';
