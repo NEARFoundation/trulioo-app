@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Box, Typography } from '@mui/material';
 import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
@@ -6,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import CountrySelect from '../general/CountrySelect/CountrySelect';
 
 import { useStyles } from './CountrySelection.styles';
-
 
 const CountrySelection = ({ setLoading }) => {
   const onChangeStatus = useStoreActions((actions) => actions.general.onChangeStatus);

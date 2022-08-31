@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { ErrorMessage } from '@hookform/error-message';
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField, Autocomplete, InputAdornment } from '@mui/material';
@@ -79,13 +80,7 @@ const CountrySelect = (props) => {
                   disableUnderline: true,
                 }}
               />
-              {errors && (
-                <ErrorMessage
-                  errors={errors}
-                  name={name}
-                  as={<span className="error-message" style={{ color: 'red' }} />}
-                />
-              )}
+              {errors && <ErrorMessage errors={errors} name={name} as={<span className="error-message" style={{ color: 'red' }} />} />}
             </>
           )}
         />

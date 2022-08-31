@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Box, Container } from '@mui/material';
 import { useStoreActions } from 'easy-peasy';
 import { useEffect, useState } from 'react';
@@ -21,10 +22,7 @@ const TruliooEmbedId = ({ publicKey }) => {
   const scriptLoaded = (publicKey) => {
     new window.TruliooClient({
       publicKey,
-      accessTokenURL: `${window.location.pathname.slice(
-        0,
-        Math.max(0, window.location.pathname.length - 1),
-      )}`,
+      accessTokenURL: `${window.location.pathname.slice(0, Math.max(0, window.location.pathname.length - 1))}`,
       handleResponse,
       onInitialRenderComplete,
     });

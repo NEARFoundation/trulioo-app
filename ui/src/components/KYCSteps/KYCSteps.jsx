@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
@@ -9,7 +10,6 @@ import IdentityVerification from '../IdentityVerification/IdentityVerification';
 
 import CheckVerification from './CheckVerification/CheckVerification';
 import TruliooEmbedId from './TruliooEmbedId/TruliooEmbedId';
-
 
 const stepperSteps = [
   { label: 'Select Country', value: 'country_select' },
@@ -45,9 +45,7 @@ const stepIcons = {
 const KYCSteps = ({ loading, status }) => {
   const onGetAppConfig = useStoreActions((actions) => actions.general.onGetAppConfig);
 
-  const { trulioo_public_key, finish_redirect_url } = useStoreState(
-    (state) => state.general.appConfig,
-  );
+  const { trulioo_public_key, finish_redirect_url } = useStoreState((state) => state.general.appConfig);
   const [step, setStep] = useState(null);
   const isFinished = status === 'document_verification_completed';
   const isCheckProcess =
@@ -106,12 +104,8 @@ const KYCSteps = ({ loading, status }) => {
       {status && (
         <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
           {status === 'identity_verification' && <IdentityVerification loading={loading} />}
-          {isCheckProcess && (
-            <CheckVerification status={status} redirectUrl={finish_redirect_url} />
-          )}
-          {status === 'identity_verification_completed' && trulioo_public_key && (
-            <TruliooEmbedId publicKey={trulioo_public_key} />
-          )}
+          {isCheckProcess && <CheckVerification status={status} redirectUrl={finish_redirect_url} />}
+          {status === 'identity_verification_completed' && trulioo_public_key && <TruliooEmbedId publicKey={trulioo_public_key} />}
         </Box>
       )}
     </Box>

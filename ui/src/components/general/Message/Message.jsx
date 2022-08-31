@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Modal, Box, Typography, Button } from '@mui/material';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
@@ -22,12 +23,7 @@ const Message = () => {
 
   return (
     <div>
-      <Modal
-        open={isError}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={isError} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Something went wrong...
@@ -36,12 +32,7 @@ const Message = () => {
             {description}
           </Typography>
           <Box display="flex" justifyContent="flex-end" sx={{ mt: 2 }}>
-            <Button
-              variant="contained"
-              onClick={handleClose}
-              disableElevation
-              sx={{ borderRadius: '12px' }}
-            >
+            <Button variant="contained" onClick={handleClose} disableElevation sx={{ borderRadius: '12px' }}>
               Got it
             </Button>
           </Box>

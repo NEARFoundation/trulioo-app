@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import Box from '@mui/material/Box';
 import { cloneElement, useEffect, useState } from 'react';
 

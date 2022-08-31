@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -10,7 +11,6 @@ import { useState } from 'react';
 import Loader from '../general/Loader/Loader';
 
 import { useStyles } from './IdentityVerification.styles';
-
 
 export const IdentityVerification = ({ loading }) => {
   const classes = useStyles();
@@ -30,8 +30,7 @@ export const IdentityVerification = ({ loading }) => {
           type: 'string',
           readOnly: true,
           enum: state.countries.map((item) => item.code),
-          enumNames:
-            state.countries.map((item) => item.code) && state.countries.map((item) => item.name),
+          enumNames: state.countries.map((item) => item.code) && state.countries.map((item) => item.name),
         },
       },
     };
@@ -157,10 +156,7 @@ export const IdentityVerification = ({ loading }) => {
           <>
             {formProps ? (
               <Box className={classes.root}>
-                <Typography
-                  component="h2"
-                  sx={{ fontSize: '20px', fontWeight: '700', letterSpacing: 0.15 }}
-                >
+                <Typography component="h2" sx={{ fontSize: '20px', fontWeight: '700', letterSpacing: 0.15 }}>
                   Identity verification
                 </Typography>
                 <Form
@@ -173,13 +169,7 @@ export const IdentityVerification = ({ loading }) => {
                 >
                   <Box className={classes.footer}>
                     <Button onClick={handleBackward}>Back</Button>
-                    <LoadingButton
-                      className={classes.submitBtn}
-                      type="submit"
-                      variant="contained"
-                      disableElevation
-                      loading={submitLoading}
-                    >
+                    <LoadingButton className={classes.submitBtn} type="submit" variant="contained" disableElevation loading={submitLoading}>
                       Next
                     </LoadingButton>
                   </Box>

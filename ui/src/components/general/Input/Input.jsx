@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { ErrorMessage } from '@hookform/error-message';
 import { TextField } from '@mui/material';
 
@@ -23,13 +24,7 @@ const Input = (props) => {
         }}
         {...props.register(props.name)}
       />
-      {props.errors && (
-        <ErrorMessage
-          errors={props.errors}
-          name={props.name}
-          as={<span className="error-message" style={{ color: 'red' }} />}
-        />
-      )}
+      {props.errors && <ErrorMessage errors={props.errors} name={props.name} as={<span className="error-message" style={{ color: 'red' }} />} />}
     </>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import './App.css';
 import Box from '@mui/material/Box';
 import { useStoreState } from 'easy-peasy';
@@ -11,8 +12,6 @@ import KYCSteps from './components/KYCSteps/KYCSteps';
 import WelcomePage from './components/WelcomePage/WelcomePage';
 import Message from './components/general/Message/Message';
 import { steps } from './config/steps';
-
-
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -36,9 +35,7 @@ const App = () => {
         >
           {status === 'new' && <WelcomePage />}
           {status === 'country_select' && <CountrySelection setLoading={setLoading} />}
-          {steps.includes(status) && (
-            <KYCSteps loading={loading} setLoading={setLoading} status={status} />
-          )}
+          {steps.includes(status) && <KYCSteps loading={loading} setLoading={setLoading} status={status} />}
         </Box>
       ) : (
         <AppError description={description} />
