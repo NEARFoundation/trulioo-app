@@ -7,6 +7,7 @@ module.exports = {
   extends: ['near', 'plugin:react/recommended'], // See https://github.com/NEAR-Edu/eslint-config-near/blob/main/package.json
   globals: {
     console: true,
+    document: true,
     process: true,
     window: true,
   },
