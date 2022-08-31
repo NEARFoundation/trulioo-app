@@ -45,8 +45,8 @@ const CountrySelect = (props) => {
           autoHighlight
           getOptionLabel={(option) => option.name}
           isOptionEqualToValue={(option, value) => option.code === value.code}
-          renderOption={(props, option) => (
-            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+          renderOption={(renderOptionProps, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...renderOptionProps}>
               <img
                 loading="lazy"
                 width="20"
