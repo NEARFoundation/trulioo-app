@@ -13,6 +13,41 @@ import Loader from '../general/Loader/Loader';
 
 import { useStyles } from './IdentityVerification.styles';
 
+const mapStateToProps = (state) => {
+  const schema = {
+    type: 'object',
+    properties: {
+      countries: {
+        title: 'Selected country',
+        type: 'string',
+        readOnly: true,
+        enum: state.countries.map((item) => item.code),
+        enumNames: state.countries.map((item) => item.code) && state.countries.map((item) => item.name),
+      },
+    },
+  };
+  if (state.fields && state.fields.fields && state.fields.fields.properties) {
+    schema.properties.TruliooFields = {
+      title: 'Properties',
+      type: 'object',
+      properties: state.fields && state.fields.fields && state.fields.fields.properties,
+    };
+    if (state.fields.additionalFields) {
+      schema.properties = { ...schema.properties, ...state.fields.additionalFields };
+    }
+
+    if (state.fields.consents) {
+      schema.properties.Consents = state.fields.consents;
+    }
+  }
+
+  return {
+    fields: state.fields,
+    schema,
+    formData: state.fields.formData,
+  };
+};
+
 export const IdentityVerification = ({ loading }) => {
   const classes = useStyles();
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -21,41 +56,6 @@ export const IdentityVerification = ({ loading }) => {
   const fields = useStoreState((state) => state.general.getFields);
   const countries = useStoreState((state) => state.general.countries);
   const onSubmitForm = useStoreActions((actions) => actions.general.onSubmitForm);
-
-  const mapStateToProps = (state) => {
-    const schema = {
-      type: 'object',
-      properties: {
-        countries: {
-          title: 'Selected country',
-          type: 'string',
-          readOnly: true,
-          enum: state.countries.map((item) => item.code),
-          enumNames: state.countries.map((item) => item.code) && state.countries.map((item) => item.name),
-        },
-      },
-    };
-    if (state.fields && state.fields.fields && state.fields.fields.properties) {
-      schema.properties.TruliooFields = {
-        title: 'Properties',
-        type: 'object',
-        properties: state.fields && state.fields.fields && state.fields.fields.properties,
-      };
-      if (state.fields.additionalFields) {
-        schema.properties = { ...schema.properties, ...state.fields.additionalFields };
-      }
-
-      if (state.fields.consents) {
-        schema.properties.Consents = state.fields.consents;
-      }
-    }
-
-    return {
-      fields: state.fields,
-      schema,
-      formData: state.fields.formData,
-    };
-  };
 
   let formProps;
   if (fields && countries) {
@@ -95,11 +95,11 @@ export const IdentityVerification = ({ loading }) => {
     );
   };
 
-  const CountryWidget = (props) => {
-    const handleChangeCountry = () => {
-      onChangeStatus({ status: 'country_select' });
-    };
+  const handleChangeCountry = () => {
+    onChangeStatus({ status: 'country_select' });
+  };
 
+  const CountryWidget = (props) => {
     return (
       <TextField
         label={props.label}
