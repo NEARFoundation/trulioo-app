@@ -45,6 +45,7 @@ export const createNewCode = async (expiryDate) => {
     enabled: true,
   });
   await codeEntity.save();
+  console.log('codeEntity.code: ', code); // This logging gets used locally for testing purposes. See README.md for more details.
   return codeEntity;
 };
 
