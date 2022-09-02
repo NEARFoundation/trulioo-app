@@ -1,3 +1,4 @@
+// TODO: Clean up eqeqeq instances below.
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import * as R from 'ramda';
@@ -9,6 +10,7 @@ countries.registerLocale(enLocale);
 
 const countryObject = countries.getNames('en', { select: 'official' });
 
+// eslint-disable-next-line unicorn/prevent-abbreviations
 export const localeCountriesArr = Object.entries(countryObject).map(([key, value]) => {
   return {
     name: value,
@@ -30,6 +32,7 @@ const hasDOBInMap = () => {
 
 const parseFields = (object) => {
   for (const [key] of Object.entries(object)) {
+    // eslint-disable-next-line eqeqeq
     if (key == 0) {
       return;
     }
@@ -47,6 +50,7 @@ const parseFields = (object) => {
 const parseFieldDates = (object) => {
   updateDateRequiredArray(object);
   for (const [key] of Object.entries(object)) {
+    // eslint-disable-next-line eqeqeq
     if (key == 0) {
       return;
     }
@@ -305,13 +309,13 @@ const parseConsents = (consents) => {
 
 const getSubmitBody = (form) => {
   const countryCode = getCountryCode(form);
-  form = parseFormData(form);
+  const parsedForm = parseFormData(form);
 
   return {
     session_id: null,
     country: countryCode,
-    fields: form.TruliooFields,
-    consents: parseConsents(form.Consents),
+    fields: parsedForm.TruliooFields,
+    consents: parseConsents(parsedForm.Consents),
   };
 };
 
