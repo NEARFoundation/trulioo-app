@@ -34,7 +34,7 @@ const parseFields = (object) => {
   for (const [key] of Object.entries(object)) {
     // eslint-disable-next-line eqeqeq
     if (key == 0) {
-      return;
+      return null;
     }
 
     if (key === 'label') {
@@ -42,39 +42,6 @@ const parseFields = (object) => {
     }
 
     parseFields(object[key]);
-  }
-
-  return object;
-};
-
-const parseFieldDates = (object) => {
-  updateDateRequiredArray(object);
-  for (const [key] of Object.entries(object)) {
-    // eslint-disable-next-line eqeqeq
-    if (key == 0) {
-      return;
-    }
-
-    if (key === 'label') {
-      object.title = object[key];
-    }
-
-    if (!dateFields.includes(key)) {
-      parseFieldDates(object[key]);
-    } else {
-      dateFieldsMap.set(key, true);
-    }
-
-    if ((key === DAY_OF_BIRTH || key === MONTH_OF_BIRTH || key === YEAR_OF_BIRTH) && hasDOBInMap()) {
-      delete object[DAY_OF_BIRTH];
-      delete object[MONTH_OF_BIRTH];
-      delete object[YEAR_OF_BIRTH];
-      object.DOB = {
-        title: DOB_TITLE,
-        type: 'string',
-        format: 'date',
-      };
-    }
   }
 
   return object;
@@ -96,9 +63,42 @@ const updateDateRequiredArray = (object) => {
   }
 };
 
+const parseFieldDates = (object) => {
+  updateDateRequiredArray(object);
+  for (const [key] of Object.entries(object)) {
+    // eslint-disable-next-line eqeqeq
+    if (key == 0) {
+      return null;
+    }
+
+    if (key === 'label') {
+      object.title = object[key];
+    }
+
+    if (dateFields.includes(key)) {
+      dateFieldsMap.set(key, true);
+    } else {
+      parseFieldDates(object[key]);
+    }
+
+    if ((key === DAY_OF_BIRTH || key === MONTH_OF_BIRTH || key === YEAR_OF_BIRTH) && hasDOBInMap()) {
+      delete object[DAY_OF_BIRTH];
+      delete object[MONTH_OF_BIRTH];
+      delete object[YEAR_OF_BIRTH];
+      object.DOB = {
+        title: DOB_TITLE,
+        type: 'string',
+        format: 'date',
+      };
+    }
+  }
+
+  return object;
+};
+
 const generateConsentSchema = (consents) => {
   if (!consents || !consents.length) {
-    return;
+    return null;
   }
 
   const schema = {
@@ -120,15 +120,15 @@ const generateConsentSchema = (consents) => {
 };
 
 const updateStateProvince = (object, subdivisions) => {
-  for (const k of Object.keys(object)) {
-    if (k === 'StateProvinceCode' && subdivisions.length > 0) {
-      object[k] = {
-        ...object[k],
+  for (const key of Object.keys(object)) {
+    if (key === 'StateProvinceCode' && subdivisions.length > 0) {
+      object[key] = {
+        ...object[key],
         enum: subdivisions.map((x) => x.Code),
         enumNames: subdivisions.map((x) => x.Name),
       };
-    } else if (object[k] !== null && typeof object[k] === 'object') {
-      updateStateProvince(object[k], subdivisions);
+    } else if (object[key] !== null && typeof object[key] === 'object') {
+      updateStateProvince(object[key], subdivisions);
     }
   }
 };
@@ -205,7 +205,7 @@ const getNationalIdsForGG = (nationalIds, countryCode) => {
       return [{ ...nationalIds, Type: constantNationalIds[countryCode][0].type }];
     }
 
-    return;
+    return null;
   }
 
   return [nationalIds];
@@ -278,6 +278,8 @@ const getCountryCode = (form) => {
       return value;
     }
   }
+
+  return null;
 };
 
 const validateAdditionalFields = (additionalFields) => {
