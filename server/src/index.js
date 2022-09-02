@@ -47,6 +47,6 @@ This block is a temporary hack for local development purposes so that we reduce 
 */
 if (process.env.FORCE_CREATE_CODE === 'true') {
   const expiryDate = new Date();
-  expiryDate.setDate(expiryDate.getDate() + 30);
+  expiryDate.setDate(expiryDate.getDate() + 365);
   await createNewCode(expiryDate);
 }

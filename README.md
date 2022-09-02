@@ -34,16 +34,16 @@ npx localtunnel --port 8080 --subdomain trulioo
 # 2. Copy the URL with https and paste it in server/.env as the value for EXTERNAL_SERVER_URL. E.g. EXTERNAL_SERVER_URL="https://trulioo.loca.lt"
 
 # 3. (Temporary hack to create a KYC URL) Ensure that your server/.env file has FORCE_CREATE_CODE="true" so that a new code will automatically get created upon page load.
+# The hack is at server/src/index.js.
 
 # 4. Run the local dev server via:
 DISABLE_ESLINT_PLUGIN=true yarn dev
 
-# 5. In that same terminal, look for the console log about codeEntity.code to get the GUID (such as 6c7079b6022347ada53f37f489fc773a) and copy it to your clipboard. 
+# 5. In that same terminal, look for the console log about codeEntity.code to get the GUID (such as 6c7079b6022347ada53f37f489fc773a) and copy it to your clipboard. This codeEntity.code will have a long expiration (e.g. 1 year), so you can bookmark the URL that uses it in the step below.
 
 # Or... alternatively you could use MongoDB Compass or any other tool to connect to your database (such as mongodb://localhost:27017/) and browse the `trulioo/codes` table of your Mongo database. Copy the value code of one of the entries of the codes table (such as 6c7079b6022347ada53f37f489fc773a).
 
-# 6. Go to the URL from EXTERNAL_SERVER_URL followed by / and the code (such as https://trulioo.loca.lt/6c7079b6022347ada53f37f489fc773a). 
-# (TODO: We should make the browser tab automatically open to this location without requiring the engineer to manually find, copy, and paste the code.)
+# 6. Go to the URL from EXTERNAL_SERVER_URL followed by / and the code (such as https://trulioo.loca.lt/6c7079b6022347ada53f37f489fc773a).
 ```
 
 ## How to manually test the flow
