@@ -40,8 +40,8 @@ export const identityVerify = async (request, response) => {
     applicant.personInfo = fields.PersonInfo;
     applicant.location = fields.Location;
     applicant.communication = fields.Communication;
-    applicant.txId1 = truliooResponse.data.TransactionID;
-    applicant.verifyBeginTimestamp1 = new Date();
+    applicant.identityVerificationTransactionId = truliooResponse.data.TransactionID;
+    applicant.identityVerificationVerifyBeginTimestamp = new Date();
     await applicant.save();
 
     response.send({ status: applicant.status });

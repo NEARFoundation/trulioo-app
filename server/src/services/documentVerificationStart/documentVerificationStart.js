@@ -20,8 +20,8 @@ export const documentVerificationStart = async (request, response) => {
     }
 
     applicant.status = 'document_verification_in_progress';
-    applicant.feTxId = experienceTransactionId;
-    applicant.verifyBeginTimestamp2 = new Date();
+    applicant.experienceTransactionId = experienceTransactionId;
+    applicant.documentVerificationVerifyBeginTimestamp = new Date();
     await applicant.save();
 
     response.send({ status: applicant.status });

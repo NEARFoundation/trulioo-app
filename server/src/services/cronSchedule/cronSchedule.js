@@ -46,7 +46,7 @@ const ifStepHasIdsSaveApplicantAndCreateTransaction = async (truliooInstance, ap
   const { transactionId, transactionRecordId } = step;
 
   if (transactionId && transactionRecordId) {
-    await Applicant.findOneAndUpdate({ id: applicant._id }, { txId2: transactionId });
+    await Applicant.findOneAndUpdate({ id: applicant._id }, { documentVerificationTransactionId: transactionId });
 
     const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
     if (txResult) {
@@ -68,14 +68,14 @@ async function updateDocumentVStatuses(app) {
     const dateBegin = new Date(Date.now() - maxSearchDept * 60 * 60 * 1_000);
     const dateEnd = new Date(Date.now() - delayBeforeStartCheck * 1_000);
     const applicants = await Applicant.find({
-      verifyBeginTimestamp2: { $lt: dateEnd, $gte: dateBegin },
+      documentVerificationVerifyBeginTimestamp: { $lt: dateEnd, $gte: dateBegin },
       status: { $eq: 'document_verification_in_progress' },
-      txId2: { $eq: null },
+      documentVerificationTransactionId: { $eq: null },
     });
 
     applicants.map(async (applicant) => {
       try {
-        const txId = applicant.feTxId;
+        const txId = applicant.experienceTransactionId;
         const { status, steps } = await fetchTransaction(txId);
 
         if (status === 'complete' && steps) {
