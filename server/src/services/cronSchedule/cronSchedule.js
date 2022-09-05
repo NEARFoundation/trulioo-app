@@ -42,7 +42,8 @@ const getEmbedIDDocVStep = (steps) => {
  * @param {*} applicant
  * @param {*} step
  */
-const ifStepHasIdsSaveApplicantAndCreateTransaction = async (truliooInstance, applicant, step) => {
+
+const createDocumentVerificationTransactionAndUpdateId = async (truliooInstance, applicant, step) => {
   const { transactionId, transactionRecordId } = step;
 
   if (transactionId && transactionRecordId) {
@@ -82,7 +83,7 @@ async function updateDocumentVStatuses(app) {
           const step = getEmbedIDDocVStep(steps);
 
           if (step) {
-            await ifStepHasIdsSaveApplicantAndCreateTransaction(truliooInstance, applicant, step);
+            await createDocumentVerificationTransactionAndUpdateId(truliooInstance, applicant, step);
           }
         }
       } catch (error) {
