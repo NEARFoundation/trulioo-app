@@ -42,8 +42,11 @@ if (process.env.USE_SSL === 'true') {
   });
 }
 
+/*
+This block is a temporary hack for local development purposes so that we reduce the number of steps required for manually testing the flow. See README.md for more details.
+*/
 if (process.env.FORCE_CREATE_CODE === 'true') {
   const expiryDate = new Date();
-  expiryDate.setDate(expiryDate.getDate() + 30);
+  expiryDate.setDate(expiryDate.getDate() + 365);
   await createNewCode(expiryDate);
 }

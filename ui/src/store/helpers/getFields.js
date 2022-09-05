@@ -1,3 +1,4 @@
+// TODO: Clean up eqeqeq instances below.
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import * as R from 'ramda';
@@ -31,7 +32,8 @@ const hasDOBInMap = () => {
 
 const parseFields = (object) => {
   for (const [key] of Object.entries(object)) {
-    if (key === 0) {
+    // eslint-disable-next-line eqeqeq
+    if (key == 0) {
       return null;
     }
 
@@ -64,7 +66,8 @@ const updateDateRequiredArray = (object) => {
 const parseFieldDates = (object) => {
   updateDateRequiredArray(object);
   for (const [key] of Object.entries(object)) {
-    if (key === 0) {
+    // eslint-disable-next-line eqeqeq
+    if (key == 0) {
       return null;
     }
 
