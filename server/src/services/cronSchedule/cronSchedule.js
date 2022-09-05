@@ -23,7 +23,7 @@ const fetchTransaction = async (txId) => {
 };
 
 /**
- * // TODO: Document what this is doing and why.
+ * Check if application is eligible for document verification
  *
  * @param {Array} steps
  * @returns {object}
@@ -36,7 +36,7 @@ const getEmbedIDDocVStep = (steps) => {
 };
 
 /**
- * // TODO: Document what this is doing and why (including clarifying what the unusual txId2 property is). And refactor / rename this function to be more appropriate.
+ * Create a document verification transaction and update the transaction ID for the applicant.
  *
  * @param {*} truliooInstance
  * @param {*} applicant
@@ -46,8 +46,7 @@ const ifStepHasIdsSaveApplicantAndCreateTransaction = async (truliooInstance, ap
   const { transactionId, transactionRecordId } = step;
 
   if (transactionId && transactionRecordId) {
-    applicant.txId2 = transactionId; // Before splitting out this function, this line had: error  Possible race condition: `applicant.txId2` might be assigned based on an outdated state of `applicant`  require-atomic-updates
-    await applicant.save();
+    await Applicant.findOneAndUpdate({ id: applicant._id }, { txId2: transactionId });
 
     const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
     if (txResult) {
@@ -59,7 +58,7 @@ const ifStepHasIdsSaveApplicantAndCreateTransaction = async (truliooInstance, ap
 };
 
 /**
- * // TODO: Document what this is doing and why.
+ * Update status of document verification
  *
  * @param {Express app?} app
  */

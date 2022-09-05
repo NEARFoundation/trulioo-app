@@ -4,7 +4,8 @@ import { Applicant } from '../../models/Applicant.js';
 import { Transaction } from '../../models/Transaction.js';
 
 /**
- * // TODO: Document what this is doing and why. And break it down into smaller testable functions.
+ * Parsing the response of the document verification transaction.
+ * See: https://gateway-admin.trulioo.com/documentation/embedid#5.-understanding-the-verification-response
  *
  * @param {*} truliooInstance
  * @param {*} transactionId
