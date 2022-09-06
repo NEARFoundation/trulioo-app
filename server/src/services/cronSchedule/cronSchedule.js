@@ -23,7 +23,8 @@ const fetchTransaction = async (txId) => {
 };
 
 /**
- * Check if application is eligible for document verification
+ * TODO: Document how steps work and why this function is necessary.
+ * See: https://gateway-admin.trulioo.com/documentation/embedid#5.-understanding-the-verification-response
  *
  * @param {Array} steps
  * @returns {object}
@@ -59,7 +60,8 @@ const createDocumentVerificationTransactionAndUpdateId = async (truliooInstance,
 };
 
 /**
- * Update status of document verification
+ * Processing of applicants for whom a document check has been initiated to find data on completed trulioo transactions.
+ * TODO: Clarify what this means.
  *
  * @param {Express app?} app
  */

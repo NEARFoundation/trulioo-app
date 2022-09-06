@@ -4,8 +4,9 @@ import { Applicant } from '../../models/Applicant.js';
 import { Transaction } from '../../models/Transaction.js';
 
 /**
- * Parsing the response of the document verification transaction.
- * See: https://gateway-admin.trulioo.com/documentation/embedid#5.-understanding-the-verification-response
+ * Searching for Trulioo transactions by TransactionRecordID.
+ * See: https://gateway-admin.trulioo.com/documentation/docs#operation/GetTransactionRecord.
+ * Updating the status of the applicant for whom identity or document verification has been initiated.
  *
  * @param {*} truliooInstance
  * @param {*} transactionId
@@ -21,6 +22,7 @@ export const eventHandling = async (truliooInstance, transactionId) => {
       let applicant = await Applicant.findOne({ identityVerificationTransactionId: transactionId });
 
       if (applicant) {
+        // TODO: See if we can refactor to reduce duplication with some code blocks below.
         if (applicant.status === 'identity_verification_in_progress') {
           const response1 = await truliooInstance.get(`/verifications/v1/transactionrecord/${transactionRecordId}`);
 
