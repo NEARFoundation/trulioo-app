@@ -41,11 +41,7 @@ DISABLE_ESLINT_PLUGIN=true yarn dev
 
 # Note: you will always need to update EXTERNAL_SERVER_URL in server/.env (such as if localtunnel makes you change your subdomain) and then restart the `DISABLE_ESLINT_PLUGIN=true yarn dev` command.
 
-# 5. In that same terminal, look for the console log about codeEntity.code to get the GUID (such as 6c7079b6022347ada53f37f489fc773a) and copy it to your clipboard. This codeEntity.code will have a long expiration (e.g. 1 year), so you can bookmark the URL that uses it in the step below.
-
-# Or... alternatively you could use MongoDB Compass or any other tool to connect to your database (such as mongodb://localhost:27017/) and browse the `trulioo/codes` table of your Mongo database. Copy the value code of one of the entries of the codes table (such as 6c7079b6022347ada53f37f489fc773a).
-
-# 6. Go to the URL from EXTERNAL_SERVER_URL followed by / and the code (such as https://trulioo.loca.lt/6c7079b6022347ada53f37f489fc773a).
+# 5. In that same terminal, look for the console log that says "Please visit", and click its link (such as https://trulioo.loca.lt/6c7079b6022347ada53f37f489fc773a).
 ```
 
 ## How to manually test the flow

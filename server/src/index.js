@@ -7,7 +7,7 @@ import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 
-import { truliooInstance } from './config/trulioo.config.js';
+import { truliooInstance, EXTERNAL_SERVER_URL } from './config/trulioo.config.js';
 import { createNewCode } from './helpers/codeUtils.js';
 import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse.js';
 import { routes } from './routes/collector.routes.js';
@@ -48,5 +48,6 @@ This block is a temporary hack for local development purposes so that we reduce 
 if (process.env.FORCE_CREATE_CODE === 'true') {
   const expiryDate = new Date();
   expiryDate.setDate(expiryDate.getDate() + 365);
-  await createNewCode(expiryDate);
+  const codeEntity = await createNewCode(expiryDate);
+  console.log(`Please visit ${EXTERNAL_SERVER_URL}/${codeEntity.code}`); // This logging gets used locally for testing purposes. See README.md for more details.
 }
