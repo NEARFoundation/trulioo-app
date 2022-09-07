@@ -48,7 +48,7 @@ const createDocumentVerificationTransactionAndUpdateId = async (truliooInstance,
   const { transactionId, transactionRecordId } = step;
 
   if (transactionId && transactionRecordId) {
-    await Applicant.findOneAndUpdate({ id: applicant._id }, { documentVerificationTransactionId: transactionId });
+    await Applicant.findOneAndUpdate({ _id: applicant._id }, { documentVerificationTransactionId: transactionId });
 
     const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
     if (txResult) {
