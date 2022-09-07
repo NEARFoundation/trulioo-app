@@ -50,6 +50,9 @@ DISABLE_ESLINT_PLUGIN=true yarn dev
 
 You can use fake data (as long as it passes validation) when filling out the forms to test.
 
-1. Click "Get Started". Choose your country.
+1. Click "Get Started". 
+2. Choose "France" as your country.
+3. Fill out the form with first name "Han", last name "Solo", and DOB 01-01-2000. You can use any other data for the other required fields and leave optional fields blank.
 
-TODO: Document the steps here for testing.
+
+TODO: Document the other steps here for testing.

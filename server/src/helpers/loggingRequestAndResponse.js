@@ -12,9 +12,11 @@ export const loggingRequestAndResponse = (request, response, next) => {
 
     response.send = function (chunk, ...args) {
       if (typeof chunk === 'string') {
-        console.log(`${new Date().toISOString()} Url: ${request.path}`);
+        console.log(`${new Date().toISOString()}`);
+        console.log(request.path);
         console.log(`Request: ${request.rawBody}`);
         console.log(`Response: ${chunk}`);
+        console.log(`__________________`);
       }
 
       responseSend.apply(response, [chunk, ...args]);
