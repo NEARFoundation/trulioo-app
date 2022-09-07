@@ -39,6 +39,8 @@ npx localtunnel --port 8080 --subdomain trulioo
 # 4. Run the local dev server via:
 DISABLE_ESLINT_PLUGIN=true yarn dev
 
+# Note: you will always need to update EXTERNAL_SERVER_URL in server/.env (such as if localtunnel makes you change your subdomain) and then restart the `DISABLE_ESLINT_PLUGIN=true yarn dev` command.
+
 # 5. In that same terminal, look for the console log about codeEntity.code to get the GUID (such as 6c7079b6022347ada53f37f489fc773a) and copy it to your clipboard. This codeEntity.code will have a long expiration (e.g. 1 year), so you can bookmark the URL that uses it in the step below.
 
 # Or... alternatively you could use MongoDB Compass or any other tool to connect to your database (such as mongodb://localhost:27017/) and browse the `trulioo/codes` table of your Mongo database. Copy the value code of one of the entries of the codes table (such as 6c7079b6022347ada53f37f489fc773a).
@@ -52,7 +54,7 @@ You can use fake data (as long as it passes validation) when filling out the for
 
 1. Click "Get Started". 
 2. Choose "France" as your country.
-3. Fill out the form with first name "Han", last name "Solo", and DOB 01-01-2000. You can use any other data for the other required fields and leave optional fields blank.
+3. Fill out the form with first name "San", last name "Holo", and DOB 01-01-2000. (Yes, it's "Han Solo" misspelled, and yes you're providing a date of birth even though that field isn't marked as required.) You can use any other data for the other required fields and leave optional fields blank.
 
 
 TODO: Document the other steps here for testing.
