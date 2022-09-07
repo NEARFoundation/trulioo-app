@@ -1,3 +1,4 @@
+// TODO Enable consistent-return rule and fix the function.
 import { thunk } from 'easy-peasy';
 
 import { api } from '../../config/api';
@@ -10,6 +11,7 @@ const onError = async ({ actions, error }) => {
   await onGetSession();
 };
 
+// eslint-disable-next-line consistent-return
 export const onSubmitForm = thunk(async (_, { formData, setSubmitLoading }, { getStoreState, getStoreActions }) => {
   const state = getStoreState();
   const actions = getStoreActions();
@@ -23,9 +25,14 @@ export const onSubmitForm = thunk(async (_, { formData, setSubmitLoading }, { ge
     // eslint-disable-next-line canonical/id-match
     body.session_id = state.general.session[pathname]?.session_id || '';
     const { status, error } = await api.requestSubmitForm(body);
-    if (error) return await onError({ actions, error });
+    if (error) {
+      console.error(`Error`, error);
+      return await onError({ actions, error });
+    }
+
     onChangeStatus({ status });
   } catch (error) {
+    console.error(`Error`, error);
     setError({ isAppError: true, description: `${error}` });
   } finally {
     setSubmitLoading(false);

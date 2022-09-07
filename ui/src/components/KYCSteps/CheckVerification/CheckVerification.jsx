@@ -9,7 +9,7 @@ import Man from '../../general/img/man.png';
 
 import { useStyles } from './CheckVerification.styles';
 
-const DELAY_MILLISECONDS = 30_000;
+const POLLING_INTERVAL_MILLISECONDS = 3_000; // TODO: Change back to 30_000 as default but make this configurable per env.
 
 const CheckVerification = ({ status, redirectUrl }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
@@ -36,10 +36,11 @@ const CheckVerification = ({ status, redirectUrl }) => {
   useEffect(() => {
     let timer;
     if (counter) {
+      console.log({ counter });
       timer = window.setTimeout(() => {
         setCounter(counter + 1);
         onGetSession();
-      }, DELAY_MILLISECONDS);
+      }, POLLING_INTERVAL_MILLISECONDS);
     }
 
     return () => {
@@ -70,7 +71,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
               </Box>
               <Box className={classes.formHeader}>
                 <Typography className={classes.formTitle} variant="h6">
-                  Thank you! We are currently checking your data
+                  Thank you! We are currently checking your data.
                 </Typography>
                 <Typography variant="body2" className={classes.formDescription}>
                   This may take a few seconds...
@@ -87,7 +88,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
               <img className={classes.img} src={Man} alt="Rejected" />
               <Box className={classes.formHeader}>
                 <Typography className={classes.formTitle} variant="h6">
-                  Your account has been rejected
+                  Your account has been rejected.
                 </Typography>
                 <Typography variant="body2" className={classes.formDescription}>
                   Sorry, but your data is invalid.

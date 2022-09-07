@@ -21,6 +21,7 @@ const TruliooEmbedId = ({ publicKey }) => {
   };
 
   const scriptLoaded = (scriptLoadedPublicKey) => {
+    // eslint-disable-next-line no-new
     new window.TruliooClient({
       publicKey: scriptLoadedPublicKey,
       accessTokenURL: `${window.location.pathname.slice(0, Math.max(0, window.location.pathname.length - 1))}`,

@@ -37,9 +37,9 @@ npx localtunnel --port 8080 --subdomain trulioo
 # The hack is at server/src/index.js.
 
 # 4. Run the local dev server via:
-DISABLE_ESLINT_PLUGIN=true yarn dev
+yarn dev
 
-# Note: you will always need to update EXTERNAL_SERVER_URL in server/.env (such as if localtunnel makes you change your subdomain) and then restart the `DISABLE_ESLINT_PLUGIN=true yarn dev` command.
+# Note: you will always need to update EXTERNAL_SERVER_URL in server/.env (such as if localtunnel makes you change your subdomain) and then restart the `yarn dev` command.
 
 # 5. In that same terminal, look for the console log that says "Please visit", and click its link (such as https://trulioo.loca.lt/6c7079b6022347ada53f37f489fc773a).
 ```
@@ -54,3 +54,7 @@ You can use fake data (as long as it passes validation) when filling out the for
 
 
 TODO: Document the other steps here for testing.
+
+## TODO
+
+Throughout the repo, find places where Eslint was disabled. Re-enable Eslint, and fix the issues.

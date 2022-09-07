@@ -2,8 +2,8 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { MagicSpinner } from 'react-spinners-kit';
 
+// eslint-disable-next-line import/extensions
 import { useStyles } from './Loader.styles';
-
 
 const Loader = () => {
   const classes = useStyles();
