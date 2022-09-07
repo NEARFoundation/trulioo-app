@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useStoreActions } from 'easy-peasy';
+/* eslint-disable react/prop-types */
 import { Box, Button, Typography } from '@mui/material';
-import Man from '../../general/img/man.png';
-import Hand from '../../general/img/hand.png';
-import { useStyles } from './CheckVerification.styles';
+import { useStoreActions } from 'easy-peasy';
+import React, { useEffect, useState } from 'react';
 import { MagicSpinner } from 'react-spinners-kit';
+
+import Hand from '../../general/img/hand.png';
+import Man from '../../general/img/man.png';
+
+import { useStyles } from './CheckVerification.styles';
+
+const DELAY_MILLISECONDS = 30_000;
 
 const CheckVerification = ({ status, redirectUrl }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
-  const isInProgress =
-    status === 'identity_verification_in_progress' ||
-    status === 'document_verification_in_progress';
-  const isCompleted =
-    status === 'identity_verification_completed' || status === 'document_verification_completed';
+  const isInProgress = status === 'identity_verification_in_progress' || status === 'document_verification_in_progress';
+  const isCompleted = status === 'identity_verification_completed' || status === 'document_verification_completed';
 
-  const isFailed =
-    status === 'document_verification_failed' || status === 'identity_verification_failed';
+  const isFailed = status === 'document_verification_failed' || status === 'identity_verification_failed';
 
   const classes = useStyles();
   const [counter, setCounter] = useState(0);
@@ -23,6 +24,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
   const startCounter = () => {
     setCounter(counter + 1);
   };
+
   const stopCounter = () => {
     setCounter(0);
   };
@@ -34,17 +36,21 @@ const CheckVerification = ({ status, redirectUrl }) => {
   useEffect(() => {
     let timer;
     if (counter) {
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         setCounter(counter + 1);
         onGetSession();
-      }, 30000);
+      }, DELAY_MILLISECONDS);
     }
-    return () => clearTimeout(timer);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
   }, [counter]);
 
   if (!counter && isInProgress) {
     startCounter();
   }
+
   if (counter && isCompleted) {
     stopCounter();
   }
@@ -88,13 +94,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
                 </Typography>
               </Box>
               <Box className={classes.formFooter}>
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  variant="contained"
-                  disableElevation
-                  onClick={handleReset}
-                >
+                <Button className={classes.button} color="primary" variant="contained" disableElevation onClick={handleReset}>
                   Try again
                 </Button>
               </Box>
@@ -116,13 +116,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
                 </Typography>
               </Box>
               <Box className={classes.formFooter}>
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  variant="contained"
-                  onClick={handleSubmit}
-                  disableElevation
-                >
+                <Button className={classes.button} color="primary" variant="contained" onClick={handleSubmit} disableElevation>
                   Next
                 </Button>
               </Box>

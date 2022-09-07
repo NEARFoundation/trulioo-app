@@ -1,5 +1,6 @@
-import React from 'react';
 import { AppBar, Toolbar, Box } from '@mui/material';
+import React from 'react';
+
 import Logo from '../../images/logo.jpg';
 
 const Header = () => {

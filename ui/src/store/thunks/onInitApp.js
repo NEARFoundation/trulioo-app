@@ -7,7 +7,7 @@ export const onInitApp = thunk(async (actions, payload) => {
     clearError();
     await onGetSession();
     setInit(true);
-  } catch (e) {
-    console.log(`Error onInit App:${e}`);
+  } catch (error) {
+    console.log(`Error onInit App:${error}`);
   }
 });

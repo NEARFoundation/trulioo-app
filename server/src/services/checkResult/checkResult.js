@@ -1,120 +1,73 @@
-import { Applicant } from "../../models/Applicant.js";
-import { Transaction } from "../../models/Transaction.js";
-import { checkCode, disableCode, invalidCode } from "../../helpers/codeUtils.js";
+/* eslint-disable import/extensions */
+import { checkCode, disableCode, invalidCode } from '../../helpers/codeUtils.js';
+import { Applicant } from '../../models/Applicant.js';
+import { Transaction } from '../../models/Transaction.js';
 
-export const checkResult = async (req, res) => {
-  try {
-    // TODO: Check the source of the request
-    const checkResult = await checkCode(req);
-    if (!checkResult) {
-      return invalidCode(res);
-    }
-
-    const truliooInstance = req.app.get('trulioo');
-    const transactionId = req.body["TransactionId"];
-    const transactionRecordId = req.body["TransactionRecordId"];
-
-    if (transactionId && transactionRecordId && req.body["Status"] === "Completed") {
-      const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
-      if (!txResult) {
-        console.log('The transaction has already been processed.');
-        return res.send({});
-      }
-    } else {
-      console.log('This event is being ignored.');
-    }
-
-    res.send({});
-
-  } catch (e) {
-    console.log('Webhook error:');
-    console.log(e);
-    res
-      .status(500)
-      .send({ error: 'Internal server error. Please try again later.' });
-  }
-}
-
-export const createTransaction = async (transactionId, transactionRecordId, truliooInstance) => {
-  const transaction = await Transaction.findOne({ transactionId: transactionId });
-  if (transaction) {
-    return false;
-  }
-
-  await Transaction.create({
-    transactionId: transactionId,
-    transactionRecordId: transactionRecordId,
-    transactionTimestamp: new Date(),
-    processed: false
-  });
-
-  eventHandling(truliooInstance, transactionId).then();
-  return true;
-}
-
+/**
+ * Searching for Trulioo transactions by TransactionRecordID.
+ * See: https://gateway-admin.trulioo.com/documentation/docs#operation/GetTransactionRecord.
+ * Updating the status of the applicant for whom identity or document verification has been initiated.
+ *
+ * @param {*} truliooInstance
+ * @param {*} transactionId
+ */
 export const eventHandling = async (truliooInstance, transactionId) => {
   try {
     console.log(`Handling event: ${transactionId}`);
-    const transaction = await Transaction.findOne({ transactionId: transactionId });
+    const transaction = await Transaction.findOne({ transactionId });
 
     if (transaction) {
-      const transactionRecordId = transaction["transactionRecordId"];
+      const transactionRecordId = transaction.transactionRecordId;
 
-      let applicant = await Applicant.findOne({txId1: transactionId});
+      let applicant = await Applicant.findOne({ identityVerificationTransactionId: transactionId });
 
       if (applicant) {
-        if (applicant.status === "identity_verification_in_progress") {
+        // TODO: See if we can refactor to reduce duplication with some code blocks below.
+        if (applicant.status === 'identity_verification_in_progress') {
           const response1 = await truliooInstance.get(`/verifications/v1/transactionrecord/${transactionRecordId}`);
 
-          if (response1.data && response1.data["Record"]) {
-            const status = response1.data["Record"]["RecordStatus"];
-            applicant.txRecordId1 = transactionRecordId;
-            applicant.result1 = response1.data;
-            applicant.verifyEndTimestamp1 = new Date();
-            applicant.status = status === "match" ?
-              "identity_verification_completed" :
-              "identity_verification_failed";
+          if (response1.data && response1.data.Record) {
+            const status = response1.data.Record.RecordStatus;
+            applicant.identityVerificationTransactionRecordId = transactionRecordId;
+            applicant.identityVerificationResult = response1.data;
+            applicant.identityVerificationVerifyEndTimestamp = new Date();
+            applicant.status = status === 'match' ? 'identity_verification_completed' : 'identity_verification_failed';
             await applicant.save();
 
             transaction.processed = true;
             await transaction.save();
 
             console.log(`The applicant was granted the status: '${applicant.status}'`);
-
           } else {
-            console.log("Invalid query response format.");
+            console.log('Invalid query response format.');
           }
         } else {
           console.log("Applicant must have 'identity_verification_in_progress' status.");
         }
       } else {
-        applicant = await Applicant.findOne({txId2: transactionId});
+        applicant = await Applicant.findOne({ documentVerificationTransactionId: transactionId });
         if (applicant) {
-
-          if (applicant.status === "document_verification_in_progress") {
+          if (applicant.status === 'document_verification_in_progress') {
             const response2 = await truliooInstance.get(`/verifications/v1/transactionrecord/${transactionRecordId}`);
 
-            if (response2.data && response2.data["Record"]) {
-              const status = response2.data["Record"]["RecordStatus"];
-              applicant.txRecordId2 = transactionRecordId;
-              applicant.result2 = response2.data;
-              applicant.verifyEndTimestamp2 = new Date();
-              applicant.status = status === "match" ?
-                "document_verification_completed" :
-                "document_verification_failed";
+            if (response2.data && response2.data.Record) {
+              const status = response2.data.Record.RecordStatus;
+              applicant.documentVerificationTransactionRecordId = transactionRecordId;
+              applicant.documentVerificationResult = response2.data;
+              applicant.documentVerificationVerifyEndTimestamp = new Date();
+              applicant.status = status === 'match' ? 'document_verification_completed' : 'document_verification_failed';
               await applicant.save();
 
               transaction.processed = true;
               await transaction.save();
 
-              if (applicant.status === "document_verification_completed") {
+              if (applicant.status === 'document_verification_completed') {
                 await disableCode(applicant.code);
               }
 
               console.log(`The applicant was granted the status: '${applicant.status}'`);
-
             } else {
-              console.log("Invalid query response format.");
+              console.log('Invalid query response format.');
             }
           } else {
             console.log("Applicant must have 'document_verification_in_progress' status.");
@@ -124,10 +77,57 @@ export const eventHandling = async (truliooInstance, transactionId) => {
         }
       }
     } else {
-      console.log('Transaction not found.')
+      console.log('Transaction not found.');
     }
-  } catch (e) {
+  } catch (error) {
     console.log('Unknown error:');
-    console.log(e);
+    console.log(error);
   }
-}
+};
+
+export const createTransaction = async (transactionId, transactionRecordId, truliooInstance) => {
+  const transaction = await Transaction.findOne({ transactionId });
+  if (transaction) {
+    return false;
+  }
+
+  await Transaction.create({
+    transactionId,
+    transactionRecordId,
+    transactionTimestamp: new Date(),
+    processed: false,
+  });
+
+  eventHandling(truliooInstance, transactionId).then();
+  return true;
+};
+
+export const checkResult = async (request, response) => {
+  try {
+    // TODO: Check the source of the request. Karolina said "This part is needed to check the source of request if it's received from Trulioo to protect from hackers."
+    const checkCodeResult = await checkCode(request);
+    if (!checkCodeResult) {
+      return invalidCode(response);
+    }
+
+    const truliooInstance = request.app.get('trulioo');
+    const transactionId = request.body.TransactionId;
+    const transactionRecordId = request.body.TransactionRecordId;
+
+    if (transactionId && transactionRecordId && request.body.Status === 'Completed') {
+      const txResult = await createTransaction(transactionId, transactionRecordId, truliooInstance);
+      if (!txResult) {
+        console.log('The transaction has already been processed.');
+        return response.send({});
+      }
+    } else {
+      console.log('This event is being ignored.');
+    }
+
+    response.send({});
+  } catch (error) {
+    console.log('Webhook error:');
+    console.log(error);
+    response.status(500).send({ error: 'Internal server error. Please try again later.' });
+  }
+};

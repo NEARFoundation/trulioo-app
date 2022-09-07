@@ -1,29 +1,29 @@
-import { useEffect, useState } from 'react';
-import Loader from '../../general/Loader/Loader';
-import { useStoreActions } from 'easy-peasy';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import { Box, Container } from '@mui/material';
+import { useStoreActions } from 'easy-peasy';
+import { useEffect, useState } from 'react';
+
+import Loader from '../../general/Loader/Loader';
 
 const TruliooEmbedId = ({ publicKey }) => {
   const [loading, setLoading] = useState(true);
   const { onDocVerify } = useStoreActions((actions) => actions.general);
 
-  const handleResponse = (e) => {
-    onDocVerify(e);
+  const handleResponse = (event) => {
+    onDocVerify(event);
   };
 
-  const onInitialRenderComplete = (e) => {
-    if (e.status === 200) {
+  const onInitialRenderComplete = (event) => {
+    if (event.status === 200) {
       setLoading(false);
     }
   };
 
-  const scriptLoaded = (publicKey) => {
+  const scriptLoaded = (scriptLoadedPublicKey) => {
     new window.TruliooClient({
-      publicKey,
-      accessTokenURL: `${window.location.pathname.substring(
-        0,
-        window.location.pathname.length - 1,
-      )}`,
+      publicKey: scriptLoadedPublicKey,
+      accessTokenURL: `${window.location.pathname.slice(0, Math.max(0, window.location.pathname.length - 1))}`,
       handleResponse,
       onInitialRenderComplete,
     });
@@ -37,6 +37,7 @@ const TruliooEmbedId = ({ publicKey }) => {
       script.onload = () => scriptLoaded(publicKey);
       document.body.appendChild(script);
     }
+
     return () => {
       document.body.removeChild(script);
     };

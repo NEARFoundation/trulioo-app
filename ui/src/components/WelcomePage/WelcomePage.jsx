@@ -1,7 +1,11 @@
-import FaceId from '../../images/face_id.jpg';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable id-length */
 import { Box, Button } from '@mui/material';
-import { useStyles } from './WelcomePage.styles';
 import { useStoreActions } from 'easy-peasy';
+
+import FaceId from '../../images/face_id.jpg';
+
+import { useStyles } from './WelcomePage.styles';
 
 const WelcomePage = () => {
   const classes = useStyles();
@@ -20,7 +24,7 @@ const WelcomePage = () => {
           <Box className={classes.textBlock}>
             <Box className={classes.title}>
               <Box component="h2" sx={{ fontWeight: [700], fontSize: 60, m: 0 }}>
-                Let's verify
+                Let’s verify
               </Box>
               <Box component="h2" sx={{ fontWeight: [700], fontSize: 60, m: 0 }}>
                 your identity

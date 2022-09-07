@@ -1,6 +1,9 @@
-import { cloneElement, useEffect, useState } from 'react';
-import Loader from '../../components/general/Loader/Loader';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import Box from '@mui/material/Box';
+import { cloneElement, useEffect, useState } from 'react';
+
+import Loader from '../../components/general/Loader/Loader';
 
 export const Initializer = ({ store, children }) => {
   const [isInit, setInit] = useState(false);

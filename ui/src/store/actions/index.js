@@ -1,12 +1,12 @@
-import { setCountry } from './setCountry';
-import { setFieldsSchema } from './setFieldsSchema';
-import { setSession } from './setSession';
-import { setCountries } from './setCountries';
-import { resetState } from './resetState';
-import { setError } from './setError';
 import { clearError } from './clearError';
+import { resetState } from './resetState';
+import { setCountries } from './setCountries';
+import { setCountry } from './setCountry';
+import { setError } from './setError';
+import { setFieldsSchema } from './setFieldsSchema';
 import { setPublicKey } from './setPublicKey';
 import { setRedirectUrl } from './setRedirectUrl';
+import { setSession } from './setSession';
 
 export const actions = {
   setPublicKey,

@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Trulioo KYC module",
   "scripts": {
-    "start-dev": "(yarn build:ui) && (cd server && yarn start-dev)",
+    "dev": "(yarn build:ui) && (cd server && yarn dev)",
     "build:ui": "./scripts/build_ui.sh",
-    "postinstall": "(cd ui && yarn install) && (cd server && yarn install)"
+    "postinstall": "(cd ui && yarn install) && (cd server && yarn install)",
+    "lint": "cd server && yarn lint && cd ../ui && yarn lint"
   }
 }

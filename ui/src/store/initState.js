@@ -1,5 +1,6 @@
 import { persist } from 'easy-peasy';
 
+// eslint-disable-next-line canonical/id-match
 const _initState = {
   isLoading: false,
   error: {

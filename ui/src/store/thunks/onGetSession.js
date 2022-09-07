@@ -1,4 +1,5 @@
 import { thunk } from 'easy-peasy';
+
 import { api } from '../../config/api';
 
 export const onGetSession = thunk(async (_, payload, { getStoreActions, getStoreState }) => {
@@ -8,8 +9,9 @@ export const onGetSession = thunk(async (_, payload, { getStoreActions, getStore
   const setError = actions.general.setError;
   try {
     const pathname = window.location.pathname;
+    // eslint-disable-next-line canonical/id-match
     const session_id = state.general.session[pathname]?.session_id || '';
-    let session = await api.requestSession({ session_id, ...payload });
+    const session = await api.requestSession({ session_id, ...payload });
     if (session.error) return setError({ isAppError: true, description: session.error });
     setSession(session);
   } catch (error) {

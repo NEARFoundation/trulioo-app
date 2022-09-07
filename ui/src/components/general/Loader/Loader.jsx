@@ -1,7 +1,9 @@
 import { Box, Typography } from '@mui/material';
-import { useStyles } from './Loader.styles';
-import { MagicSpinner } from 'react-spinners-kit';
 import React from 'react';
+import { MagicSpinner } from 'react-spinners-kit';
+
+import { useStyles } from './Loader.styles';
+
 
 const Loader = () => {
   const classes = useStyles();

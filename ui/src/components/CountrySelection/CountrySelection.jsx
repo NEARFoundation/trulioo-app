@@ -1,9 +1,13 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import { Box, Typography } from '@mui/material';
-import CountrySelect from '../general/CountrySelect/CountrySelect';
-import { useForm } from 'react-hook-form';
-import { useStyles } from './CountrySelection.styles';
 import { useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import CountrySelect from '../general/CountrySelect/CountrySelect';
+
+import { useStyles } from './CountrySelection.styles';
 
 const CountrySelection = ({ setLoading }) => {
   const onChangeStatus = useStoreActions((actions) => actions.general.onChangeStatus);

@@ -1,18 +1,18 @@
-import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
 
-export const testAuthentication = async (req, res) => {
+export const testAuthentication = async (request, response) => {
   try {
-    const checkResult = await checkCode(req);
+    const checkResult = await checkCode(request);
     if (!checkResult) {
-      return invalidCode(res);
+      return invalidCode(response);
     }
 
-    const truliooInstance = req.app.get('trulioo');
+    const truliooInstance = request.app.get('trulioo');
     await truliooInstance.get(`/connection/v1/testauthentication`);
-    res.send({result: true});
-
-  } catch (e) {
-    console.log(e);
-    res.send({result: false});
+    response.send({ result: true });
+  } catch (error) {
+    console.log(error);
+    response.send({ result: false });
   }
-}
+};

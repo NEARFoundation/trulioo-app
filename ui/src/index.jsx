@@ -1,12 +1,13 @@
+import { colors } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { StoreProvider } from 'easy-peasy';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
 import './index.css';
 import App from './App';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { colors } from '@mui/material';
 import { Initializer } from './providers/Initializer/Initializer';
 import { store } from './store';
-import { StoreProvider } from 'easy-peasy';
 
 const theme = createTheme({
   breakpoints: {
@@ -15,8 +16,8 @@ const theme = createTheme({
       xs: 300, // phone
       sm: 600, // tablets
       md: 900, // small laptop
-      lg: 1200, // desktop
-      xl: 1536, // large screens
+      lg: 1_200, // desktop
+      xl: 1_536, // large screens
     },
   },
   palette: {
@@ -85,7 +86,7 @@ const theme = createTheme({
   },
 });
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.querySelector('#root'));
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>

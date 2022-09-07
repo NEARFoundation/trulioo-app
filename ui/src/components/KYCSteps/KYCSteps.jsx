@@ -1,12 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Stepper, Step, StepButton, Box } from '@mui/material';
-import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
+/* eslint-disable canonical/filename-match-regex */
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CancelIcon from '@mui/icons-material/Cancel';
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import { Stepper, Step, StepButton, Box } from '@mui/material';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useEffect, useState } from 'react';
+
 import IdentityVerification from '../IdentityVerification/IdentityVerification';
+
 import CheckVerification from './CheckVerification/CheckVerification';
 import TruliooEmbedId from './TruliooEmbedId/TruliooEmbedId';
-import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const stepperSteps = [
   { label: 'Select Country', value: 'country_select' },
@@ -14,7 +19,7 @@ const stepperSteps = [
   { label: 'Document verification', value: 'document_verification' },
 ];
 
-function statusToStep(status) {
+const statusToStep = (status) => {
   const steps = {
     select_country: 'select_country',
     identity_verification: 'identity_verification',
@@ -25,7 +30,7 @@ function statusToStep(status) {
     document_verification_failed: 'document_verification',
   };
   return steps[status];
-}
+};
 
 const stepIcons = {
   identity_verification: <PanoramaFishEyeIcon color="primary" />,
@@ -42,9 +47,7 @@ const stepIcons = {
 const KYCSteps = ({ loading, status }) => {
   const onGetAppConfig = useStoreActions((actions) => actions.general.onGetAppConfig);
 
-  const { trulioo_public_key, finish_redirect_url } = useStoreState(
-    (state) => state.general.appConfig,
-  );
+  const { trulioo_public_key, finish_redirect_url } = useStoreState((state) => state.general.appConfig);
   const [step, setStep] = useState(null);
   const isFinished = status === 'document_verification_completed';
   const isCheckProcess =
@@ -74,10 +77,10 @@ const KYCSteps = ({ loading, status }) => {
     return index < activeStep();
   };
 
-  const getStepIcon = (status, index) => {
-    if (activeStep() === index) return stepIcons[status];
+  const getStepIcon = (stepIconStatus, index) => {
+    if (activeStep() === index) return stepIcons[stepIconStatus];
     if (completedSteps(index)) return null;
-    return stepIcons['default'];
+    return stepIcons.default;
   };
 
   return (
@@ -91,10 +94,10 @@ const KYCSteps = ({ loading, status }) => {
     >
       {!isFinished && (
         <Stepper sx={{ maxWidth: 580, marginTop: 4 }} activeStep={activeStep()} alternativeLabel>
-          {stepperSteps.map((step, index) => (
-            <Step key={step.label}>
+          {stepperSteps.map((stepperStep, index) => (
+            <Step key={stepperStep.label}>
               <StepButton color="inherit" icon={getStepIcon(status, index)}>
-                {step.label}
+                {stepperStep.label}
               </StepButton>
             </Step>
           ))}
@@ -103,12 +106,8 @@ const KYCSteps = ({ loading, status }) => {
       {status && (
         <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
           {status === 'identity_verification' && <IdentityVerification loading={loading} />}
-          {isCheckProcess && (
-            <CheckVerification status={status} redirectUrl={finish_redirect_url} />
-          )}
-          {status === 'identity_verification_completed' && trulioo_public_key && (
-            <TruliooEmbedId publicKey={trulioo_public_key} />
-          )}
+          {isCheckProcess && <CheckVerification status={status} redirectUrl={finish_redirect_url} />}
+          {status === 'identity_verification_completed' && trulioo_public_key && <TruliooEmbedId publicKey={trulioo_public_key} />}
         </Box>
       )}
     </Box>

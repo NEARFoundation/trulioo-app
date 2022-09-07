@@ -1,19 +1,22 @@
-import { TextField, Autocomplete, InputAdornment } from '@mui/material';
-import { Controller } from 'react-hook-form';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import { ErrorMessage } from '@hookform/error-message';
-import { useStyles } from './CountrySelect.styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { useStoreState } from 'easy-peasy';
+import { TextField, Autocomplete, InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useStoreState } from 'easy-peasy';
 import { useState } from 'react';
+import { Controller } from 'react-hook-form';
+
+import { useStyles } from './CountrySelect.styles';
 
 const CountrySelect = (props) => {
   const { control, name, errors } = props;
   const [open, setOpen] = useState(false);
   const country = useStoreState((state) => state.general.country);
-  const countriesArr = useStoreState((state) => state.general.countries);
-  const loading = open && countriesArr.length === 0;
+  const countriesArray = useStoreState((state) => state.general.countries);
+  const loading = open && countriesArray.length === 0;
 
   const classes = useStyles();
 
@@ -28,10 +31,10 @@ const CountrySelect = (props) => {
             onChange(data?.code ?? '');
             return data;
           }}
-          defaultValue={countriesArr.find((item) => item.code === country)}
+          defaultValue={countriesArray.find((item) => item.code === country)}
           id="country"
           className={classes.autocomplete}
-          options={countriesArr}
+          options={countriesArray}
           loading={loading}
           onOpen={() => {
             setOpen(true);
@@ -42,8 +45,8 @@ const CountrySelect = (props) => {
           autoHighlight
           getOptionLabel={(option) => option.name}
           isOptionEqualToValue={(option, value) => option.code === value.code}
-          renderOption={(props, option) => (
-            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+          renderOption={(renderOptionProps, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...renderOptionProps}>
               <img
                 loading="lazy"
                 width="20"
@@ -54,16 +57,16 @@ const CountrySelect = (props) => {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => (
+          renderInput={(parameters) => (
             <>
               <TextField
-                {...params}
+                {...parameters}
                 placeholder="Select"
                 InputLabelProps={{ shrink: false }}
                 variant="filled"
                 fullWidth
                 InputProps={{
-                  ...params.InputProps,
+                  ...parameters.InputProps,
                   startAdornment: (
                     <InputAdornment position="start">
                       <SearchIcon />
@@ -72,19 +75,13 @@ const CountrySelect = (props) => {
                   endAdornment: (
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                      {params.InputProps.endAdornment}
+                      {parameters.InputProps.endAdornment}
                     </>
                   ),
                   disableUnderline: true,
                 }}
               />
-              {errors && (
-                <ErrorMessage
-                  errors={errors}
-                  name={name}
-                  as={<span className="error-message" style={{ color: 'red' }} />}
-                />
-              )}
+              {errors && <ErrorMessage errors={errors} name={name} as={<span className="error-message" style={{ color: 'red' }} />} />}
             </>
           )}
         />

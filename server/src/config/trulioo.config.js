@@ -11,6 +11,6 @@ export const truliooPublicKey = process.env.TRULIOO_PUBLIC_KEY;
 
 export const truliooInstance = axios.create({
   baseURL: TRULIOO_BASE_URL,
-  timeout: 10000,
+  timeout: 10_000,
   headers: {'x-trulioo-api-key': truliooApiKey}
 });

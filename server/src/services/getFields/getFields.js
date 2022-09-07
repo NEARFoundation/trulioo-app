@@ -1,44 +1,44 @@
-import { cacheExpirationPeriod, Fields } from "../../models/Fields.js";
-import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
-import { hoursDifference } from "../../helpers/hoursDifference.js";
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { hoursDifference } from '../../helpers/hoursDifference.js';
+import { cacheExpirationPeriod, Fields } from '../../models/Fields.js';
 
-export const getFields = async (req, res) => {
+export const getFields = async (request, response) => {
   try {
-    const checkResult = await checkCode(req);
+    const checkResult = await checkCode(request);
     if (!checkResult) {
-      return invalidCode(res);
+      return invalidCode(response);
     }
 
-    const { country } = req.query;
-    let fieldsRecord = await Fields.findOne({country: country});
+    const { country } = request.query;
+    let fieldsRecord = await Fields.findOne({ country });
     if (fieldsRecord && hoursDifference(new Date(), fieldsRecord.timestamp) < cacheExpirationPeriod) {
-      res.send(fieldsRecord.fields);
+      response.send(fieldsRecord.fields);
     } else {
-      const fields = await getFieldsFromTrulioo(country, req.app.get('trulioo'));
+      const fields = await getFieldsFromTrulioo(country, request.app.get('trulioo'));
       if (!fieldsRecord) {
-        fieldsRecord = new Fields({country: country});
+        fieldsRecord = new Fields({ country });
       }
+
       fieldsRecord.fields = fields;
       fieldsRecord.timestamp = new Date();
       fieldsRecord.save();
-      res.send(fields);
+      response.send(fields);
     }
-
-  } catch (e) {
-    console.log(e);
-    res
-      .status(500)
-      .send({ error: 'The list of fields cannot be obtained. Please try again.' });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ error: 'The list of fields cannot be obtained. Please try again.' });
   }
-}
+};
 
 function checkFieldsData(data) {
   // The required field for missing fields must be removed
   if (data && data.properties) {
     for (const [groupId, group] of Object.entries(data.properties)) {
       if (group && group.required) {
-        let newRequired = []
-        group.required.map(item => {
+        const newRequired = [];
+        // eslint-disable-next-line array-callback-return
+        group.required.map((item) => {
           if (group.properties[item]) {
             newRequired.push(item);
           }
@@ -47,6 +47,7 @@ function checkFieldsData(data) {
       }
     }
   }
+
   return data;
 }
 

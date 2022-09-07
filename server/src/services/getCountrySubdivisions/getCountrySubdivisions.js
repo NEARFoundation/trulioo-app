@@ -1,38 +1,35 @@
-import { cacheExpirationPeriod, CountrySubdivisions } from "../../models/CountrySubdivisions.js";
-import { checkCode, invalidCode } from "../../helpers/codeUtils.js";
-import { hoursDifference } from "../../helpers/hoursDifference.js";
+/* eslint-disable import/extensions */
+import { checkCode, invalidCode } from '../../helpers/codeUtils.js';
+import { hoursDifference } from '../../helpers/hoursDifference.js';
+import { cacheExpirationPeriod, CountrySubdivisions } from '../../models/CountrySubdivisions.js';
 
-export const getCountrySubdivisions = async (req, res) => {
+export const getCountrySubdivisions = async (request, response) => {
   try {
-    const checkResult = await checkCode(req);
+    const checkResult = await checkCode(request);
     if (!checkResult) {
-      return invalidCode(res);
+      return invalidCode(response);
     }
 
-    const { country } = req.query;
-    let countrySubdivisionsRecord = await CountrySubdivisions.findOne({country: country});
-    if (countrySubdivisionsRecord &&
-      hoursDifference(new Date(), countrySubdivisionsRecord.timestamp) < cacheExpirationPeriod)
-    {
-      res.send(countrySubdivisionsRecord.countrySubdivisions);
+    const { country } = request.query;
+    let countrySubdivisionsRecord = await CountrySubdivisions.findOne({ country });
+    if (countrySubdivisionsRecord && hoursDifference(new Date(), countrySubdivisionsRecord.timestamp) < cacheExpirationPeriod) {
+      response.send(countrySubdivisionsRecord.countrySubdivisions);
     } else {
-      const countrySubdivisions = await getCountrySubdivisionsFromTrulioo(country, req.app.get('trulioo'));
+      const countrySubdivisions = await getCountrySubdivisionsFromTrulioo(country, request.app.get('trulioo'));
       if (!countrySubdivisionsRecord) {
-        countrySubdivisionsRecord = new CountrySubdivisions({country: country});
+        countrySubdivisionsRecord = new CountrySubdivisions({ country });
       }
+
       countrySubdivisionsRecord.countrySubdivisions = countrySubdivisions;
       countrySubdivisionsRecord.timestamp = new Date();
       countrySubdivisionsRecord.save();
-      res.send(countrySubdivisions);
+      response.send(countrySubdivisions);
     }
-
-  } catch (e) {
-    console.log(e);
-    res
-      .status(500)
-      .send({ error: 'The list of subdivisions cannot be obtained. Please try again.' });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ error: 'The list of subdivisions cannot be obtained. Please try again.' });
   }
-}
+};
 
 async function getCountrySubdivisionsFromTrulioo(country, truliooInstance) {
   const response = await truliooInstance.get(`/configuration/v1/countrysubdivisions/${country}`);
