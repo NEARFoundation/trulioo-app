@@ -9,7 +9,7 @@ import Man from '../../general/img/man.png';
 
 import { useStyles } from './CheckVerification.styles';
 
-const POLLING_INTERVAL_MILLISECONDS = 3_000; // TODO: Change back to 30_000 as default but make this configurable per env.
+const POLLING_INTERVAL_MILLISECONDS = process.env.REACT_APP_POLLING_INTERVAL_MILLISECONDS || 30_000;
 
 const CheckVerification = ({ status, redirectUrl }) => {
   const { onGetSession } = useStoreActions((actions) => actions.general);
