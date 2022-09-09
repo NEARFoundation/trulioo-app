@@ -74,7 +74,7 @@ const CheckVerification = ({ status, redirectUrl }) => {
                   Thank you! We are currently checking your data.
                 </Typography>
                 <Typography variant="body2" className={classes.formDescription}>
-                  This may take a few seconds...
+                  This may take a few minutes...
                 </Typography>
               </Box>
             </Box>
