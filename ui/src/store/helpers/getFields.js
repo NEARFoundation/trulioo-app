@@ -1,4 +1,4 @@
-// TODO: Clean up eqeqeq instances below.
+// TODO: Clean up eqeqeq instances below. See question at https://github.com/NEARFoundation/trulioo-app/pull/45#issuecomment-1238630791 and in Telegram.
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import * as R from 'ramda';
