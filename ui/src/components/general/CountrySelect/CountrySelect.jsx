@@ -31,7 +31,6 @@ const CountrySelect = (props) => {
             onChange(data?.code ?? '');
             return data;
           }}
-          defaultValue={countriesArray.find((item) => item.code === country)}
           id="country"
           className={classes.autocomplete}
           options={countriesArray}
