@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { ipListWhitelist } from '../../config/trulioo.config.js';
+import { ipAddressAllowList } from '../../config/trulioo.config.js';
 import { checkCode, disableCode, invalidCode } from '../../helpers/codeUtils.js';
 import { Applicant } from '../../models/Applicant.js';
 import { Transaction } from '../../models/Transaction.js';
@@ -107,7 +107,7 @@ export const checkResult = async (request, response) => {
   try {
     const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
     console.log(`IP address ${ip} is trying to access the /:code/api/send-check-result endpoint.`);
-    if (!ipListWhitelist.includes(ip)) {
+    if (!ipAddressAllowList.includes(ip)) {
       console.log(`IP address ${ip} is not allowed to access this endpoint.`);
       return response.status(403).send('Forbidden');
     }
