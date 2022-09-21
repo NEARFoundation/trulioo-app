@@ -1,4 +1,5 @@
 /* eslint-disable import/extensions */
+import { ipListWhitelist } from '../../config/trulioo.config.js';
 import { checkCode, disableCode, invalidCode } from '../../helpers/codeUtils.js';
 import { Applicant } from '../../models/Applicant.js';
 import { Transaction } from '../../models/Transaction.js';
@@ -104,7 +105,13 @@ export const createTransaction = async (transactionId, transactionRecordId, trul
 
 export const checkResult = async (request, response) => {
   try {
-    // TODO: Check the source of the request. Karolina said "This part is needed to check the source of request if it's received from Trulioo to protect from hackers."
+    const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+    console.log(`IP address ${ip} is trying to access the /:code/api/send-check-result endpoint.`);
+    if (!ipListWhitelist.includes(ip)) {
+      console.log(`IP address ${ip} is not allowed to access this endpoint.`);
+      return response.status(403).send('Forbidden');
+    }
+
     const checkCodeResult = await checkCode(request);
     if (!checkCodeResult) {
       return invalidCode(response);
