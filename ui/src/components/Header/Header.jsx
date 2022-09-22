@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Box, Link } from '@mui/material';
+import { AppBar, Toolbar, Box } from '@mui/material';
 import React from 'react';
 
 import Logo from '../../images/logo.jpg';
@@ -21,16 +21,14 @@ const Header = () => {
           justifyContent: 'space-between',
         }}
       >
-        <Link href="/">
-          <Box
-            component="img"
-            sx={{
-              height: 'auto',
-            }}
-            alt="Near KYC"
-            src={Logo}
-          />
-        </Link>
+        <Box
+          component="img"
+          sx={{
+            height: 'auto',
+          }}
+          alt="Near KYC"
+          src={Logo}
+        />
       </Toolbar>
     </AppBar>
   );
