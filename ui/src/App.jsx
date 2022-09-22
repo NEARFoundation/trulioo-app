@@ -50,7 +50,7 @@ const App = () => {
           }
         />
       </Routes>
-      {status !== 'country_select' && status !== steps.includes(status) && <Footer />}
+      {(status === 'new' || pathname === '/privacy-policy' || isAppError) && <Footer />}
       <Message />
     </Router>
   );
