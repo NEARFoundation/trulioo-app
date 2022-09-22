@@ -3,7 +3,13 @@
 import { Container } from '@mui/material';
 
 const PrivacyPolicy = () => (
-  <Container maxWidth="lg">
+  <Container
+    maxWidth="lg"
+    sx={{
+      marginTop: '32px',
+      marginBottom: '64px',
+    }}
+  >
     <div>
       <h1>Privacy Policy</h1>
 
