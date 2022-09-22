@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import AppError from './components/AppError/AppError';
 import CountrySelection from './components/CountrySelection/CountrySelection';
+import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import KYCSteps from './components/KYCSteps/KYCSteps';
 import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
@@ -49,6 +50,7 @@ const App = () => {
           }
         />
       </Routes>
+      {status !== 'country_select' && status !== steps.includes(status) && <Footer />}
       <Message />
     </Router>
   );
