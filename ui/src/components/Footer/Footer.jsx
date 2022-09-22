@@ -8,19 +8,7 @@ export default function Footer() {
 
   return (
     <footer>
-      <Box
-        sx={{
-          paddingRight: '16px',
-          paddingLeft: '16px',
-          color: '#000',
-          borderTop: '1px solid #E1E1E1',
-        }}
-        py={6}
-        display="flex"
-        flexWrap="wrap"
-        alignItems="center"
-        className={classes.rootBox}
-      >
+      <Box py={6} display="flex" flexWrap="wrap" alignItems="center" className={classes.footerContainer}>
         <Box component="nav" className={classes.footerNav}>
           <Link href="/privacy-policy" variant="body1" color="textPrimary" className={classes.footerLink}>
             Privacy Policy

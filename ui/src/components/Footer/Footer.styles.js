@@ -1,10 +1,14 @@
 import makeStyles from '@mui/styles/makeStyles';
 
 const styles = (theme) => ({
-  rootBox: {
+  footerContainer: {
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center',
     },
+    paddingRight: '16px',
+    paddingLeft: '16px',
+    color: '#000',
+    borderTop: '1px solid #E1E1E1',
   },
   footerNav: {
     display: 'flex',
