@@ -43,27 +43,29 @@ yarn dev
 
 # Note: you will always need to update EXTERNAL_SERVER_URL in server/.env (such as if localtunnel makes you change your subdomain) and then restart the `yarn dev` command.
 
-# 6. In that same terminal, look for the console log that says "Please visit", and click its link (such as https://trulioo.loca.lt/6c7079b6022347ada53f37f489fc773a).
+# 6. In your browser, visit the URL such as https://trulioo.loca.lt/kyc/secret-create-url which is determined by your environment variables EXTERNAL_SERVER_URL and GENERIC_CREATE_CODE_TOKEN like this: `${EXTERNAL_SERVER_URL}/kyc/${GENERIC_CREATE_CODE_TOKEN}`.
+
 ```
 
 ## How to manually test the flow
 
-As an admin: 
+As an admin:
 
 1. You need to log in as a special user with certain permissions.
-1. Create test entities (see https://trulioo.freshdesk.com/support/solutions/articles/13000009316-how-do-i-create-test-entities-) 
-
+1. Create test entities (see https://trulioo.freshdesk.com/support/solutions/articles/13000009316-how-do-i-create-test-entities-)
 
 As a user:
 
-1. Click "Get Started". 
+1. Click "Get Started".
 1. Choose "France" as your country.
 1. Fill out the form with values that match a test entity, such as: first name "San", last name "Holo", and DOB 01-01-2000. (Yes, it's "Han Solo" misspelled, and yes you're providing a date of birth even though that field isn't marked as required.) You can use any other (fake) data for the other required fields and leave optional fields blank.
 1. Use your phone to visit the QR code's website.
 1. Take a photo of a passport such as https://www.pinterest.com/pin/buy-your-real-passportsid-cardsvisasdrivers-licensessnieltstoefl-and-scan-onlinecontact-us-o--1078541810733589539/ It will likely say "document not recognized" and will allow you to take the photo again manually, which you should.
 
-
-
 ## TODO
 
 Throughout the repo, find places where Eslint was disabled. Re-enable Eslint, and fix the issues.
+
+```
+
+```

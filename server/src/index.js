@@ -7,8 +7,7 @@ import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 
-import { truliooInstance, EXTERNAL_SERVER_URL } from './config/trulioo.config.js';
-import { createNewCode } from './helpers/codeUtils.js';
+import { truliooInstance } from './config/trulioo.config.js';
 import { loggingRequestAndResponse, rawBody } from './helpers/loggingRequestAndResponse.js';
 import { routes } from './routes/collector.routes.js';
 import { createSchedules } from './services/cronSchedule/cronSchedule.js';
@@ -40,14 +39,4 @@ if (process.env.USE_SSL === 'true') {
   https.createServer(options, app).listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
   });
-}
-
-/*
-This block is a temporary hack for local development purposes so that we reduce the number of steps required for manually testing the flow. See README.md for more details.
-*/
-if (process.env.FORCE_CREATE_CODE === 'true') {
-  const expiryDate = new Date();
-  expiryDate.setDate(expiryDate.getDate() + 365);
-  const codeEntity = await createNewCode(expiryDate);
-  console.log(`Please visit ${EXTERNAL_SERVER_URL}/${codeEntity.code}`); // This logging gets used locally for testing purposes. See README.md for more details.
 }

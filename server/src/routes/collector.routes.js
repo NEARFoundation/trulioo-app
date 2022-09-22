@@ -1,7 +1,9 @@
 /* eslint-disable import/extensions */
 import express from 'express';
 
+import { GENERIC_CREATE_CODE_TOKEN } from '../config/trulioo.config.js';
 import { checkResult } from '../services/checkResult/checkResult.js';
+import { createCode } from '../services/createCode/createCode.js';
 import { documentVerificationStart } from '../services/documentVerificationStart/documentVerificationStart.js';
 import { embedIdToken } from '../services/embedIdToken/embedIdToken.js';
 import { getConsents } from '../services/getConsents/getConsents.js';
@@ -26,6 +28,7 @@ export const routes = (app) => {
   app.post('/:code/trulioo-api/embedids/tokens/:publicKey', embedIdToken);
   app.post('/:code/api/doc-verify', documentVerificationStart);
   app.use('/:code/', express.static('public'));
+  app.get(`/kyc/${GENERIC_CREATE_CODE_TOKEN}`, createCode);
   app.get('*', (request, response) => {
     response.redirect('/error/');
   });
