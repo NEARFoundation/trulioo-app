@@ -43,7 +43,7 @@ yarn dev
 
 # Note: you will always need to update EXTERNAL_SERVER_URL in server/.env (such as if localtunnel makes you change your subdomain) and then restart the `yarn dev` command.
 
-# 6. You can then use the link starting with EXTERNAL_SERVER_URL followed by `/kyc/secret-create-url` for example https://trulioo.loca.lt/kyc/secret-create-url
+# 6. In your browser, visit the URL such as https://trulioo.loca.lt/kyc/secret-create-url which is determined by your environment variables EXTERNAL_SERVER_URL and GENERIC_CREATE_CODE_TOKEN like this: `${EXTERNAL_SERVER_URL}/kyc/${GENERIC_CREATE_CODE_TOKEN}`.
 
 ```
 
