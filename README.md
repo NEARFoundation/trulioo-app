@@ -65,7 +65,3 @@ As a user:
 ## TODO
 
 Throughout the repo, find places where Eslint was disabled. Re-enable Eslint, and fix the issues.
-
-```
-
-```
