@@ -9,6 +9,7 @@ export const EXPERIENCE_TRANSACTION_URL = 'https://gateway.trulioo.com/experienc
 export const GENERIC_CREATE_CODE_TOKEN = process.env.GENERIC_CREATE_CODE_TOKEN;
 export const truliooApiKey = process.env.X_TRULIOO_API_KEY;
 export const truliooPublicKey = process.env.TRULIOO_PUBLIC_KEY;
+export const ipAddressAllowList = process.env.IP_ADDRESS_ALLOW_LIST.split(',');
 
 export const truliooInstance = axios.create({
   baseURL: TRULIOO_BASE_URL,

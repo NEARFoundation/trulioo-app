@@ -14,7 +14,6 @@ import { useStyles } from './CountrySelect.styles';
 const CountrySelect = (props) => {
   const { control, name, errors } = props;
   const [open, setOpen] = useState(false);
-  const country = useStoreState((state) => state.general.country);
   const countriesArray = useStoreState((state) => state.general.countries);
   const loading = open && countriesArray.length === 0;
 
