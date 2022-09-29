@@ -35,15 +35,12 @@ npx localtunnel --port 8080 --subdomain trulioo
 
 # 3. Copy the URL with https and paste it in server/.env as the value for EXTERNAL_SERVER_URL. E.g. EXTERNAL_SERVER_URL="https://trulioo.loca.lt"
 
-# 4. (Temporary hack to create a KYC URL) Ensure that your server/.env file has FORCE_CREATE_CODE="true" so that a new code will automatically get created upon page load.
-# The hack is at server/src/index.js.
-
-# 5. Run the local dev server via:
-yarn dev
+# 4. Run the local dev server via:
+yarn dev # or `DISABLE_ESLINT_PLUGIN=true yarn dev`
 
 # Note: you will always need to update EXTERNAL_SERVER_URL in server/.env (such as if localtunnel makes you change your subdomain) and then restart the `yarn dev` command.
 
-# 6. In your browser, visit the URL such as https://trulioo.loca.lt/kyc/secret-create-url which is determined by your environment variables EXTERNAL_SERVER_URL and GENERIC_CREATE_CODE_TOKEN like this: `${EXTERNAL_SERVER_URL}/kyc/${GENERIC_CREATE_CODE_TOKEN}`.
+# 5. In your browser, visit the URL such as https://trulioo.loca.lt/kyc/secret-create-url which is determined by your environment variables EXTERNAL_SERVER_URL and GENERIC_CREATE_CODE_TOKEN like this: `${EXTERNAL_SERVER_URL}/kyc/${GENERIC_CREATE_CODE_TOKEN}`. Your server console should also show this URL as a clickable link for your convenience.
 
 ```
 
